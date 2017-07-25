@@ -3,6 +3,8 @@ CC = $(CROSS_COMPILE)gcc
 OBJCOPY = $(CROSS_COMPILE)objcopy
 LIBOPENCM3 ?= ./libopencm3
 
+STFLASH=../tools/stlink/bin-amd64/st-flash
+
 TARGET=./stm32-tx-hid
 
 APP_ADDRESS = 0x08002000
@@ -36,4 +38,7 @@ clean:
 	-rm *.elf *.o *.bin
 
 flash:
-	
+	$(STFLASH) --reset write $(TARGET)-bootldr-combined.bin 0x8000000
+
+dfu:
+	dfu-util -d 0483:df11 -R -s 0x8002000 -D stm32-tx-hid.bin
