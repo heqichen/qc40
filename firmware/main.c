@@ -4,6 +4,10 @@
 #include <libopencm3/usb/hid.h>
 #include <libopencm3/stm32/st_usbfs.h>
 #include <libopencmsis/core_cm3.h>
+#include <libopencm3/cm3/nvic.h>
+#include <libopencm3/stm32/exti.h>
+#include <libopencm3/stm32/gpio.h>
+
 
 #ifndef NULL
 #define NULL 0
@@ -204,7 +208,6 @@ void usb_wakeup_isr(void)
 	*/
 }
 
-
 void sys_tick_handler(void)
 {
 	static uint8_t buf[1 + 16];
@@ -223,6 +226,20 @@ void sys_tick_handler(void)
 
 int main(void)
 {
+	rcc_clock_setup_in_hse_8mhz_out_72mhz();
+	rcc_periph_clock_enable(RCC_GPIOA);
+
+	exti_set_trigger(EXTI18, EXTI_TRIGGER_RISING);
+	exti_enable_request(EXTI18);
+	nvic_enable_irq(NVIC_USB_WAKEUP_IRQ);
+
+
+	gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
+		GPIO_CNF_OUTPUT_PUSHPULL, GPIO12);
+	gpio_clear(GPIOA, GPIO12);
+	for (unsigned int i = 0; i < 800000; i++)
+		__asm__("nop");
+
 
 	usbd_dev = usbd_init(&st_usbfs_v1_usb_driver, &dev_descr, &config, usb_strings, 4, usbd_control_buffer, sizeof(usbd_control_buffer));
 	usbd_register_set_config_callback(usbd_dev, hid_set_config);
@@ -231,6 +248,7 @@ int main(void)
 
 	while (1)
 	{
+		usbd_poll(usbd_dev);
 		;
 	}
 	return 0;
