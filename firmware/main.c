@@ -214,6 +214,7 @@ static const char *usb_strings[] = {
 
 uint8_t usbd_control_buffer[5*64];
 
+
 uint32_t getChipId()
 {
 	return *(volatile uint8_t *)0x1FFFF7E8;
@@ -236,7 +237,6 @@ int hid_control_request(usbd_device *dev, struct usb_setup_data *req, uint8_t **
 
 	return 1;
 }
-
 
 void hid_set_config(usbd_device *dev, uint16_t wValue)
 {
@@ -297,12 +297,27 @@ void sys_tick_handler(void)
 	if (bb%2 == 0)
 	{
 		buf[0] = 3;	//report id 1 mouse
-	usbd_ep_write_packet(usbd_dev, 0x81, buf, 4);
+		//usbd_ep_write_packet(usbd_dev, 0x81, buf, 4);
 	}
 	else
 	{
-	buf[0] = 1;//joystick
-	usbd_ep_write_packet(usbd_dev, 0x81, buf, 6);		
+		int len;
+		buf[0] = 1;//joystick
+		len = usbd_ep_write_packet(usbd_dev, 0x81, buf, 6);
+		if (len == 0)
+		{
+			gpio_toggle(GPIOC, GPIO13);
+		}
+		buf[0] = 3;	//report id 1 mouse
+
+
+		//len = usbd_ep_write_packet(usbd_dev, 0x81, buf, 4);
+
+		while (len == 0)
+		{
+			//len = usbd_ep_write_packet(usbd_dev, 0x81, buf, 4);
+			gpio_toggle(GPIOC, GPIO13);
+		}
 	}
 
 	
@@ -317,11 +332,11 @@ void sys_tick_handler(void)
 
 	if ((vv & (1<<5)) > 0)
 	{
-		gpio_set(GPIOC, GPIO13);
+		//gpio_set(GPIOC, GPIO13);
 	}
 	else
 	{
-		gpio_clear(GPIOC, GPIO13);
+		//gpio_clear(GPIOC, GPIO13);
 	}
 }
 
