@@ -3,6 +3,8 @@ CC = $(CROSS_COMPILE)gcc
 OBJCOPY = $(CROSS_COMPILE)objcopy
 LIBOPENCM3 ?= ./libopencm3
 
+TARGET=./stm32-tx-hid
+
 APP_ADDRESS = 0x08002000
 APP_OFFSET = $(shell echo $$(($(APP_ADDRESS) - 0x08000000)))
 
@@ -14,14 +16,14 @@ LDFLAGS = -lopencm3_stm32f1 \
 	-Wl,-Tstm32f103.ld -nostartfiles -lc -lnosys \
 	-mthumb -mcpu=cortex-m3 -L$(LIBOPENCM3)/lib/ -Wl,-gc-sections
 
-stm32-tx-hid-bootldr-combined.bin: stm32-tx-hid-bootldr.bin stm32-tx-hid.bin
-	cp stm32-tx-hid-bootldr.bin $@
-	dd if=stm32-tx-hid.bin of=$@ seek=1 bs=$(APP_OFFSET)
+$(TARGET)-bootldr-combined.bin: $(TARGET)-bootldr.bin $(TARGET).bin
+	cp $(TARGET)-bootldr.bin $@
+	dd if=$(TARGET).bin of=$@ seek=1 bs=$(APP_OFFSET)
 
-stm32-tx-hid.elf: stm32-tx-hid.o | $(LIBOPENCM3)/lib/libopencm3_stm32f1.a
+$(TARGET).elf: $(TARGET).o | $(LIBOPENCM3)/lib/libopencm3_stm32f1.a
 	$(CC) $^ -o $@ $(LDFLAGS) -Wl,-Ttext=$(APP_ADDRESS)
 
-stm32-tx-hid-bootldr.elf: stm32-tx-hid-bootldr.o | $(LIBOPENCM3)/lib/libopencm3_stm32f1.a
+$(TARGET)-bootldr.elf: $(TARGET)-bootldr.o | $(LIBOPENCM3)/lib/libopencm3_stm32f1.a
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 $(LIBOPENCM3)/lib/libopencm3_stm32f1.a:
@@ -32,3 +34,6 @@ $(LIBOPENCM3)/lib/libopencm3_stm32f1.a:
 
 clean:
 	-rm *.elf *.o *.bin
+
+flash:
+	
