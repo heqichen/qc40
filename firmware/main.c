@@ -1,5 +1,234 @@
+#include <libopencm3/stm32/rcc.h>
+#include <libopencm3/cm3/systick.h>
+#include <libopencm3/usb/usbd.h>
+#include <libopencm3/usb/hid.h>
+#include <libopencm3/stm32/st_usbfs.h>
+#include <libopencmsis/core_cm3.h>
+
+#ifndef NULL
+#define NULL 0
+#endif
+
+usbd_device *usbd_dev;
+
+const struct usb_device_descriptor dev_descr = {
+	.bLength = USB_DT_DEVICE_SIZE,
+	.bDescriptorType = USB_DT_DEVICE,
+	.bcdUSB = 0x0200,
+	.bDeviceClass = 0,
+	.bDeviceSubClass = 0,
+	.bDeviceProtocol = 0,
+	.bMaxPacketSize0 = 64,
+	.idVendor = 0x0483,
+	.idProduct = 0x5710,
+	.bcdDevice = 0x0200,
+	.iManufacturer = 1,
+	.iProduct = 2,
+	.iSerialNumber = 3,
+	.bNumConfigurations = 1,
+};
+
+const struct usb_endpoint_descriptor hid_endpoint = {
+	.bLength = USB_DT_ENDPOINT_SIZE,
+	.bDescriptorType = USB_DT_ENDPOINT,
+	.bEndpointAddress = 0x81,
+	.bmAttributes = USB_ENDPOINT_ATTR_INTERRUPT,
+	.wMaxPacketSize = 17,
+	.bInterval = 0x02,
+};
+
+static const uint8_t hid_report_descriptor[] = {
+	 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+	 0x09, 0x04, // USAGE (Joystick)
+
+	 0xa1, 0x01, // COLLECTION (Application)
+	 0xa1, 0x00, // COLLECTION (Physical)
+
+	 0x05, 0x09, // USAGE_PAGE (Button)
+	 0x19, 0x01, // USAGE_MINIMUM (Button 1)
+	 0x29, 0x08, // USAGE_MAXIMUM (Button 8)
+	 0x15, 0x00, // LOGICAL_MINIMUM (0)
+	 0x25, 0x01, // LOGICAL_MAXIMUM (1)
+	 0x95, 0x08, // REPORT_COUNT (8)
+	 0x75, 0x01, // REPORT_SIZE (1)
+	 0x81, 0x02, // INPUT (Data,Var,Abs)
+
+	 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+	 0x15, 0x00, // LOGICAL_MINIMUM (0)
+	 0x26, 0xff, 0x0f, // LOGICAL_MAXIMUM
+	 0x75, 0x10, // REPORT_SIZE
+
+	 0x09, 0x30, // USAGE (X)
+	 0x09, 0x31, // USAGE (Y)
+	 0x09, 0x32, // USAGE (Z)
+	 0x09, 0x33, // USAGE (Rx)
+	 0x09, 0x34, // USAGE (Ry)
+	 0x09, 0x35, // USAGE (Rz)
+	 0x09, 0x36, // USAGE (Throttle)
+	 0x09, 0x37, // USAGE (Rudder)
+	 0x95, 0x08, // REPORT_COUNT
+	 0x81, 0x82, // INPUT (Data,Var,Abs,Vol)
+
+	 0xc0, // END_COLLECTION
+	 0xc0 // END_COLLECTION
+};
+
+
+
+static const struct {
+	struct usb_hid_descriptor hid_descriptor;
+	struct {
+		uint8_t bReportDescriptorType;
+		uint16_t wDescriptorLength;
+	} __attribute__((packed)) hid_report;
+} __attribute__((packed)) hid_function = {
+	.hid_descriptor = {
+		.bLength = sizeof(hid_function),
+		.bDescriptorType = USB_DT_HID,
+		.bcdHID = 0x0100,
+		.bCountryCode = 0,
+		.bNumDescriptors = 1,
+	},
+	.hid_report = {
+		.bReportDescriptorType = USB_DT_REPORT,
+		.wDescriptorLength = sizeof(hid_report_descriptor),
+	}
+};
+
+const struct usb_interface_descriptor hid_iface = {
+	.bLength = USB_DT_INTERFACE_SIZE,
+	.bDescriptorType = USB_DT_INTERFACE,
+	.bInterfaceNumber = 0,
+	.bAlternateSetting = 0,
+	.bNumEndpoints = 1,
+	.bInterfaceClass = USB_CLASS_HID,
+	.bInterfaceSubClass = 0, /* boot */
+	.bInterfaceProtocol = 0, /* mouse */
+	.iInterface = 0,
+
+	.endpoint = &hid_endpoint,
+
+	.extra = &hid_function,
+	.extralen = sizeof(hid_function),
+};
+
+const struct usb_interface ifaces[] = {{
+	.num_altsetting = 1,
+	.altsetting = &hid_iface,
+}};
+
+
+const struct usb_config_descriptor config = {
+	.bLength = USB_DT_CONFIGURATION_SIZE,
+	.bDescriptorType = USB_DT_CONFIGURATION,
+	.wTotalLength = 0,
+	.bNumInterfaces = 1,
+	.bConfigurationValue = 1,
+	.iConfiguration = 0,
+	.bmAttributes = 0xC0,
+	.bMaxPower = 0x32,
+
+	.interface = ifaces,
+};
+
+static const char *usb_strings[] = {
+	"libopencm3",
+	"STM32 Tx HID adapter",
+	"0x00011"
+	/* This string is used by ST Microelectronics' DfuSe utility. */
+	"@Internal Flash   /0x08000000/8*001Ka,56*001Kg",
+};
+
+uint8_t usbd_control_buffer[5*64];
+
+uint32_t getChipId()
+{
+	return *(volatile uint8_t *)0x1FFFF7E8;
+}
+
+int hid_control_request(usbd_device *dev, struct usb_setup_data *req, uint8_t **buf, uint16_t *len,
+			void (**complete)(usbd_device *dev, struct usb_setup_data *req))
+{
+	(void)complete;
+	(void)dev;
+
+	if((req->bmRequestType != 0x81) ||
+	   (req->bRequest != USB_REQ_GET_DESCRIPTOR) ||
+	   (req->wValue != 0x2200))
+		return 0;
+
+	/* Handle the HID report descriptor. */
+	*buf = (uint8_t *)hid_report_descriptor;
+	*len = sizeof(hid_report_descriptor);
+
+	return 1;
+}
+
+
+void hid_set_config(usbd_device *dev, uint16_t wValue)
+{
+	(void)wValue;
+
+	usbd_ep_setup(dev, 0x81, USB_ENDPOINT_ATTR_INTERRUPT, 4, NULL);
+
+	usbd_register_control_callback(
+				dev,
+				USB_REQ_TYPE_STANDARD | USB_REQ_TYPE_INTERFACE,
+				USB_REQ_TYPE_TYPE | USB_REQ_TYPE_RECIPIENT,
+				hid_control_request);
+
+	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB_DIV8);
+	/* SysTick interrupt every N clock pulses: set reload to N-1 */
+	systick_set_reload(99999);
+	systick_interrupt_enable();
+	systick_counter_enable();
+}
+
+
+void usb_suspend_callback(void)
+{
+	/*
+	*USB_CNTR_REG |= USB_CNTR_FSUSP;
+	*USB_CNTR_REG |= USB_CNTR_LP_MODE;
+	SCB_SCR |= SCB_SCR_SLEEPDEEP;
+	__WFI();
+	*/
+}
+
+void usb_wakeup_isr(void)
+{
+	/*
+	exti_reset_request(EXTI18);
+	rcc_clock_setup_in_hse_8mhz_out_72mhz();
+	*USB_CNTR_REG &= ~USB_CNTR_FSUSP;
+	*/
+}
+
+
+void sys_tick_handler(void)
+{
+	static uint8_t buf[1 + 16];
+
+	for (int i=0; i<8; ++i)
+	{
+		buf[i*2+1] = 0;	//Low
+		buf[i*2+1+1] = 0; //high;
+	}
+
+	buf[0] = 0;
+	usbd_ep_write_packet(usbd_dev, 0x81, buf, sizeof(buf));
+}
+
+
+
 int main(void)
 {
+
+	usbd_dev = usbd_init(&st_usbfs_v1_usb_driver, &dev_descr, &config, usb_strings, 4, usbd_control_buffer, sizeof(usbd_control_buffer));
+	usbd_register_set_config_callback(usbd_dev, hid_set_config);
+	usbd_register_suspend_callback(usbd_dev, usb_suspend_callback);
+
+
 	while (1)
 	{
 		;

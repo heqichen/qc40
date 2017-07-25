@@ -78,7 +78,8 @@ $(BIN): $(ELF)
 $(HEX): $(ELF)
 	$(OBJCOPY) -O ihex $< $@
 
-$(ELF): $(OBJECTS)
+$(ELF): $(OBJECTS) $(LIBOPENCM3)/lib/libopencm3_stm32f1.a
+	echo $(OBJECTS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJECTS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map
 
 $(BUILD_DIR)/%.o: %.s
@@ -93,6 +94,8 @@ $(BUILD_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
 	$(CXX) -c $(CFLAGS) $< -o $@
 
+$(LIBOPENCM3)/lib/libopencm3_stm32f1.a:
+	$(MAKE) -C $(LIBOPENCM3) TARGETS=stm32/f1
 
 all: $(OBJECTS) $(ELF) $(BIN)
 	$(SIZE) $(ELF)
