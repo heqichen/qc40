@@ -210,28 +210,34 @@ void usb_wakeup_isr(void)
 
 
 uint16_t value[8];
-
+uint16_t vv;
 
 void sys_tick_handler(void)
 {
 	static uint8_t buf[1 + 16];
+	buf[0] = 0;
+	vv += 10;
+	if (vv > 0x0FFF)
+	{
+		vv = 0;
+	}
 
 	for (int i=0; i<8; ++i)
 	{
-		buf[i*2+1] = value[i] &0xFF;	//Low
-		buf[i*2+1+1] = value[i] >> 8; //high;
+		buf[i*2+1] = vv & 0xFF;	//Low
+		buf[i*2+1+1] = vv >> 8; //high;
 	}
 
-	value[0]+=16;
-	int id = 0;
-	while (value[id]==0 && id<8)
+	if ((vv & (1<<5)) > 0)
 	{
-		value[id+1]++;
-		id++;
+		gpio_set(GPIOC, GPIO13);
 	}
-
-	buf[0] = 0;
-	usbd_ep_write_packet(usbd_dev, 0x81, buf, sizeof(buf));
+	else
+	{
+		gpio_clear(GPIOC, GPIO13);
+	}
+	
+	usbd_ep_write_packet(usbd_dev, 0x81, buf, 17);
 }
 
 
@@ -244,14 +250,15 @@ int main(void)
 	}
 	rcc_clock_setup_in_hse_8mhz_out_72mhz();
 	rcc_periph_clock_enable(RCC_GPIOA);
+	rcc_periph_clock_enable(RCC_GPIOC);
+	gpio_set_mode(GPIOC, GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
 
 	exti_set_trigger(EXTI18, EXTI_TRIGGER_RISING);
 	exti_enable_request(EXTI18);
 	nvic_enable_irq(NVIC_USB_WAKEUP_IRQ);
 
 
-	gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ,
-		GPIO_CNF_OUTPUT_PUSHPULL, GPIO12);
+	gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO12);
 	gpio_clear(GPIOA, GPIO12);
 	for (unsigned int i = 0; i < 800000; i++)
 		__asm__("nop");
