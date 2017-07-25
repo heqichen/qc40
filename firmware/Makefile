@@ -57,7 +57,7 @@ LD = arm-none-eabi-g++
 AR = arm-none-eabi-ar
 OBJCOPY = arm-none-eabi-objcopy
 SIZE = arm-none-eabi-size
-#STFLASH = ../tools/stlink/bin-amd64/st-flash
+STFLASH = ../tools/stlink/bin-amd64/st-flash
 
 APP_ADDRESS = 0x08002000
 APP_OFFSET = $(shell echo $$(($(APP_ADDRESS) - 0x08000000)))
@@ -96,3 +96,6 @@ $(BUILD_DIR)/%.o: %.cpp
 
 all: $(OBJECTS) $(ELF) $(BIN)
 	$(SIZE) $(ELF)
+
+flash:
+	$(STFLASH) --reset write $(BUILD_DIR)/$(TARGET).bin 0x8000000
