@@ -42,42 +42,15 @@ const struct usb_endpoint_descriptor hid_endpoint = {
 };
 
 static const uint8_t hid_report_descriptor[] = {
-	 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
-	 0x09, 0x04, // USAGE (Joystick)
-
-	 0xa1, 0x01, // COLLECTION (Application)
-	 0xa1, 0x00, // COLLECTION (Physical)
-
-	 0x05, 0x09, // USAGE_PAGE (Button)
-	 0x19, 0x01, // USAGE_MINIMUM (Button 1)
-	 0x29, 0x08, // USAGE_MAXIMUM (Button 8)
-	 0x15, 0x00, // LOGICAL_MINIMUM (0)
-	 0x25, 0x01, // LOGICAL_MAXIMUM (1)
-	 0x95, 0x08, // REPORT_COUNT (8)
-	 0x75, 0x01, // REPORT_SIZE (1)
-	 0x81, 0x02, // INPUT (Data,Var,Abs)
-
-	 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
-	 0x09, 0x30, // USAGE (X)
-	 0x09, 0x31, // USAGE (Y)
-	 0x95, 0x02, // REPORT_COUNT
-	 0x15, 0x00, // LOGICAL_MINIMUM (0)
-	 0x26, 0xff, 0x0f, // LOGICAL_MAXIMUM
-	 0x75, 0x10, // REPORT_SIZE
-
-	 0x81, 0x82, // INPUT (Data,Var,Abs,Vol)
-
-	 0xc0, // END_COLLECTION
-	 0xc0 // END_COLLECTION
 
 
-
-/*
 0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
 0x09, 0x02,                    // USAGE (Mouse)
 0xa1, 0x01,                    // COLLECTION (Application)
+
 0x09, 0x01,                    //   USAGE (Pointer)
 0xa1, 0x00,                    //   COLLECTION (Physical)
+0x85, 0x03,						// report id 3
 0x05, 0x09,                    //     USAGE_PAGE (Button)
 0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
 0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
@@ -98,7 +71,78 @@ static const uint8_t hid_report_descriptor[] = {
 0x95, 0x02,                    //     REPORT_COUNT (2)
 0x81, 0x06,                    //     INPUT (Data,Var,Rel)
 0xc0,                          //   END_COLLECTION
-0xc0                           // END_COLLECTION
+0xc0,                           // END_COLLECTION
+
+
+	 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+	 0x09, 0x04, // USAGE (Joystick)
+
+	 0xa1, 0x01, // COLLECTION (Application)
+	 
+		 0xa1, 0x00, // COLLECTION (Physical)
+		 	0x85, 0x01, // report id 1
+			 0x05, 0x09, // USAGE_PAGE (Button)
+			 0x19, 0x01, // USAGE_MINIMUM (Button 1)
+			 0x29, 0x08, // USAGE_MAXIMUM (Button 8)
+			 0x15, 0x00, // LOGICAL_MINIMUM (0)
+			 0x25, 0x01, // LOGICAL_MAXIMUM (1)
+			 0x95, 0x08, // REPORT_COUNT (8)
+			 0x75, 0x01, // REPORT_SIZE (1)
+			 0x81, 0x02, // INPUT (Data,Var,Abs)
+
+			 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+			 0x09, 0x30, // USAGE (X)
+			 0x09, 0x31, // USAGE (Y)
+			 0x95, 0x02, // REPORT_COUNT
+			 0x15, 0x00, // LOGICAL_MINIMUM (0)
+			 0x26, 0xff, 0x0f, // LOGICAL_MAXIMUM
+			 0x75, 0x10, // REPORT_SIZE
+			 0x81, 0x82, // INPUT (Data,Var,Abs,Vol)
+
+		 0xc0, // END_COLLECTION
+	 0xc0, // END_COLLECTION
+
+/*
+	 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+	 0x09, 0x04, // USAGE (Joystick)
+
+	 0xa1, 0x01, // COLLECTION (Application)
+		 0xa1, 0x00, // COLLECTION (Physical)
+		 	 0x85, 0x02, // report id 2
+			 0x05, 0x09, // USAGE_PAGE (Button)
+			 0x19, 0x01, // USAGE_MINIMUM (Button 1)
+			 0x29, 0x08, // USAGE_MAXIMUM (Button 8)
+			 0x15, 0x00, // LOGICAL_MINIMUM (0)
+			 0x25, 0x01, // LOGICAL_MAXIMUM (1)
+			 0x95, 0x08, // REPORT_COUNT (8)
+			 0x75, 0x01, // REPORT_SIZE (1)
+			 0x81, 0x02, // INPUT (Data,Var,Abs)
+
+
+		 0xc0, // END_COLLECTION
+	 0xc0, // END_COLLECTION
+
+*/
+
+
+	 /*
+
+	 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+	 0x09, 0x04, // USAGE (Joystick)
+ 	 0xa1, 0x01, // COLLECTION (Application)
+ 	 
+	 	0xa1, 0x00, // COLLECTION (Physical)
+	 	0x85, 0x02, // report id 2
+		 0x05, 0x09, // USAGE_PAGE (Button)
+		 0x19, 0x01, // USAGE_MINIMUM (Button 1)
+		 0x29, 0x08, // USAGE_MAXIMUM (Button 8)
+		 0x15, 0x00, // LOGICAL_MINIMUM (0)
+		 0x25, 0x01, // LOGICAL_MAXIMUM (1)
+		 0x95, 0x08, // REPORT_COUNT (8)
+		 0x75, 0x01, // REPORT_SIZE (1)
+		 0x81, 0x02, // INPUT (Data,Var,Abs)
+	 0xc0, // END_COLLECTION
+ 	0xc0, // END_COLLECTION
 */
 };
 
@@ -198,7 +242,7 @@ void hid_set_config(usbd_device *dev, uint16_t wValue)
 {
 	(void)wValue;
 
-	usbd_ep_setup(dev, 0x81, USB_ENDPOINT_ATTR_INTERRUPT, 4, NULL);
+	usbd_ep_setup(dev, 0x81, USB_ENDPOINT_ATTR_INTERRUPT, 64, NULL);
 
 	usbd_register_control_callback(
 				dev,
@@ -232,11 +276,11 @@ void usb_wakeup_isr(void)
 
 uint16_t value[8];
 uint16_t vv;
-
+int bb;
 void sys_tick_handler(void)
 {
 	static uint8_t buf[1 + 16];
-	buf[0] = 0;
+
 	vv += 10;
 	if (vv > 0x0FFF)
 	{
@@ -245,9 +289,31 @@ void sys_tick_handler(void)
 
 	for (int i=0; i<8; ++i)
 	{
-		buf[i*2+1] = vv & 0xFF;	//Low
-		buf[i*2+1+1] = vv >> 8; //high;
+		buf[i*2+2] = vv & 0xFF;	//Low
+		buf[i*2+2+1] = vv >> 8; //high;
 	}
+
+	bb++;
+	if (bb%2 == 0)
+	{
+		buf[0] = 3;	//report id 1 mouse
+	usbd_ep_write_packet(usbd_dev, 0x81, buf, 4);
+	}
+	else
+	{
+	buf[0] = 1;//joystick
+	usbd_ep_write_packet(usbd_dev, 0x81, buf, 6);		
+	}
+
+	
+	
+
+
+
+	buf[0] = 0x01;	
+
+	//usbd_ep_write_packet(usbd_dev, 0x81, buf, 6);
+
 
 	if ((vv & (1<<5)) > 0)
 	{
@@ -257,8 +323,6 @@ void sys_tick_handler(void)
 	{
 		gpio_clear(GPIOC, GPIO13);
 	}
-	
-	usbd_ep_write_packet(usbd_dev, 0x81, buf, 5);
 }
 
 
