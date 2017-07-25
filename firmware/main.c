@@ -23,8 +23,8 @@ const struct usb_device_descriptor dev_descr = {
 	.bDeviceSubClass = 0,
 	.bDeviceProtocol = 0,
 	.bMaxPacketSize0 = 64,
-	.idVendor = 0x0483,
-	.idProduct = 0x5710,
+	.idVendor = 0x8173,
+	.idProduct = 0xA001,
 	.bcdDevice = 0x0200,
 	.iManufacturer = 1,
 	.iProduct = 2,
@@ -58,23 +58,48 @@ static const uint8_t hid_report_descriptor[] = {
 	 0x81, 0x02, // INPUT (Data,Var,Abs)
 
 	 0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+	 0x09, 0x30, // USAGE (X)
+	 0x09, 0x31, // USAGE (Y)
+	 0x95, 0x02, // REPORT_COUNT
 	 0x15, 0x00, // LOGICAL_MINIMUM (0)
 	 0x26, 0xff, 0x0f, // LOGICAL_MAXIMUM
 	 0x75, 0x10, // REPORT_SIZE
 
-	 0x09, 0x30, // USAGE (X)
-	 0x09, 0x31, // USAGE (Y)
-	 0x09, 0x32, // USAGE (Z)
-	 0x09, 0x33, // USAGE (Rx)
-	 0x09, 0x34, // USAGE (Ry)
-	 0x09, 0x35, // USAGE (Rz)
-	 0x09, 0x36, // USAGE (Throttle)
-	 0x09, 0x37, // USAGE (Rudder)
-	 0x95, 0x08, // REPORT_COUNT
 	 0x81, 0x82, // INPUT (Data,Var,Abs,Vol)
 
 	 0xc0, // END_COLLECTION
 	 0xc0 // END_COLLECTION
+
+
+
+/*
+0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+0x09, 0x02,                    // USAGE (Mouse)
+0xa1, 0x01,                    // COLLECTION (Application)
+0x09, 0x01,                    //   USAGE (Pointer)
+0xa1, 0x00,                    //   COLLECTION (Physical)
+0x05, 0x09,                    //     USAGE_PAGE (Button)
+0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
+0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
+0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
+0x95, 0x03,                    //     REPORT_COUNT (3)
+0x75, 0x01,                    //     REPORT_SIZE (1)
+0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+0x95, 0x01,                    //     REPORT_COUNT (1)
+0x75, 0x05,                    //     REPORT_SIZE (5)
+0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)
+0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
+0x09, 0x30,                    //     USAGE (X)
+0x09, 0x31,                    //     USAGE (Y)
+0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
+0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
+0x75, 0x08,                    //     REPORT_SIZE (8)
+0x95, 0x02,                    //     REPORT_COUNT (2)
+0x81, 0x06,                    //     INPUT (Data,Var,Rel)
+0xc0,                          //   END_COLLECTION
+0xc0                           // END_COLLECTION
+*/
 };
 
 
@@ -136,8 +161,8 @@ const struct usb_config_descriptor config = {
 };
 
 static const char *usb_strings[] = {
-	"libopencm3",
-	"STM32 Tx HID adapter",
+	"Cooboc",
+	"H4K",
 	"0x00011"
 	/* This string is used by ST Microelectronics' DfuSe utility. */
 	"@Internal Flash   /0x08000000/8*001Ka,56*001Kg",
@@ -183,7 +208,7 @@ void hid_set_config(usbd_device *dev, uint16_t wValue)
 
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB_DIV8);
 	/* SysTick interrupt every N clock pulses: set reload to N-1 */
-	systick_set_reload(99999);
+	systick_set_reload(90000 - 1);	//100hz at 72M / 8
 	systick_interrupt_enable();
 	systick_counter_enable();
 }
@@ -191,21 +216,17 @@ void hid_set_config(usbd_device *dev, uint16_t wValue)
 
 void usb_suspend_callback(void)
 {
-	/*
 	*USB_CNTR_REG |= USB_CNTR_FSUSP;
 	*USB_CNTR_REG |= USB_CNTR_LP_MODE;
 	SCB_SCR |= SCB_SCR_SLEEPDEEP;
 	__WFI();
-	*/
 }
 
 void usb_wakeup_isr(void)
 {
-	/*
 	exti_reset_request(EXTI18);
 	rcc_clock_setup_in_hse_8mhz_out_72mhz();
 	*USB_CNTR_REG &= ~USB_CNTR_FSUSP;
-	*/
 }
 
 
@@ -237,7 +258,7 @@ void sys_tick_handler(void)
 		gpio_clear(GPIOC, GPIO13);
 	}
 	
-	usbd_ep_write_packet(usbd_dev, 0x81, buf, 17);
+	usbd_ep_write_packet(usbd_dev, 0x81, buf, 5);
 }
 
 
