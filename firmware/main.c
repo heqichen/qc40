@@ -208,14 +208,26 @@ void usb_wakeup_isr(void)
 	*/
 }
 
+
+uint16_t value[8];
+
+
 void sys_tick_handler(void)
 {
 	static uint8_t buf[1 + 16];
 
 	for (int i=0; i<8; ++i)
 	{
-		buf[i*2+1] = 0;	//Low
-		buf[i*2+1+1] = 0; //high;
+		buf[i*2+1] = value[i] &0xFF;	//Low
+		buf[i*2+1+1] = value[i] >> 8; //high;
+	}
+
+	value[0]+=16;
+	int id = 0;
+	while (value[id]==0 && id<8)
+	{
+		value[id+1]++;
+		id++;
 	}
 
 	buf[0] = 0;
@@ -226,6 +238,10 @@ void sys_tick_handler(void)
 
 int main(void)
 {
+	for (int i=0; i<8; ++i)
+	{
+		value[i] = 0;
+	}
 	rcc_clock_setup_in_hse_8mhz_out_72mhz();
 	rcc_periph_clock_enable(RCC_GPIOA);
 
