@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    usb_type.h
+  * @file    usb_prop.h
   * @author  MCD Application Team
   * @version V4.1.0
   * @date    26-May-2017
-  * @brief   Type definitions used by the USB Library
+  * @brief   All processing related to Joystick Mouse demo
   ******************************************************************************
   * @attention
   *
@@ -37,35 +37,57 @@
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __USB_TYPE_H
-#define __USB_TYPE_H
+#ifndef __USB_PROP_H
+#define __USB_PROP_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "usb_conf.h"
-#include <stm32f10x.h>
-#include <stm32f10x_rcc.h>
-#include <stm32f10x_exti.h>
-
+#include "usb_lib.h"
 /* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-#ifndef NULL
-#define NULL ((void *)0)
-#endif
-
-
-#ifndef __cplusplus
-typedef enum
+typedef enum _HID_REQUESTS
 {
-  FALSE = 0, TRUE  = !FALSE
-}
-bool;
-#endif
+  GET_REPORT = 1,
+  GET_IDLE,
+  GET_PROTOCOL,
 
+  SET_REPORT = 9,
+  SET_IDLE,
+  SET_PROTOCOL
+} HID_REQUESTS;
 
+/* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-/* External variables --------------------------------------------------------*/
+void Joystick_init(void);
+void Joystick_Reset(void);
+void Joystick_SetConfiguration(void);
+void Joystick_SetDeviceAddress (void);
+void Joystick_Status_In (void);
+void Joystick_Status_Out (void);
+RESULT Joystick_Data_Setup(uint8_t);
+RESULT Joystick_NoData_Setup(uint8_t);
+RESULT Joystick_Get_Interface_Setting(uint8_t Interface, uint8_t AlternateSetting);
+uint8_t *Joystick_GetDeviceDescriptor(uint16_t );
+uint8_t *Joystick_GetConfigDescriptor(uint16_t);
+uint8_t *Joystick_GetStringDescriptor(uint16_t);
+RESULT Joystick_SetProtocol(void);
+uint8_t *Joystick_GetProtocolValue(uint16_t Length);
+RESULT Joystick_SetProtocol(void);
+uint8_t *Joystick_GetReportDescriptor(uint16_t Length);
+uint8_t *Joystick_GetHIDDescriptor(uint16_t Length);
 
-#endif /* __USB_TYPE_H */
+/* Exported define -----------------------------------------------------------*/
+#define Joystick_GetConfiguration          NOP_Process
+//#define Joystick_SetConfiguration          NOP_Process
+#define Joystick_GetInterface              NOP_Process
+#define Joystick_SetInterface              NOP_Process
+#define Joystick_GetStatus                 NOP_Process
+#define Joystick_ClearFeature              NOP_Process
+#define Joystick_SetEndPointFeature        NOP_Process
+#define Joystick_SetDeviceFeature          NOP_Process
+//#define Joystick_SetDeviceAddress          NOP_Process
+
+#define REPORT_DESCRIPTOR                  0x22
+
+#endif /* __USB_PROP_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

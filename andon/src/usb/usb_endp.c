@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    usb_type.h
+  * @file    usb_endp.c
   * @author  MCD Application Team
   * @version V4.1.0
   * @date    26-May-2017
-  * @brief   Type definitions used by the USB Library
+  * @brief   Endpoint routines
   ******************************************************************************
   * @attention
   *
@@ -36,36 +36,29 @@
   */
 
 
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __USB_TYPE_H
-#define __USB_TYPE_H
-
 /* Includes ------------------------------------------------------------------*/
-#include "usb_conf.h"
-#include <stm32f10x.h>
-#include <stm32f10x_rcc.h>
-#include <stm32f10x_exti.h>
+#include "hw_config.h"
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+extern __IO uint8_t PrevXferComplete;
 
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-#ifndef NULL
-#define NULL ((void *)0)
-#endif
-
-
-#ifndef __cplusplus
-typedef enum
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+/**
+* Function Name  : EP1_OUT_Callback.
+* Description    : EP1 OUT Callback Routine.
+* Input          : None.
+* Output         : None.
+* Return         : None.
+*******************************************************************************/
+void EP1_IN_Callback(void)
 {
-  FALSE = 0, TRUE  = !FALSE
+  /* Set the transfer complete token to inform upper layer that the current 
+  transfer has been complete */
+  PrevXferComplete = 1; 
 }
-bool;
-#endif
-
-
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
-/* External variables --------------------------------------------------------*/
-
-#endif /* __USB_TYPE_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+

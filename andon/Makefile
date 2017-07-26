@@ -23,7 +23,6 @@ USER_SRC += $(SRC_DIR)/main.cpp
 
 DEVICE_SRC += $(SRC_DIR)/devices/a7/aia7.cpp
 DEVICE_SRC += $(SRC_DIR)/devices/a7/at_decoder.cpp
-
 DEVICE_SRC += $(SRC_DIR)/devices/gps/gps.cpp
 
 
@@ -38,6 +37,14 @@ USER_LIB_SRC += $(SRC_DIR)/lib/system_stm32f10x.c
 USER_LIB_SRC += $(SRC_DIR)/lib/stm32f10x_it.c
 USER_LIB_SRC += $(SRC_DIR)/lib/newlib_stubs.c
 USER_LIB_SRC += $(SRC_DIR)/lib/core_cm3.c
+
+#USB
+COOBOC_SRC += $(SRC_DIR)/usb/hw_config.cpp
+COOBOC_SRC += $(SRC_DIR)/usb/usb_desc.c
+COOBOC_SRC += $(SRC_DIR)/usb/usb_endp.c
+COOBOC_SRC += $(SRC_DIR)/usb/usb_istr.c
+COOBOC_SRC += $(SRC_DIR)/usb/usb_prop.c
+COOBOC_SRC += $(SRC_DIR)/usb/usb_pwr.c
 
 UTILS_SRC += $(SRC_DIR)/utils/line_parser.cpp
 
@@ -57,7 +64,7 @@ DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Dri
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dbgmcu.c
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c
-#DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c
+DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c
 DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_flash.c
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_fsmc.c
 DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c
@@ -72,23 +79,31 @@ DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Dri
 DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_wwdg.c
 DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/misc.c
-
+DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/src/usb_init.c
+DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/src/usb_core.c
+DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/src/usb_regs.c
+DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/src/usb_sil.c
+DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/src/usb_mem.c
+DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/src/usb_int.c
 
 SOURCES = $(USER_SRC) $(USER_LIB_SRC) $(CORE_SRC) $(DRIVER_SRC) $(COOBOC_SRC) $(UTILS_SRC) $(DEVICE_SRC) 
 OBJECTS = $(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(SOURCES))))
 
 INCLUDES += -I$(SRC_DIR)
+INCLUDES += -I$(SRC_DIR)/usb
 INCLUDES += -I$(COOOBOC_DIR)
 INCLUDES += -I$(SRC_DIR)/lib
 # INCLUDES += -I./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/CMSIS/CM3/CoreSupport/
 INCLUDES += -I./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/CMSIS/Device/ST/STM32F10x/Include/
 INCLUDES += -I./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/inc/
 INCLUDES += -I./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/CMSIS/Include/
+INCLUDES += -I./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/inc/
+INCLUDES += -I./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/CMSIS/Device/ST/STM32F10x/Include/
 INCLUDES += -I$(SRC_DIR)/utils
 
 LDSCRIPT=./src/lib/stm32f103c8t6_cooboc.ld
 
-CFLAGS = -Os -g -mcpu=cortex-m3 -mthumb -march=armv7-m  -nostartfiles -ffunction-sections -fdata-sections -Wl,--gc-sections $(INCLUDES) $(DEFS)
+CFLAGS = -Os -std=gnu99 -g -mcpu=cortex-m3 -mthumb -march=armv7-m  -nostartfiles -ffunction-sections -fdata-sections -Wl,--gc-sections $(INCLUDES) $(DEFS)
 CXXFLAGS = $(CFLAGS)
 LDFLAGS = -T$(LDSCRIPT) -mcpu=cortex-m3 -mthumb -nostartfiles -lm
 

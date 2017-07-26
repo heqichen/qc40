@@ -3,6 +3,10 @@
 #include "stm32f10x_conf.h"
 #include "hardware_serial.h"
 
+//usb
+#include "hw_config.h"
+
+__IO uint8_t PrevXferComplete = 1;
 
 void setup()
 {
@@ -11,14 +15,28 @@ void setup()
 	Serial2.begin(115200);
 	Serial3.begin(9600);
 
+
 }
 
 
 void loop()
 {
-	digitalWrite(C13, LOW);
-	Serial.println("hello wrld\r\n");
-	delay(500);
-	digitalWrite(C13, HIGH);
-	delay(500);
+	  Set_System();
+  
+  USB_Interrupts_Config();
+  
+  Set_USBClock();
+  
+  USB_Init();
+  
+  while (1)
+  {
+    if (bDeviceState == CONFIGURED)
+    {
+      if ((JoyState() != 0) && (PrevXferComplete))
+      {
+        Joystick_Send(JoyState());
+      }
+    } 
+  }
 }
