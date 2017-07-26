@@ -39,9 +39,23 @@ void Gps::tick()
 	}
 }
 
-void Gps::decodeGpgga(char *s)
+
+
+int Gps::readField(const char *sentence, char *buffer)
 {
-	int idx = 7;
+	int length = 0;
+	while (*sentence!='\0' && *sentence!='\r' && *sentence!='\n' && *sentence!=',')
+	{
+		*buffer = *sentence;
+		buffer++;
+		sentence++;
+		length++;
+	}
 	
-	Serial.println(s);
+	*buffer = '\0';
+	if (*sentence == ',')
+	{
+		length++;
+	}
+	return length;
 }

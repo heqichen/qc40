@@ -356,7 +356,8 @@ void AiA7Begin(HardwareSerial &s)
 	ti.init();
 	status = -1;
 	nextStatus = -1;
-	switchTo(A7_STAUTS_CONFIGURING);
+	//switchTo(A7_STAUTS_CONFIGURING);
+	switchTo(A7_STAUTS_IDLE);
 }
 
 void AiA7Tick(void)

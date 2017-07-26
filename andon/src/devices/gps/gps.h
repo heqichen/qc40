@@ -13,6 +13,7 @@ class Gps
 		HardwareSerial *mSerial;
 		LineParser mlp;
 
+		int readField(const char *sentence, char *buffer);
 
 		void decodeGpgga(char *s);
 
