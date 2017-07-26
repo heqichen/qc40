@@ -29,7 +29,7 @@ DEVICE_SRC += $(SRC_DIR)/devices/gps/gps.cpp
 COOBOC_SRC += $(COOOBOC_DIR)/cooboc.cpp
 COOBOC_SRC += $(COOOBOC_DIR)/gpio.cpp
 COOBOC_SRC += $(COOOBOC_DIR)/hardware_serial.cpp
-COOBOC_SRC += $(COOOBOC_DIR)/hardware_can.cpp
+# COOBOC_SRC += $(COOOBOC_DIR)/hardware_can.cpp
 COOBOC_SRC += $(COOOBOC_DIR)/hardware_iic.cpp
 COOBOC_SRC += $(COOOBOC_DIR)/block_slave_iic.cpp
 
@@ -39,7 +39,7 @@ USER_LIB_SRC += $(SRC_DIR)/lib/newlib_stubs.c
 USER_LIB_SRC += $(SRC_DIR)/lib/core_cm3.c
 
 #USB
-COOBOC_SRC += $(SRC_DIR)/usb/hw_config.cpp
+COOBOC_SRC += $(SRC_DIR)/usb/hw_config.c
 COOBOC_SRC += $(SRC_DIR)/usb/usb_desc.c
 COOBOC_SRC += $(SRC_DIR)/usb/usb_endp.c
 COOBOC_SRC += $(SRC_DIR)/usb/usb_istr.c
