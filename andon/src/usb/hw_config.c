@@ -174,7 +174,8 @@ void Joystick_Send(uint8_t Keys)
   
   /* prepare buffer to send */
   Mouse_Buffer[1] = X;
-  Mouse_Buffer[2] = Y;
+  Mouse_Buffer[2] = Keys & 0xFF;
+
   
   /* Reset the control token to inform upper layer that a transfer is ongoing */
   PrevXferComplete = 0;

@@ -40,9 +40,10 @@ void loop()
   {
     if (bDeviceState == CONFIGURED)
     {
-      if ((JoyState() != 0) && (PrevXferComplete))
+      for (int i=0; i<100; ++i)
       {
-        Joystick_Send(JoyState());
+        Joystick_Send(i);
+        delay(10);
       }
     } 
   }
