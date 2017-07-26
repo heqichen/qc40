@@ -52,7 +52,6 @@
 #define NULL ((void *)0)
 #endif
 
-
 #ifndef __cplusplus
 typedef enum
 {

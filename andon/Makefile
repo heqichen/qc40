@@ -86,7 +86,7 @@ DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Dri
 DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/src/usb_mem.c
 DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32_USB-FS-Device_Driver/src/usb_int.c
 
-SOURCES = $(USER_SRC) $(USER_LIB_SRC) $(CORE_SRC) $(DRIVER_SRC) $(COOBOC_SRC) $(UTILS_SRC) $(DEVICE_SRC) 
+SOURCES = $(USER_LIB_SRC) $(CORE_SRC) $(DRIVER_SRC) $(UTILS_SRC) $(DEVICE_SRC) $(COOBOC_SRC) $(USER_SRC)
 OBJECTS = $(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(SOURCES))))
 
 INCLUDES += -I$(SRC_DIR)
@@ -103,9 +103,9 @@ INCLUDES += -I$(SRC_DIR)/utils
 
 LDSCRIPT=./src/lib/stm32f103c8t6_cooboc.ld
 
-CFLAGS = -Os -std=gnu99 -g -mcpu=cortex-m3 -mthumb -march=armv7-m  -nostartfiles -ffunction-sections -fdata-sections -Wl,--gc-sections $(INCLUDES) $(DEFS)
+CFLAGS = -std=c99 -Os -g -mcpu=cortex-m3 -mthumb -march=armv7-m  -nostartfiles -ffunction-sections -fdata-sections -Wl,--gc-sections $(INCLUDES) $(DEFS)
 CXXFLAGS = $(CFLAGS)
-LDFLAGS = -T$(LDSCRIPT) -mcpu=cortex-m3 -mthumb -nostartfiles -lm
+LDFLAGS = -T$(LDSCRIPT) -mcpu=cortex-m3 -mthumb -nostartfiles
 
 all: $(OBJECTS) $(ELF) $(BIN)
 	$(SIZE) $(ELF)
@@ -120,7 +120,7 @@ $(HEX): $(ELF)
 	$(OBJCOPY) -O ihex $< $@
 
 $(ELF): $(OBJECTS)
-	$(LD) $(LDFLAGS) -o $@ $(OBJECTS) $(LDLIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map
+	$(LD) $(LDFLAGS) $(OBJECTS) -o $@ -Wl,-Map=$(BUILD_DIR)/$(TARGET).map
 
 $(BUILD_DIR)/%.o: %.s
 	mkdir -p $(dir $@)

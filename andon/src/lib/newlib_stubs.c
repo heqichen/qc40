@@ -10,6 +10,8 @@
 #include <sys/times.h>
 #include <sys/unistd.h>
 
+uint32_t __get_MSP(void) __attribute__( ( naked ) );
+
 #undef errno
 extern int errno;
 
@@ -21,7 +23,7 @@ extern int errno;
 char *__env[1] = { 0 };
 char **environ = __env;
 
-int _write(int file, char *ptr, int len);
+int _write(int file, const char *ptr, int len);
 
 void _init(void) {return;}
 
@@ -104,7 +106,7 @@ int _kill(int pid, int sig) {
  Establish a new name for an existing file. Minimal implementation:
  */
 
-int _link(char *old, char *new) {
+int _link(char *old, char *newLink) {
     errno = EMLINK;
     return -1;
 }
@@ -201,6 +203,6 @@ int _wait(int *status) {
  Write a character to a file. `libc' subroutines will use this system routine for output to all files, including stdout
  Returns -1 on error or number of bytes sent
  */
-int _write(int file, char *ptr, int len) {
+int _write(int file, const char *ptr, int len) {
     return len;
 }

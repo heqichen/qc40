@@ -3,6 +3,9 @@
 #include "stm32f10x_conf.h"
 #include "hardware_serial.h"
 
+#include <usb_core.h>
+#include <usb_init.h>
+
 //usb
 #include "hw_config.h"
 
