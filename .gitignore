@@ -6,6 +6,7 @@
 *.a
 firmware/bin
 
+andon/bin
 
 
 ## libopencm3 ##

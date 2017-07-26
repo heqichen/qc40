@@ -175,8 +175,8 @@ const struct usb_interface_descriptor hid_iface = {
 	.bAlternateSetting = 0,
 	.bNumEndpoints = 1,
 	.bInterfaceClass = USB_CLASS_HID,
-	.bInterfaceSubClass = 0, /* boot */
-	.bInterfaceProtocol = 0, /* mouse */
+	.bInterfaceSubClass = 1, /* boot */
+	.bInterfaceProtocol = 1, /* keyboard boot as keyboard */
 	.iInterface = 0,
 
 	.endpoint = &hid_endpoint,
@@ -235,7 +235,7 @@ int hid_control_request(usbd_device *dev, struct usb_setup_data *req, uint8_t **
 	*buf = (uint8_t *)hid_report_descriptor;
 	*len = sizeof(hid_report_descriptor);
 
-	return 1;
+	return USBD_REQ_HANDLED;
 }
 
 void hid_set_config(usbd_device *dev, uint16_t wValue)
@@ -258,12 +258,9 @@ void hid_set_config(usbd_device *dev, uint16_t wValue)
 }
 
 
-void usb_suspend_callback(void)
+void usbSuspendCallback(void)
 {
-	*USB_CNTR_REG |= USB_CNTR_FSUSP;
-	*USB_CNTR_REG |= USB_CNTR_LP_MODE;
-	SCB_SCR |= SCB_SCR_SLEEPDEEP;
-	__WFI();
+	//gpio_toggle(GPIOC, GPIO13);
 }
 
 void usb_wakeup_isr(void)
@@ -306,22 +303,19 @@ void sys_tick_handler(void)
 		len = usbd_ep_write_packet(usbd_dev, 0x81, buf, 6);
 		if (len == 0)
 		{
-			gpio_toggle(GPIOC, GPIO13);
+			//gpio_toggle(GPIOC, GPIO13);
 		}
 		buf[0] = 3;	//report id 1 mouse
 
 
 		//len = usbd_ep_write_packet(usbd_dev, 0x81, buf, 4);
 
-		while (len == 0)
+		//while (len == 0)
 		{
 			//len = usbd_ep_write_packet(usbd_dev, 0x81, buf, 4);
-			gpio_toggle(GPIOC, GPIO13);
+			//gpio_toggle(GPIOC, GPIO13);
 		}
 	}
-
-	
-	
 
 
 
@@ -341,38 +335,86 @@ void sys_tick_handler(void)
 }
 
 
+void setupUsb();
 
-int main(void)
+void usbResetCallback()
 {
-	for (int i=0; i<8; ++i)
-	{
-		value[i] = 0;
-	}
-	rcc_clock_setup_in_hse_8mhz_out_72mhz();
-	rcc_periph_clock_enable(RCC_GPIOA);
-	rcc_periph_clock_enable(RCC_GPIOC);
-	gpio_set_mode(GPIOC, GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
+	
+	usbd_disconnect(usbd_dev, true);
+	
+	setupUsb();
+}
 
-	exti_set_trigger(EXTI18, EXTI_TRIGGER_RISING);
-	exti_enable_request(EXTI18);
+volatile uint64_t sofCount;
+volatile bool isSofBegin;
+
+void usbSofCallback(void)
+{
+	sofCount = 0;
+	isSofBegin = true;
+	//gpio_toggle(GPIOC, GPIO13);
+}
+
+void setupUsb()
+{
 	nvic_enable_irq(NVIC_USB_WAKEUP_IRQ);
-
 
 	gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO12);
 	gpio_clear(GPIOA, GPIO12);
 	for (unsigned int i = 0; i < 800000; i++)
 		__asm__("nop");
 
-
-	usbd_dev = usbd_init(&st_usbfs_v1_usb_driver, &dev_descr, &config, usb_strings, 4, usbd_control_buffer, sizeof(usbd_control_buffer));
+	usbd_dev = usbd_init(&st_usbfs_v1_usb_driver, &dev_descr, &config, usb_strings, 2, usbd_control_buffer, sizeof(usbd_control_buffer));
 	usbd_register_set_config_callback(usbd_dev, hid_set_config);
-	usbd_register_suspend_callback(usbd_dev, usb_suspend_callback);
+	usbd_register_suspend_callback(usbd_dev, usbSuspendCallback);
+	usbd_register_reset_callback(usbd_dev, usbResetCallback);
+	usbd_register_sof_callback(usbd_dev, usbSofCallback);
+
+}
+
+
+
+int main(void)
+{
+	usbd_dev = NULL;
+
+
+
+	for (int i=0; i<8; ++i)
+	{
+		value[i] = 0;
+	}
+	rcc_clock_setup_in_hse_8mhz_out_72mhz();
+	rcc_periph_clock_enable(RCC_GPIOA);
+
+	rcc_periph_clock_enable(RCC_GPIOC);
+	gpio_set_mode(GPIOC, GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
+	gpio_set(GPIOC, GPIO13);
+
+	setupUsb();
+	sofCount = 0;
+	isSofBegin = false;
 
 
 	while (1)
 	{
+		if (isSofBegin)
+		{
+			sofCount ++;
+		}
 		usbd_poll(usbd_dev);
-		;
+
+		if ((sofCount > 720000) && isSofBegin)
+		{
+			gpio_toggle(GPIOC, GPIO13);
+
+			setupUsb();
+			//_usbd_reset(usbd_dev);
+			sofCount = 0;
+			isSofBegin = false;
+		}
 	}
+
+
 	return 0;
 }
