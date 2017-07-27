@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <sys/times.h>
 #include <sys/unistd.h>
+#include <stdint.h>
 
 uint32_t __get_MSP(void) __attribute__( ( naked ) );
 

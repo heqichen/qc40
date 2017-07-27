@@ -203,6 +203,7 @@ void USART3_IRQHandler(void)
 
 
 void CAN1Rx0InterruptService(void);
+void USB_Istr(void);
 void USB_LP_CAN1_RX0_IRQHandler(void)
 {
 	USB_Istr();
