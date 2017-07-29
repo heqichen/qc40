@@ -1199,6 +1199,45 @@ In this library the device names are the same as the pin names of the symbols, t
 <text x="10.8" y="-3" size="1.27" layer="25" rot="R90">&gt;NAME</text>
 <text x="12.6" y="-3.6" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
 </package>
+<package name="USB-AF10">
+<pad name="PS@2" x="7.85" y="2.7" drill="0.8" diameter="1.6764" shape="long" rot="R270"/>
+<wire x1="7.45" y1="2" x2="7.85" y2="1.6" width="0.127" layer="46" curve="90"/>
+<wire x1="7.85" y1="1.6" x2="8.25" y2="2" width="0.127" layer="46" curve="90"/>
+<wire x1="8.25" y1="2" x2="8.25" y2="3.4" width="0.127" layer="46"/>
+<wire x1="8.25" y1="3.4" x2="7.85" y2="3.8" width="0.127" layer="46" curve="90"/>
+<wire x1="7.85" y1="3.8" x2="7.45" y2="3.4" width="0.127" layer="46" curve="90"/>
+<wire x1="7.45" y1="3.4" x2="7.45" y2="2" width="0.127" layer="46"/>
+<pad name="PS@3" x="-7.85" y="9.59" drill="0.8" diameter="1.6764" shape="long" rot="R270"/>
+<wire x1="-8.25" y1="9.08" x2="-7.85" y2="8.68" width="0.127" layer="46" curve="90"/>
+<wire x1="-7.85" y1="8.68" x2="-7.45" y2="9.08" width="0.127" layer="46" curve="90"/>
+<wire x1="-7.45" y1="9.08" x2="-7.45" y2="10.1" width="0.127" layer="46"/>
+<wire x1="-7.45" y1="10.1" x2="-7.85" y2="10.5" width="0.127" layer="46" curve="90"/>
+<wire x1="-7.85" y1="10.5" x2="-8.25" y2="10.1" width="0.127" layer="46" curve="90"/>
+<wire x1="-8.25" y1="10.1" x2="-8.25" y2="9.08" width="0.127" layer="46"/>
+<pad name="PS@4" x="7.85" y="9.59" drill="0.8" diameter="1.6764" shape="long" rot="R270"/>
+<wire x1="7.45" y1="9.08" x2="7.85" y2="8.68" width="0.127" layer="46" curve="90"/>
+<wire x1="7.85" y1="8.68" x2="8.25" y2="9.08" width="0.127" layer="46" curve="90"/>
+<wire x1="8.25" y1="9.08" x2="8.25" y2="10.1" width="0.127" layer="46"/>
+<wire x1="8.25" y1="10.1" x2="7.85" y2="10.5" width="0.127" layer="46" curve="90"/>
+<wire x1="7.85" y1="10.5" x2="7.45" y2="10.1" width="0.127" layer="46" curve="90"/>
+<wire x1="7.45" y1="10.1" x2="7.45" y2="9.08" width="0.127" layer="46"/>
+<pad name="PS@1" x="-7.85" y="2.7" drill="0.8" diameter="1.6764" shape="long" rot="R270"/>
+<wire x1="-8.25" y1="2" x2="-7.85" y2="1.6" width="0.127" layer="46" curve="90"/>
+<wire x1="-7.85" y1="1.6" x2="-7.45" y2="2" width="0.127" layer="46" curve="90"/>
+<wire x1="-7.45" y1="2" x2="-7.45" y2="3.4" width="0.127" layer="46"/>
+<wire x1="-7.45" y1="3.4" x2="-7.85" y2="3.8" width="0.127" layer="46" curve="90"/>
+<wire x1="-7.85" y1="3.8" x2="-8.25" y2="3.4" width="0.127" layer="46" curve="90"/>
+<wire x1="-8.25" y1="3.4" x2="-8.25" y2="2" width="0.127" layer="46"/>
+<smd name="P$D-" x="-1" y="11.37" dx="2" dy="1.2" layer="1" rot="R90"/>
+<smd name="P$D+" x="1" y="11.37" dx="2" dy="1.2" layer="1" rot="R90"/>
+<smd name="P$V" x="-3.5" y="11.37" dx="2" dy="1.2" layer="1" rot="R90"/>
+<smd name="P$G" x="3.5" y="11.37" dx="2" dy="1.2" layer="1" rot="R90"/>
+<wire x1="-6.625" y1="10.15" x2="6.625" y2="10.15" width="0.127" layer="20"/>
+<wire x1="-6.625" y1="10.15" x2="-6.625" y2="0" width="0.127" layer="20"/>
+<wire x1="6.625" y1="10.15" x2="6.625" y2="0" width="0.127" layer="20"/>
+<text x="10.8" y="2.7" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="13.5" y="2.7" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="PCM2704">
@@ -1328,6 +1367,25 @@ In this library the device names are the same as the pin names of the symbols, t
 <text x="-2.2225" y="-6.0325" size="1.016" layer="95">&gt;NAME</text>
 <text x="-2.2225" y="-7.3025" size="1.016" layer="96">&gt;VALUE</text>
 </symbol>
+<symbol name="USB-CONNECTOR">
+<pin name="VBUS" x="2.54" y="2.54" visible="pin" length="point" rot="R180"/>
+<pin name="D-" x="2.54" y="0" visible="pin" length="point" rot="R180"/>
+<pin name="D+" x="2.54" y="-2.54" visible="pin" length="point" rot="R180"/>
+<pin name="GND" x="2.54" y="-5.08" visible="pin" length="point" rot="R180"/>
+<pin name="SHIELD" x="0" y="-7.62" visible="pin" length="point" rot="R180"/>
+<wire x1="2.54" y1="2.54" x2="-5.3975" y2="2.54" width="0.254" layer="94"/>
+<wire x1="2.54" y1="0" x2="-3.4925" y2="0" width="0.254" layer="94"/>
+<wire x1="2.54" y1="-2.54" x2="-3.4925" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="2.54" y1="-5.08" x2="-5.3975" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-6.0325" x2="1.27" y2="3.81" width="0.254" layer="94"/>
+<wire x1="1.27" y1="3.81" x2="-7.9375" y2="3.81" width="0.254" layer="94"/>
+<wire x1="-7.9375" y1="3.81" x2="-7.9375" y2="-6.0325" width="0.254" layer="94"/>
+<wire x1="-7.9375" y1="-6.0325" x2="0" y2="-6.0325" width="0.254" layer="94"/>
+<wire x1="0" y1="-6.0325" x2="1.27" y2="-6.0325" width="0.254" layer="94"/>
+<wire x1="0" y1="-7.62" x2="0" y2="-6.0325" width="0.254" layer="94"/>
+<text x="-10.16" y="-2.54" size="1.27" layer="95" rot="R90">&gt;NAME</text>
+<text x="-12.7" y="-2.54" size="1.27" layer="96" rot="R90">&gt;VALUE</text>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="PCM2704CDB" prefix="U">
@@ -1446,6 +1504,25 @@ In this library the device names are the same as the pin names of the symbols, t
 <connect gate="G$1" pin="P$1" pad="P1 P1@2"/>
 <connect gate="G$1" pin="P$2" pad="P2 P2@2"/>
 <connect gate="G$1" pin="P$3" pad="P3 P3@2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="USB-AF10" prefix="J">
+<gates>
+<gate name="G$1" symbol="USB-CONNECTOR" x="2.54" y="0"/>
+</gates>
+<devices>
+<device name="" package="USB-AF10">
+<connects>
+<connect gate="G$1" pin="D+" pad="P$D+"/>
+<connect gate="G$1" pin="D-" pad="P$D-"/>
+<connect gate="G$1" pin="GND" pad="P$G"/>
+<connect gate="G$1" pin="SHIELD" pad="PS@1 PS@2 PS@3 PS@4"/>
+<connect gate="G$1" pin="VBUS" pad="P$V"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -1709,6 +1786,8 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="C33" library="hqc" deviceset="CPOL-3216" device="" value="1uF"/>
 <part name="J2" library="hqc" deviceset="PJ-313D-AUDIO-JACK" device=""/>
 <part name="SUPPLY26" library="supply2" deviceset="GND" device=""/>
+<part name="J3" library="hqc" deviceset="USB-AF10" device=""/>
+<part name="SUPPLY27" library="supply2" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1967,6 +2046,8 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="C33" gate="G$1" x="370.84" y="205.74" rot="R180"/>
 <instance part="J2" gate="G$1" x="373.38" y="238.76"/>
 <instance part="SUPPLY26" gate="GND" x="398.78" y="231.14"/>
+<instance part="J3" gate="G$1" x="10.16" y="160.02"/>
+<instance part="SUPPLY27" gate="GND" x="22.86" y="149.86"/>
 </instances>
 <busses>
 </busses>
@@ -3493,6 +3574,12 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="SUPPLY26" gate="GND" pin="GND"/>
 <pinref part="J2" gate="G$1" pin="P$1"/>
 </segment>
+<segment>
+<pinref part="J3" gate="G$1" pin="GND"/>
+<wire x1="12.7" y1="154.94" x2="22.86" y2="154.94" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="154.94" x2="22.86" y2="152.4" width="0.1524" layer="91"/>
+<pinref part="SUPPLY27" gate="GND" pin="GND"/>
+</segment>
 </net>
 <net name="OSC32_1" class="0">
 <segment>
@@ -3652,6 +3739,11 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="208.28" y1="215.9" x2="208.28" y2="218.44" width="0.1524" layer="91"/>
 <junction x="208.28" y="218.44"/>
 </segment>
+<segment>
+<pinref part="J3" gate="G$1" pin="VBUS"/>
+<wire x1="12.7" y1="162.56" x2="22.86" y2="162.56" width="0.1524" layer="91"/>
+<label x="15.24" y="162.56" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="5V" class="0">
 <segment>
@@ -3729,12 +3821,27 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="48.26" y1="220.98" x2="38.1" y2="220.98" width="0.1524" layer="91"/>
 <label x="38.1" y="220.98" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="R29" gate="G$1" pin="P$1"/>
+<wire x1="243.84" y1="223.52" x2="195.58" y2="223.52" width="0.1524" layer="91"/>
+<label x="195.58" y="223.52" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="USB2+" class="0">
 <segment>
 <pinref part="U1" gate="GL750G" pin="DP2"/>
 <wire x1="38.1" y1="218.44" x2="48.26" y2="218.44" width="0.1524" layer="91"/>
 <label x="38.1" y="218.44" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R30" gate="G$1" pin="P$1"/>
+<wire x1="238.76" y1="220.98" x2="210.82" y2="220.98" width="0.1524" layer="91"/>
+<pinref part="R28" gate="G$1" pin="P$1"/>
+<wire x1="213.36" y1="226.06" x2="210.82" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="210.82" y1="226.06" x2="210.82" y2="220.98" width="0.1524" layer="91"/>
+<junction x="210.82" y="220.98"/>
+<wire x1="210.82" y1="220.98" x2="195.58" y2="220.98" width="0.1524" layer="91"/>
+<label x="195.58" y="220.98" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="AVDD" class="0">
@@ -3824,14 +3931,9 @@ In this library the device names are the same as the pin names of the symbols, t
 <label x="78.74" y="223.52" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="R30" gate="G$1" pin="P$1"/>
-<wire x1="238.76" y1="220.98" x2="210.82" y2="220.98" width="0.1524" layer="91"/>
-<pinref part="R28" gate="G$1" pin="P$1"/>
-<wire x1="213.36" y1="226.06" x2="210.82" y2="226.06" width="0.1524" layer="91"/>
-<wire x1="210.82" y1="226.06" x2="210.82" y2="220.98" width="0.1524" layer="91"/>
-<junction x="210.82" y="220.98"/>
-<wire x1="210.82" y1="220.98" x2="195.58" y2="220.98" width="0.1524" layer="91"/>
-<label x="195.58" y="220.98" size="1.778" layer="95"/>
+<pinref part="J3" gate="G$1" pin="D+"/>
+<wire x1="12.7" y1="157.48" x2="22.86" y2="157.48" width="0.1524" layer="91"/>
+<label x="15.24" y="157.48" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="USB1-" class="0">
@@ -3841,9 +3943,9 @@ In this library the device names are the same as the pin names of the symbols, t
 <label x="78.74" y="220.98" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="R29" gate="G$1" pin="P$1"/>
-<wire x1="243.84" y1="223.52" x2="195.58" y2="223.52" width="0.1524" layer="91"/>
-<label x="195.58" y="223.52" size="1.778" layer="95"/>
+<pinref part="J3" gate="G$1" pin="D-"/>
+<wire x1="12.7" y1="160.02" x2="22.86" y2="160.02" width="0.1524" layer="91"/>
+<label x="15.24" y="160.02" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="HOST_USB+" class="0">
