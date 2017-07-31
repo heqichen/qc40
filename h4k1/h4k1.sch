@@ -763,41 +763,41 @@ In this library the device names are the same as the pin names of the symbols, t
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="G850G" prefix="U">
+<deviceset name="GL850G" prefix="U">
 <gates>
-<gate name="GL750G" symbol="GL850G" x="-5.08" y="-2.54"/>
+<gate name="GL850G" symbol="GL850G" x="-5.08" y="-2.54"/>
 </gates>
 <devices>
 <device name="" package="SSOP28">
 <connects>
-<connect gate="GL750G" pin="!OVCUR1" pad="21"/>
-<connect gate="GL750G" pin="!OVCUR2" pad="19"/>
-<connect gate="GL750G" pin="!PWREN1" pad="22"/>
-<connect gate="GL750G" pin="!PWREN2" pad="20"/>
-<connect gate="GL750G" pin="!RESET" pad="13"/>
-<connect gate="GL750G" pin="AVDD" pad="1"/>
-<connect gate="GL750G" pin="AVDD2" pad="5"/>
-<connect gate="GL750G" pin="AVDD3" pad="10"/>
-<connect gate="GL750G" pin="DM0" pad="25"/>
-<connect gate="GL750G" pin="DM1" pad="27"/>
-<connect gate="GL750G" pin="DM2" pad="2"/>
-<connect gate="GL750G" pin="DM3" pad="8"/>
-<connect gate="GL750G" pin="DM4" pad="11"/>
-<connect gate="GL750G" pin="DP0" pad="26"/>
-<connect gate="GL750G" pin="DP1" pad="28"/>
-<connect gate="GL750G" pin="DP2" pad="3"/>
-<connect gate="GL750G" pin="DP3" pad="9"/>
-<connect gate="GL750G" pin="DP4" pad="12"/>
-<connect gate="GL750G" pin="DVDD" pad="16"/>
-<connect gate="GL750G" pin="GND" pad="15"/>
-<connect gate="GL750G" pin="PGANG" pad="18"/>
-<connect gate="GL750G" pin="PSELF" pad="17"/>
-<connect gate="GL750G" pin="RREF" pad="4"/>
-<connect gate="GL750G" pin="TEST" pad="14"/>
-<connect gate="GL750G" pin="V33" pad="24"/>
-<connect gate="GL750G" pin="V5" pad="23"/>
-<connect gate="GL750G" pin="X1" pad="6"/>
-<connect gate="GL750G" pin="X2" pad="7"/>
+<connect gate="GL850G" pin="!OVCUR1" pad="21"/>
+<connect gate="GL850G" pin="!OVCUR2" pad="19"/>
+<connect gate="GL850G" pin="!PWREN1" pad="22"/>
+<connect gate="GL850G" pin="!PWREN2" pad="20"/>
+<connect gate="GL850G" pin="!RESET" pad="13"/>
+<connect gate="GL850G" pin="AVDD" pad="1"/>
+<connect gate="GL850G" pin="AVDD2" pad="5"/>
+<connect gate="GL850G" pin="AVDD3" pad="10"/>
+<connect gate="GL850G" pin="DM0" pad="25"/>
+<connect gate="GL850G" pin="DM1" pad="27"/>
+<connect gate="GL850G" pin="DM2" pad="2"/>
+<connect gate="GL850G" pin="DM3" pad="8"/>
+<connect gate="GL850G" pin="DM4" pad="11"/>
+<connect gate="GL850G" pin="DP0" pad="26"/>
+<connect gate="GL850G" pin="DP1" pad="28"/>
+<connect gate="GL850G" pin="DP2" pad="3"/>
+<connect gate="GL850G" pin="DP3" pad="9"/>
+<connect gate="GL850G" pin="DP4" pad="12"/>
+<connect gate="GL850G" pin="DVDD" pad="16"/>
+<connect gate="GL850G" pin="GND" pad="15"/>
+<connect gate="GL850G" pin="PGANG" pad="18"/>
+<connect gate="GL850G" pin="PSELF" pad="17"/>
+<connect gate="GL850G" pin="RREF" pad="4"/>
+<connect gate="GL850G" pin="TEST" pad="14"/>
+<connect gate="GL850G" pin="V33" pad="24"/>
+<connect gate="GL850G" pin="V5" pad="23"/>
+<connect gate="GL850G" pin="X1" pad="6"/>
+<connect gate="GL850G" pin="X2" pad="7"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -1221,8 +1221,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="-7.62" y1="-7.62" x2="-7.62" y2="7.62" width="0.127" layer="21"/>
 <pad name="SW1" x="-3.81" y="2.54" drill="1.5" diameter="2.54"/>
 <pad name="SW2" x="2.54" y="5.08" drill="1.5" diameter="2.54"/>
-<pad name="P$3" x="-5.08" y="0" drill="1.7144" diameter="1.9304"/>
-<pad name="P$4" x="5.08" y="0" drill="1.7144" diameter="1.9304"/>
 <hole x="0" y="0" drill="4.0004"/>
 <text x="-2.54" y="-5.08" size="1.27" layer="25">&gt;NAME</text>
 <wire x1="8.5" y1="-9" x2="-8.5" y2="-9" width="0.127" layer="21"/>
@@ -1233,6 +1231,8 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="8.5" y1="9" x2="9" y2="8.5" width="0.127" layer="21" curve="-90"/>
 <wire x1="9" y1="8.5" x2="9" y2="-8.5" width="0.127" layer="21"/>
 <wire x1="9" y1="-8.5" x2="8.5" y2="-9" width="0.127" layer="21" curve="-90"/>
+<hole x="-5.08" y="0" drill="1.7"/>
+<hole x="5.08" y="0" drill="1.7"/>
 </package>
 <package name="CHERRY-MX-LED">
 <description>Cherry MX series keyswitch footprint with additional holes for LED</description>
@@ -1242,8 +1242,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="-7.62" y1="-7.62" x2="-7.62" y2="7.62" width="0.127" layer="21"/>
 <pad name="SW1" x="-3.81" y="2.54" drill="1.5" diameter="2.54"/>
 <pad name="SW2" x="2.54" y="5.08" drill="1.5" diameter="2.54"/>
-<pad name="P$3" x="-5.08" y="0" drill="1.7144" diameter="1.9304"/>
-<pad name="P$4" x="5.08" y="0" drill="1.7144" diameter="1.9304"/>
 <hole x="0" y="0" drill="4.0004"/>
 <pad name="LED_N" x="-1.27" y="-3.81" drill="1.016" diameter="1.6764"/>
 <pad name="LED_P" x="1.27" y="-3.81" drill="1.016" diameter="1.6764"/>
@@ -1256,8 +1254,10 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="9" y1="8.5" x2="8.5" y2="9" width="0.127" layer="21" curve="90"/>
 <wire x1="8.5" y1="9" x2="-8.5" y2="9" width="0.127" layer="21"/>
 <wire x1="-8.5" y1="9" x2="-9" y2="8.5" width="0.127" layer="21" curve="90"/>
-<wire x1="2.6" y1="-3.8" x2="3.8" y2="-3.8" width="0.127" layer="21"/>
-<wire x1="3.2" y1="-3.2" x2="3.2" y2="-4.4" width="0.127" layer="21"/>
+<wire x1="2.6" y1="-3.8" x2="3.8" y2="-3.8" width="0.127" layer="22"/>
+<wire x1="3.2" y1="-3.2" x2="3.2" y2="-4.4" width="0.127" layer="22"/>
+<hole x="-5.08" y="0" drill="1.7"/>
+<hole x="5.08" y="0" drill="1.7"/>
 </package>
 </packages>
 <symbols>
@@ -1949,7 +1949,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="VDD11" library="supply1" deviceset="VDD" device=""/>
 <part name="X2" library="hqc-crystal" deviceset="CSTCC8M00G53-R0-7230-8M-15P-RESONATOR" device=""/>
 <part name="SUPPLY6" library="supply2" deviceset="GND" device=""/>
-<part name="U1" library="hqc-communication" deviceset="G850G" device=""/>
+<part name="U1" library="hqc-communication" deviceset="GL850G" device=""/>
 <part name="X3" library="hqc-crystal" deviceset="49S-CRYSTAL" device="" value="12MHz"/>
 <part name="C10" library="hqc" deviceset="C-0805" device="" value="28pF"/>
 <part name="C11" library="hqc" deviceset="C-0805" device="" value="28pF"/>
@@ -1982,9 +1982,9 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="J1" library="hqc-connector" deviceset="PH-5AWD" device=""/>
 <part name="U3" library="hqc" deviceset="PCM2704CDB" device=""/>
 <part name="R26" library="hqc" deviceset="R-0805" device="" value="1M"/>
-<part name="X4" library="hqc-crystal" deviceset="49S-CRYSTAL" device="" value="12M"/>
-<part name="C20" library="hqc" deviceset="C-0805" device=""/>
-<part name="C21" library="hqc" deviceset="C-0805" device=""/>
+<part name="X4" library="hqc-crystal" deviceset="49S-CRYSTAL" device="" value="12MHz"/>
+<part name="C20" library="hqc" deviceset="C-0805" device="" value="28pF"/>
+<part name="C21" library="hqc" deviceset="C-0805" device="" value="28pF"/>
 <part name="SUPPLY16" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY17" library="supply2" deviceset="GND" device=""/>
 <part name="R27" library="hqc" deviceset="R-0805" device="" value="1.5k"/>
@@ -2202,7 +2202,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="VDD11" gate="G$1" x="185.42" y="76.2"/>
 <instance part="X2" gate="CSTCC8M00G53-R0" x="231.14" y="35.56"/>
 <instance part="SUPPLY6" gate="GND" x="231.14" y="22.86"/>
-<instance part="U1" gate="GL750G" x="63.5" y="208.28"/>
+<instance part="U1" gate="GL850G" x="63.5" y="208.28"/>
 <instance part="X3" gate="G$1" x="-33.02" y="195.58"/>
 <instance part="C10" gate="G$1" x="-40.64" y="190.5" rot="R90"/>
 <instance part="C11" gate="G$1" x="-25.4" y="190.5" rot="R90"/>
@@ -3393,7 +3393,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="73.66" y1="251.46" x2="73.66" y2="254" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U1" gate="GL750G" pin="V33"/>
+<pinref part="U1" gate="GL850G" pin="V33"/>
 <wire x1="76.2" y1="213.36" x2="86.36" y2="213.36" width="0.1524" layer="91"/>
 <label x="78.74" y="213.36" size="1.778" layer="95"/>
 </segment>
@@ -3403,7 +3403,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <label x="-58.42" y="233.68" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U1" gate="GL750G" pin="DVDD"/>
+<pinref part="U1" gate="GL850G" pin="DVDD"/>
 <wire x1="76.2" y1="193.04" x2="86.36" y2="193.04" width="0.1524" layer="91"/>
 <label x="78.74" y="193.04" size="1.778" layer="95"/>
 </segment>
@@ -3628,7 +3628,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="22.86" y1="215.9" x2="22.86" y2="213.36" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U1" gate="GL750G" pin="TEST"/>
+<pinref part="U1" gate="GL850G" pin="TEST"/>
 <wire x1="48.26" y1="190.5" x2="45.72" y2="190.5" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="190.5" x2="45.72" y2="182.88" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="182.88" x2="40.64" y2="182.88" width="0.1524" layer="91"/>
@@ -3650,7 +3650,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <junction x="88.9" y="236.22"/>
 </segment>
 <segment>
-<pinref part="U1" gate="GL750G" pin="GND"/>
+<pinref part="U1" gate="GL850G" pin="GND"/>
 <wire x1="76.2" y1="190.5" x2="99.06" y2="190.5" width="0.1524" layer="91"/>
 <label x="78.74" y="190.5" size="1.778" layer="95"/>
 <pinref part="SUPPLY14" gate="GND" pin="GND"/>
@@ -3930,7 +3930,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="X1" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="X1"/>
+<pinref part="U1" gate="GL850G" pin="X1"/>
 <wire x1="48.26" y1="210.82" x2="38.1" y2="210.82" width="0.1524" layer="91"/>
 <label x="38.1" y="210.82" size="1.778" layer="95"/>
 </segment>
@@ -3947,7 +3947,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="X2" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="X2"/>
+<pinref part="U1" gate="GL850G" pin="X2"/>
 <wire x1="48.26" y1="208.28" x2="38.1" y2="208.28" width="0.1524" layer="91"/>
 <label x="38.1" y="208.28" size="1.778" layer="95"/>
 </segment>
@@ -3995,7 +3995,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="U2" gate="AMS1117-33" pin="VIN"/>
 </segment>
 <segment>
-<pinref part="U1" gate="GL750G" pin="V5"/>
+<pinref part="U1" gate="GL850G" pin="V5"/>
 <wire x1="76.2" y1="210.82" x2="86.36" y2="210.82" width="0.1524" layer="91"/>
 <label x="78.74" y="210.82" size="1.778" layer="95"/>
 </segment>
@@ -4022,7 +4022,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="USB2-" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DM2"/>
+<pinref part="U1" gate="GL850G" pin="DM2"/>
 <wire x1="48.26" y1="220.98" x2="38.1" y2="220.98" width="0.1524" layer="91"/>
 <label x="38.1" y="220.98" size="1.778" layer="95"/>
 </segment>
@@ -4034,7 +4034,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="USB2+" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DP2"/>
+<pinref part="U1" gate="GL850G" pin="DP2"/>
 <wire x1="38.1" y1="218.44" x2="48.26" y2="218.44" width="0.1524" layer="91"/>
 <label x="38.1" y="218.44" size="1.778" layer="95"/>
 </segment>
@@ -4051,17 +4051,17 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="AVDD" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="AVDD"/>
+<pinref part="U1" gate="GL850G" pin="AVDD"/>
 <wire x1="48.26" y1="223.52" x2="38.1" y2="223.52" width="0.1524" layer="91"/>
 <label x="38.1" y="223.52" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U1" gate="GL750G" pin="AVDD2"/>
+<pinref part="U1" gate="GL850G" pin="AVDD2"/>
 <wire x1="48.26" y1="213.36" x2="38.1" y2="213.36" width="0.1524" layer="91"/>
 <label x="38.1" y="213.36" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U1" gate="GL750G" pin="AVDD3"/>
+<pinref part="U1" gate="GL850G" pin="AVDD3"/>
 <wire x1="48.26" y1="200.66" x2="38.1" y2="200.66" width="0.1524" layer="91"/>
 <label x="38.1" y="200.66" size="1.778" layer="95"/>
 </segment>
@@ -4085,14 +4085,14 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="N$26" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="RREF"/>
+<pinref part="U1" gate="GL850G" pin="RREF"/>
 <pinref part="R20" gate="G$1" pin="P$2"/>
 <wire x1="48.26" y1="215.9" x2="33.02" y2="215.9" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="USB3-" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DM3"/>
+<pinref part="U1" gate="GL850G" pin="DM3"/>
 <wire x1="48.26" y1="205.74" x2="38.1" y2="205.74" width="0.1524" layer="91"/>
 <label x="38.1" y="205.74" size="1.778" layer="95"/>
 </segment>
@@ -4104,7 +4104,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="USB3+" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DP3"/>
+<pinref part="U1" gate="GL850G" pin="DP3"/>
 <wire x1="38.1" y1="203.2" x2="48.26" y2="203.2" width="0.1524" layer="91"/>
 <label x="38.1" y="203.2" size="1.778" layer="95"/>
 </segment>
@@ -4116,21 +4116,21 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="USB4-" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DM4"/>
+<pinref part="U1" gate="GL850G" pin="DM4"/>
 <wire x1="48.26" y1="198.12" x2="38.1" y2="198.12" width="0.1524" layer="91"/>
 <label x="38.1" y="198.12" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="USB4+" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DP4"/>
+<pinref part="U1" gate="GL850G" pin="DP4"/>
 <wire x1="38.1" y1="195.58" x2="48.26" y2="195.58" width="0.1524" layer="91"/>
 <label x="38.1" y="195.58" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$24" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="!RESET"/>
+<pinref part="U1" gate="GL850G" pin="!RESET"/>
 <pinref part="R21" gate="G$1" pin="P$2"/>
 <wire x1="48.26" y1="193.04" x2="40.64" y2="193.04" width="0.1524" layer="91"/>
 <pinref part="C15" gate="G$1" pin="P$2"/>
@@ -4141,7 +4141,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="USB1+" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DP1"/>
+<pinref part="U1" gate="GL850G" pin="DP1"/>
 <wire x1="76.2" y1="223.52" x2="86.36" y2="223.52" width="0.1524" layer="91"/>
 <label x="78.74" y="223.52" size="1.778" layer="95"/>
 </segment>
@@ -4153,7 +4153,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="USB1-" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DM1"/>
+<pinref part="U1" gate="GL850G" pin="DM1"/>
 <wire x1="76.2" y1="220.98" x2="86.36" y2="220.98" width="0.1524" layer="91"/>
 <label x="78.74" y="220.98" size="1.778" layer="95"/>
 </segment>
@@ -4165,7 +4165,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="HOST_USB+" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DP0"/>
+<pinref part="U1" gate="GL850G" pin="DP0"/>
 <wire x1="76.2" y1="218.44" x2="101.6" y2="218.44" width="0.1524" layer="91"/>
 <label x="88.9" y="218.44" size="1.778" layer="95"/>
 </segment>
@@ -4177,7 +4177,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="HOST_USB-" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="DM0"/>
+<pinref part="U1" gate="GL850G" pin="DM0"/>
 <wire x1="76.2" y1="215.9" x2="101.6" y2="215.9" width="0.1524" layer="91"/>
 <label x="88.9" y="215.9" size="1.778" layer="95"/>
 </segment>
@@ -4189,21 +4189,21 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="N$28" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="PGANG"/>
+<pinref part="U1" gate="GL850G" pin="PGANG"/>
 <pinref part="R22" gate="G$1" pin="P$1"/>
 <wire x1="76.2" y1="198.12" x2="88.9" y2="198.12" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$30" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="PSELF"/>
+<pinref part="U1" gate="GL850G" pin="PSELF"/>
 <pinref part="R23" gate="G$1" pin="P$1"/>
 <wire x1="76.2" y1="195.58" x2="88.9" y2="195.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$34" class="0">
 <segment>
-<pinref part="U1" gate="GL750G" pin="!OVCUR1"/>
+<pinref part="U1" gate="GL850G" pin="!OVCUR1"/>
 <pinref part="R24" gate="G$1" pin="P$1"/>
 <wire x1="76.2" y1="205.74" x2="104.14" y2="205.74" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="205.74" x2="106.68" y2="205.74" width="0.1524" layer="91"/>
