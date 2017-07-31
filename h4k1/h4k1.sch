@@ -1160,11 +1160,12 @@ In this library the device names are the same as the pin names of the symbols, t
 <smd name="P$D+" x="1" y="11.37" dx="2" dy="1.2" layer="1" rot="R90"/>
 <smd name="P$V" x="-3.5" y="11.37" dx="2" dy="1.2" layer="1" rot="R90"/>
 <smd name="P$G" x="3.5" y="11.37" dx="2" dy="1.2" layer="1" rot="R90"/>
-<wire x1="-6.625" y1="10.15" x2="6.625" y2="10.15" width="0.127" layer="20"/>
-<wire x1="-6.625" y1="10.15" x2="-6.625" y2="0" width="0.127" layer="20"/>
-<wire x1="6.625" y1="10.15" x2="6.625" y2="0" width="0.127" layer="20"/>
+<wire x1="-6.625" y1="10.15" x2="6.625" y2="10.15" width="0.127" layer="46"/>
+<wire x1="-6.625" y1="10.15" x2="-6.625" y2="0" width="0.127" layer="46"/>
+<wire x1="6.625" y1="10.15" x2="6.625" y2="0" width="0.127" layer="46"/>
 <text x="10.8" y="2.7" size="1.27" layer="25" rot="R90">&gt;NAME</text>
 <text x="13.5" y="2.7" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+<wire x1="-6.625" y1="0" x2="6.625" y2="0" width="0.127" layer="46"/>
 </package>
 <package name="EVQPUL">
 <wire x1="-2.35" y1="1.75" x2="-2.35" y2="-1.75" width="0.127" layer="21"/>
@@ -1949,9 +1950,9 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="X2" library="hqc-crystal" deviceset="CSTCC8M00G53-R0-7230-8M-15P-RESONATOR" device=""/>
 <part name="SUPPLY6" library="supply2" deviceset="GND" device=""/>
 <part name="U1" library="hqc-communication" deviceset="G850G" device=""/>
-<part name="X3" library="hqc-crystal" deviceset="49S-CRYSTAL" device=""/>
-<part name="C10" library="hqc" deviceset="C-0805" device="" value="4.7uF"/>
-<part name="C11" library="hqc" deviceset="C-0805" device="" value="4.7uF"/>
+<part name="X3" library="hqc-crystal" deviceset="49S-CRYSTAL" device="" value="12MHz"/>
+<part name="C10" library="hqc" deviceset="C-0805" device="" value="28pF"/>
+<part name="C11" library="hqc" deviceset="C-0805" device="" value="28pF"/>
 <part name="SUPPLY7" library="supply2" deviceset="GND" device=""/>
 <part name="R19" library="hqc" deviceset="R-0805" device="" value="0"/>
 <part name="U2" library="hqc-power" deviceset="AMS1117-33" device=""/>
@@ -2241,7 +2242,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="SUPPLY17" gate="GND" x="302.26" y="254"/>
 <instance part="R27" gate="G$1" x="241.3" y="236.22"/>
 <instance part="C22" gate="G$1" x="243.84" y="228.6"/>
-<instance part="SUPPLY18" gate="GND" x="226.06" y="226.06"/>
+<instance part="SUPPLY18" gate="GND" x="218.44" y="233.68"/>
 <instance part="R28" gate="G$1" x="215.9" y="226.06"/>
 <instance part="R29" gate="G$1" x="246.38" y="223.52"/>
 <instance part="R30" gate="G$1" x="241.3" y="220.98"/>
@@ -3701,7 +3702,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="248.92" y1="228.6" x2="248.92" y2="231.14" width="0.1524" layer="91"/>
 <junction x="248.92" y="228.6"/>
 <wire x1="248.92" y1="231.14" x2="226.06" y2="231.14" width="0.1524" layer="91"/>
-<wire x1="226.06" y1="231.14" x2="226.06" y2="228.6" width="0.1524" layer="91"/>
+<wire x1="226.06" y1="231.14" x2="218.44" y2="236.22" width="0.1524" layer="91"/>
 <pinref part="SUPPLY18" gate="GND" pin="GND"/>
 </segment>
 <segment>
