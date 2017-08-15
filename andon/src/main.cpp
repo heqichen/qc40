@@ -17,17 +17,18 @@ __IO uint8_t PrevXferComplete = 1;
 
 void setup()
 {
-	pinMode(C13, OUTPUT);
-	Serial.begin(115200);
-	Serial2.begin(115200);
-	Serial3.begin(9600);
-
-
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+  GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
+  pinMode(A10, OUTPUT);
+  pinMode(B11, OUTPUT);
+  digitalWrite(A10, LOW);
+  digitalWrite(B11, HIGH);
 }
 
 
 void loop()
 {
+
 	  Set_System();
   
   USB_Interrupts_Config();
@@ -47,4 +48,11 @@ void loop()
       }
     } 
   }
+/*
+
+  digitalWrite(B11, HIGH);
+  delay(500);
+  digitalWrite(B11, LOW);
+  delay(500);
+  */
 }
