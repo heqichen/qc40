@@ -3084,6 +3084,8 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="U$6" library="hqc" deviceset="M2-MOUNTING-HOLE" device=""/>
 <part name="U$7" library="hqc" deviceset="M2-MOUNTING-HOLE" device=""/>
 <part name="U$8" library="hqc" deviceset="M2-MOUNTING-HOLE" device=""/>
+<part name="VDD18" library="supply1" deviceset="VDD" device=""/>
+<part name="R24" library="hqc" deviceset="R-0805" device="" value="1.5k"/>
 </parts>
 <sheets>
 <sheet>
@@ -3342,6 +3344,8 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="U$6" gate="G$1" x="721.36" y="-121.92"/>
 <instance part="U$7" gate="G$1" x="647.7" y="-127"/>
 <instance part="U$8" gate="G$1" x="627.38" y="-127"/>
+<instance part="VDD18" gate="G$1" x="-12.7" y="45.72"/>
+<instance part="R24" gate="G$1" x="-12.7" y="38.1" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -4474,6 +4478,11 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="VDD17" gate="G$1" pin="VDD"/>
 <wire x1="78.74" y1="101.6" x2="78.74" y2="104.14" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="VDD18" gate="G$1" pin="VDD"/>
+<pinref part="R24" gate="G$1" pin="P$1"/>
+<wire x1="-12.7" y1="43.18" x2="-12.7" y2="40.64" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="KB_C1" class="0">
 <segment>
@@ -5151,6 +5160,12 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="R38" gate="G$1" pin="P$2"/>
 <wire x1="20.32" y1="35.56" x2="27.94" y2="35.56" width="0.1524" layer="91"/>
 <label x="20.32" y="35.56" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R24" gate="G$1" pin="P$2"/>
+<wire x1="-12.7" y1="35.56" x2="-12.7" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="-12.7" y1="33.02" x2="0" y2="33.02" width="0.1524" layer="91"/>
+<label x="-10.16" y="33.02" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="USB4-" class="0">
