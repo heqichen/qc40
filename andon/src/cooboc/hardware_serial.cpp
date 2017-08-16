@@ -8,7 +8,7 @@
 
 #include "gpio.h"
 #include "cooboc.h"
-
+#include <math.h>
 //#include <cstdlib>
 
 char PRINT_CHARACTER[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -66,11 +66,23 @@ void HardwareSerial::begin(int baudrate)
 		mRxBufferHeadIdx = 0;
 		mRxBufferLength = 0;
 
+
+		/*
+
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
 		
 		pinMode(A9, GPIO_MUX_PUSH_PULL);
 		pinMode(A10, INPUT_FLOATING);
+		*/
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOB, ENABLE);
 		
+		pinMode(B6, GPIO_MUX_PUSH_PULL);
+		pinMode(B7, INPUT_FLOATING);
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+		GPIO_PinRemapConfig(GPIO_Remap_USART1, ENABLE);
+
+
+
 		NVIC_InitTypeDef NVIC_InitStructure;
 
 		/* Enable the USARTz Interrupt */
@@ -79,7 +91,6 @@ void HardwareSerial::begin(int baudrate)
 		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 		NVIC_Init(&NVIC_InitStructure);
-
 
 		USART_InitStructure.USART_BaudRate = baudrate;
 		USART_InitStructure.USART_WordLength = USART_WordLength_8b;
@@ -263,6 +274,44 @@ void HardwareSerial::print(unsigned long d)
 }
 
 void HardwareSerial::println(unsigned long d)
+{
+	this->print(d);
+	this->println();
+}
+
+void HardwareSerial::print(double d)
+{
+	char buffer[24];
+	int len = 0;
+	if (d < 0)
+	{
+		buffer[len] = '-';
+		d = -d;
+		len++;
+	}
+
+	unsigned long integer = floor(d);
+	itoa(integer, buffer+len);
+	while (buffer[len] != '\0')
+	{
+		++len;
+	}
+	d -= integer;
+	buffer[len] = '.';
+	len++;
+	for (int i=0; i<3; ++i)
+	{
+		d *= 10;
+		integer = floor(d);
+		d -= integer;
+		buffer[len] = integer + '0';
+		++len;
+	}
+	buffer[len] = '\0';
+	this->print(buffer);
+}
+
+void HardwareSerial::println(double d)
 {
 	this->print(d);
 	this->println();

@@ -35,6 +35,7 @@ HardwareIic::HardwareIic(int iicPort)
 
 bool HardwareIic::begin(uint8_t address)
 {
+	mTransData = NULL;
 	switch (mIicPort)
 	{
 		case (I2C2_B10_B11):
@@ -46,6 +47,7 @@ bool HardwareIic::begin(uint8_t address)
 			this->initializeB10B11();
 			this->initializeI2C2(address);
 			mI2Cx = I2C2;
+			mWorkMode = IDLE;
 			break;
 		}
 		default:
@@ -98,50 +100,62 @@ void HardwareIic::initializeI2C2(uint8_t address)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
 
 	I2C_DeInit(I2C2);
-	I2C_InitStructure.I2C_ClockSpeed = 400000;
+
+
+	I2C_InitStructure.I2C_ClockSpeed = 100000;
 	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
 	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
 	I2C_InitStructure.I2C_OwnAddress1 = address<<1;
 	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
 	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 	I2C_Init(I2C2, &I2C_InitStructure);
-
+	while (I2C_GetFlagStatus(mI2Cx,I2C_FLAG_BUSY)); // Wait until I2C free
+	
 	I2C_ITConfig(I2C2, I2C_IT_BUF | I2C_IT_EVT | I2C_IT_ERR, ENABLE);
 	
 	I2C_Cmd(I2C2, ENABLE);
 }
 
+//CR1
+#define IIC_CR1_POS				(uint16_t)_BV(11)
+#define IIC_CR1_POS_RESET		((uint16_t)0xF7FF)
+#define IIC_CR1_ACK				(uint16_t)_BV(10)
 //SR2
-#define IIC_FLAG_DUALF		(uint32_t)_BV(23)
-#define IIC_FLAG_SMBHOST	(uint32_t)_BV(22)
+#define IIC_FLAG_DUALF			(uint32_t)_BV(23)
+#define IIC_FLAG_SMBHOST		(uint32_t)_BV(22)
 #define IIC_FLAG_SMBDE_FAULT	(uint32_t)_BV(21)
-#define IIC_FLAG_GEN_CALL	(uint32_t)_BV(20)
-#define IIC_FLAG_TRA		(uint32_t)_BV(18)
-#define IIC_FLAG_BUSY		(uint32_t)_BV(17)
-#define IIC_FLAG_MSL		(uint32_t)_BV(16)
+#define IIC_FLAG_GEN_CALL		(uint32_t)_BV(20)
+#define IIC_FLAG_TRA			(uint32_t)_BV(18)
+#define IIC_FLAG_TRA_RESET		((uint32_t)0xFBFFFF)
+#define IIC_FLAG_BUSY			(uint32_t)_BV(17)
+#define IIC_FLAG_MSL			(uint32_t)_BV(16)		//master mode
 
 //SR1
-#define IIC_FLAG_SMB_ALERT	(uint32_t)_BV(15)
-#define IIC_FLAG_TIMEOUT	(uint32_t)_BV(14)
-#define IIC_FLAG_PEC_ERR	(uint32_t)_BV(12)
-#define IIC_FLAG_OVR		(uint32_t)_BV(11)
-#define IIC_FLAG_AF			(uint32_t)_BV(10)
-#define IIC_FLAG_ARLO		(uint32_t)_BV(9)
-#define IIC_FLAG_BERR		(uint32_t)_BV(8)
-#define IIC_FLAG_TxE		(uint32_t)_BV(7)
-#define IIC_FLAG_RxNE		(uint32_t)_BV(6)
-#define IIC_FLAG_STOPF		(uint32_t)_BV(4)
-#define IIC_FLAG_ADD10		(uint32_t)_BV(3)
-#define IIC_FLAG_BTF		(uint32_t)_BV(2)
-#define IIC_FLAG_ADDR		(uint32_t)_BV(1)
-#define IIC_FLAG_SB			(uint32_t)_BV(0)
+#define IIC_FLAG_SMB_ALERT		(uint32_t)_BV(15)
+#define IIC_FLAG_TIMEOUT		(uint32_t)_BV(14)
+#define IIC_FLAG_PEC_ERR		(uint32_t)_BV(12)
+#define IIC_FLAG_OVR			(uint32_t)_BV(11)
+#define IIC_FLAG_AF				(uint32_t)_BV(10)
+#define IIC_FLAG_ARLO			(uint32_t)_BV(9)
+#define IIC_FLAG_BERR			(uint32_t)_BV(8)
+#define IIC_FLAG_TxE			(uint32_t)_BV(7)
+#define IIC_FLAG_TxE_RESET		((uint32_t)0xFFFF7F)
+#define IIC_FLAG_RxNE			(uint32_t)_BV(6)
+#define IIC_FLAG_RxNE_RESET		((uint32_t)0xFFFFBF)
+#define IIC_FLAG_STOPF			(uint32_t)_BV(4)
+#define IIC_FLAG_ADD10			(uint32_t)_BV(3)
+#define IIC_FLAG_BTF			(uint32_t)_BV(2)
+#define IIC_FLAG_BTF_RESET		((uint32_t)0xFFFFFB)
+#define IIC_FLAG_ADDR			(uint32_t)_BV(1)
+#define IIC_FLAG_ADDR_RESET		((uint32_t)0xFFFFFD)
+#define IIC_FLAG_SB				(uint32_t)_BV(0)
 
 
 
 
 void captureError(uint32_t flag)
 {
-	/*
+
 	char *flags[24];
 	int i;
 	flags[23] = (char *)"IIC_FLAG_DUALF";
@@ -169,25 +183,21 @@ void captureError(uint32_t flag)
 	flags[1] = (char *)"IIC_FLAG_ADDR";
 	flags[0] = (char *)"IIC_FLAG_SB";
 
-	*/
+
 
 	Serial.println(flag);
+	for (i=0; i<24; ++i)
+	{
+		if (flag & (1<<i))
+		{
+			Serial.println(flags[i]);
+		}
+	}
 	while (true) ;
 }
 
-void HardwareIic::eventService()
+uint32_t HardwareIic::eventServiceOnIdle(uint32_t flag)
 {
-	/*
-	uint16_t cr1 = I2C_ReadRegister(mI2Cx, I2C_Register_CR1);
-	uint32_t sr1 = I2C_ReadRegister(mI2Cx, I2C_Register_SR1);
-	uint32_t sr2 = I2C_ReadRegister(mI2Cx, I2C_Register_SR2);
-	*/
-	uint16_t cr1 = mI2Cx->CR1;
-	uint32_t sr1 = mI2Cx->SR1;//I2C_ReadRegister(mI2Cx, I2C_Register_SR1);
-	uint32_t sr2 = mI2Cx->SR2;//I2C_ReadRegister(mI2Cx, I2C_Register_SR2);
-
-	uint32_t flag = (sr2<<16 | sr1) & 0x00FFFFFF;
-	
 	if (flag & IIC_FLAG_ADDR)
 	{
 		if (flag & IIC_FLAG_TRA)
@@ -208,12 +218,15 @@ void HardwareIic::eventService()
 		}
 		flag ^= IIC_FLAG_ADDR;
 	}
+	return flag;
+}
 
+uint32_t HardwareIic::eventServiceOnSlave(uint32_t flag)
+{
 	if (flag & IIC_FLAG_TRA)
 	{
 		flag ^= IIC_FLAG_TRA;
 	}
-
 
 	if (flag & IIC_FLAG_RxNE)
 	{
@@ -253,7 +266,7 @@ void HardwareIic::eventService()
 
 	if (flag & IIC_FLAG_STOPF)
 	{
-		mI2Cx->CR1 = cr1;
+		//mI2Cx->CR1 = cr1;
 		mWorkMode = IDLE;
 		flag ^= IIC_FLAG_STOPF;
 		//rx frame end
@@ -269,12 +282,206 @@ void HardwareIic::eventService()
 	if (flag != 0)
 	{
 		Serial.println("something forgot handle");
-		//TODO need hardrest
+		//TODO need hardreset
 		//step1. deinit i2c
 		//step2. set sda and scl to gpio
 		//step3. set sda and scl high
 		//step4. init i2c
 		captureError(flag);
+	}
+
+	return flag;
+}
+
+uint32_t HardwareIic::eventServiceOnMasterTransmitting(uint32_t flag)
+{
+	if (!(flag & IIC_FLAG_MSL))
+	{
+		//ERROR, i2c not working in master mode
+	}
+	flag ^= IIC_FLAG_MSL;
+	flag ^= IIC_FLAG_BUSY;
+
+	switch (mWorkMode)
+	{
+		case (MASTER_TRANSMITTING_ADDRESSING):
+		{
+			if (flag & IIC_FLAG_SB)	//event 5
+			{
+				mI2Cx->DR = (mTransBusAddr<<1)+0;
+				mTransCount = 1;		//only support 7-bit iic address
+				flag ^= IIC_FLAG_SB;
+				mWorkMode = MASTER_TRANSMITTING;
+			}
+
+			break;
+		}
+		case (MASTER_TRANSMITTING):
+		{
+			if (flag & IIC_FLAG_TxE)
+			{
+				flag &= IIC_FLAG_TxE_RESET;
+				if (mTransCount-1 < mTransLength)
+				{
+					//write dr
+					mI2Cx->DR = mTransData[mTransCount-1];
+				}
+				else
+				{
+					//stop
+					I2C_GenerateSTOP(mI2Cx, ENABLE);
+					mWorkMode = IDLE;
+				}
+				mTransCount++;
+			}
+			flag &= IIC_FLAG_BTF_RESET;
+			flag &= IIC_FLAG_ADDR_RESET;
+			flag &= IIC_FLAG_TRA_RESET;
+			break;
+		}
+		case (MASTER_TRANSMITTING_STOPPING):
+		{
+			mWorkMode = IDLE;
+			break;
+		}
+	}
+
+	return flag;
+}
+
+uint32_t HardwareIic::eventServiceOnMasterReceiving(uint32_t flag)
+{
+	if (!(flag & IIC_FLAG_MSL))
+	{
+		//ERROR, i2c not working in master mode
+	}
+	flag ^= IIC_FLAG_MSL;
+	flag ^= IIC_FLAG_BUSY;
+	switch (mWorkMode)
+	{
+		case (MASTER_RECEIVING_ADDRESS):
+		{
+			if (flag & IIC_FLAG_SB)
+			{
+				mI2Cx->DR = (mTransBusAddr<<1)+1;
+				mTransCount = 1;
+				flag ^= IIC_FLAG_SB;
+				mWorkMode = MASTER_RECEIVING;
+			}
+			break;
+		}
+
+		case (MASTER_RECEIVING):
+		{
+			if (flag & IIC_FLAG_ADDR)
+			{
+				flag &= IIC_FLAG_ADDR_RESET;
+				if (mTransLength < 2)
+				{
+					I2C_AcknowledgeConfig(mI2Cx, DISABLE);
+					mWorkMode =  MASTER_RECEIVING_STOPPING;
+				}
+			}
+			if (flag & IIC_FLAG_RxNE)
+			{
+				flag &= IIC_FLAG_RxNE_RESET;
+				uint8_t data = mI2Cx->DR;
+				mTransData[mTransCount-1] = data;
+
+				if (mTransCount == mTransLength-1)
+				{
+					I2C_GenerateSTOP(mI2Cx, ENABLE);
+					mWorkMode =  MASTER_RECEIVING_STOPPING;
+					I2C_AcknowledgeConfig(mI2Cx, DISABLE);
+				}
+				mTransCount++;
+			}
+			break;
+		}
+		case (MASTER_RECEIVING_STOPPING):
+		{
+			if (flag & IIC_FLAG_RxNE)
+			{
+				flag &= IIC_FLAG_RxNE_RESET;
+				uint8_t data = mI2Cx->DR;
+				if (mTransCount-1 < mTransLength) 
+				{
+					mTransData[mTransCount-1] = data;
+				}
+				mTransCount++;
+				mWorkMode = IDLE;
+			}
+			break;
+		}
+
+	}
+	return flag;
+}
+
+void HardwareIic::eventService()
+{
+	//Serial.print(">");
+	//Serial.print(mWorkMode);
+	/*
+	uint16_t cr1 = I2C_ReadRegister(mI2Cx, I2C_Register_CR1);
+	uint32_t sr1 = I2C_ReadRegister(mI2Cx, I2C_Register_SR1);
+	uint32_t sr2 = I2C_ReadRegister(mI2Cx, I2C_Register_SR2);
+	*/
+	uint16_t cr1 = mI2Cx->CR1;
+	uint32_t sr1 = mI2Cx->SR1;//I2C_ReadRegister(mI2Cx, I2C_Register_SR1);
+	uint32_t sr2 = mI2Cx->SR2;//I2C_ReadRegister(mI2Cx, I2C_Register_SR2);
+
+	uint32_t flag = (sr2<<16 | sr1) & 0x00FFFFFF;
+	switch (mWorkMode)
+	{
+		case (IDLE):
+		{
+			flag = eventServiceOnIdle(flag);
+			break;
+		}
+		case (SLAVE_RECEIVER):
+		case (SLAVE_TRANSMITTER):
+		{
+			flag = eventServiceOnSlave(flag);
+			break;
+		}
+		case (MASTER_TRANSMITTING_ADDRESSING):
+		case (MASTER_TRANSMITTING):
+		case (MASTER_TRANSMITTING_STOPPING):
+		{
+			flag = eventServiceOnMasterTransmitting(flag);
+			break;
+		}
+		case (MASTER_RECEIVING_ADDRESS):
+		case (MASTER_RECEIVING):
+		case (MASTER_RECEIVING_STOPPING):
+		{
+			flag = eventServiceOnMasterReceiving(flag);
+			break;
+		}
+	}
+
+	if (flag == (IIC_FLAG_TRA|IIC_FLAG_BUSY|IIC_FLAG_MSL|IIC_FLAG_TxE))
+	{
+		//clear it for master transmimt
+		flag = 0;
+	}
+	if (flag == (IIC_FLAG_TRA|IIC_FLAG_BUSY|IIC_FLAG_MSL|IIC_FLAG_TxE|IIC_FLAG_BTF))
+	{
+		//clear it for master transmimt
+		flag = 0;
+	}
+	if (flag == (IIC_FLAG_TxE|IIC_FLAG_BTF))
+	{
+		//clear it for master transmimt
+		flag = 0;
+	}
+	if (flag != 0)
+	{
+		Serial.print("unknown iic event: ");
+		Serial.print(flag);
+		Serial.print("  work mode: ");
+		Serial.println((int)mWorkMode);
 	}
 }
 
@@ -296,15 +503,76 @@ void HardwareIic::errorService()
 			mInterruptServiceOnSlaveAckFailure(mInterruptServiceData);
 		}
 	}
+	if (flag == (IIC_FLAG_AF | IIC_FLAG_BUSY | IIC_FLAG_MSL))
+	{
+		//nack of master transmitter frame
+		I2C_GenerateSTOP(mI2Cx, ENABLE);
+		mWorkMode = IDLE;
+		mTransGood = false;
+		flag = 0;
+		mI2Cx->SR1 = 0;//clear AF
+		Serial.print ("IIC master transmit Error!! at tx xcount: ");
+		Serial.print(mTransCount);
+		Serial.print(" flag: ");
+		Serial.print(flag);
+		Serial.println("");
+
+	}
 
 	if (flag != 0)
 	{
-		Serial.println("IIC Error!!");
+		Serial.print ("IIC Error!! at tx xcount: ");
+		Serial.println(mTransCount);
 
 		captureError(flag);	
 	}
+}
 
-	
+
+bool HardwareIic::write(uint8_t address, uint8_t *buf, int length)
+{
+	if (mWorkMode != IDLE)
+	{
+		return false;
+	}
+
+	mTransBusAddr = address;
+	mTransData = buf;
+	mTransLength = length;
+	mWorkMode = MASTER_TRANSMITTING_ADDRESSING;
+	mTransCount = 0;
+	mTransGood = true;
+	I2C_GenerateSTART(mI2Cx, ENABLE);
+	while (mWorkMode != IDLE)
+	{
+		;
+	}
+	mTransData = NULL;
+	return mTransGood;
+}
+
+bool HardwareIic::read(uint8_t address, uint8_t *buf, int length)
+{
+	if (mWorkMode != IDLE)
+	{
+		return false;
+	}
+	mWorkMode = MASTER_RECEIVING_ADDRESS;
+	mTransBusAddr = address;
+	mTransData = buf;
+	mTransLength = length;
+	mTransCount = 0;
+	mTransGood = true;
+	I2C_AcknowledgeConfig(mI2Cx, ENABLE);
+	I2C_GenerateSTART(mI2Cx, ENABLE);
+	while (mWorkMode != IDLE)
+	{
+		;
+	}
+	mTransData = NULL;
+	return mTransGood;
 }
 
 HardwareIic Iic2(I2C2_B10_B11);
+
+

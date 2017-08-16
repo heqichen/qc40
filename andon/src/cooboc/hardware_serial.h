@@ -27,6 +27,8 @@ class HardwareSerial
 		void print(uint8_t d, int base);
 		void print(unsigned long d);
 		void println(unsigned long d);
+		void print(double d);
+		void println(double d);
 
 		int available(void) const {return mRxBufferLength;};
 		uint8_t read(void);

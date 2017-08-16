@@ -34,15 +34,24 @@ class HardwareIic
 		HardwareIic(int iicPort);
 		bool begin(uint8_t address);
 		void setInterruptService(InterruptServiceOnSlaveTxFrameStart, InterruptServiceOnSlaveRxFrameStart, InterruptServiceOnSlaveData, InterruptServiceSlaveRequestData, InterruptServiceOnSlaveAckFailure, void *);
+		bool write(uint8_t address, uint8_t *buf, int length);
+		bool read(uint8_t address, uint8_t *buf, int length);
 	private:
 
 		int mIicPort;
+		int mTransCount;
 		I2C_TypeDef* mI2Cx;
-		enum WorkMode
+		volatile enum WorkMode
 		{
-			IDLE,
-			SLAVE_RECEIVER,
-			SLAVE_TRANSMITTER
+			IDLE,							//0
+			SLAVE_RECEIVER,					//1
+			SLAVE_TRANSMITTER,				//2
+			MASTER_TRANSMITTING_ADDRESSING,	//3
+			MASTER_TRANSMITTING,			//4
+			MASTER_TRANSMITTING_STOPPING,	//5
+			MASTER_RECEIVING_ADDRESS,		//6
+			MASTER_RECEIVING,				//7
+			MASTER_RECEIVING_STOPPING		//8
 		} mWorkMode;
 
 		static bool mIsI2C1Initialized;
@@ -59,8 +68,18 @@ class HardwareIic
 		void eventService();
 		void errorService();
 
+		uint32_t eventServiceOnIdle(uint32_t flag);
+		uint32_t eventServiceOnSlave(uint32_t flag);
+		uint32_t eventServiceOnMasterTransmitting(uint32_t flag);
+		uint32_t eventServiceOnMasterReceiving(uint32_t flag);
+
 		friend void I2C2EventInturruptService();
 		friend void I2C2ErrorInturruptService();
+
+		uint8_t mTransBusAddr;
+		uint8_t *mTransData;
+		int mTransLength;
+		volatile bool mTransGood;
 		
 };
 
