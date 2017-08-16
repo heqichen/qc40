@@ -1273,6 +1273,34 @@ In this library the device names are the same as the pin names of the symbols, t
 <circle x="0" y="0" radius="1.5" width="2" layer="29"/>
 <circle x="0" y="0" radius="1.5" width="2" layer="30"/>
 </package>
+<package name="BMX055">
+<wire x1="-1.5" y1="2.25" x2="1.5" y2="2.25" width="0.127" layer="21"/>
+<wire x1="1.5" y1="2.25" x2="1.5" y2="-2.25" width="0.127" layer="21"/>
+<wire x1="1.5" y1="-2.25" x2="-1.5" y2="-2.25" width="0.127" layer="21"/>
+<wire x1="-1.5" y1="-2.25" x2="-1.5" y2="2.25" width="0.127" layer="21"/>
+<smd name="P$1" x="1.3625" y="1.5" dx="0.875" dy="0.25" layer="1"/>
+<smd name="P$2" x="1.3625" y="1" dx="0.875" dy="0.25" layer="1"/>
+<smd name="P$3" x="1.3625" y="0.5" dx="0.875" dy="0.25" layer="1"/>
+<smd name="P$4" x="1.3625" y="0" dx="0.875" dy="0.25" layer="1"/>
+<smd name="P$5" x="1.3625" y="-0.5" dx="0.875" dy="0.25" layer="1"/>
+<smd name="P$6" x="1.3625" y="-1" dx="0.875" dy="0.25" layer="1"/>
+<smd name="P$7" x="1.3625" y="-1.5" dx="0.875" dy="0.25" layer="1"/>
+<smd name="P$8" x="0.5" y="-2.1125" dx="0.875" dy="0.25" layer="1" rot="R90"/>
+<smd name="P$9" x="0" y="-2.1125" dx="0.875" dy="0.25" layer="1" rot="R90"/>
+<smd name="P$10" x="-0.5" y="-2.1125" dx="0.875" dy="0.25" layer="1" rot="R90"/>
+<smd name="P$11" x="-1.3625" y="-1.5" dx="0.875" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$12" x="-1.3625" y="-1" dx="0.875" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$13" x="-1.3625" y="-0.5" dx="0.875" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$14" x="-1.3625" y="0" dx="0.875" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$15" x="-1.3625" y="0.5" dx="0.875" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$16" x="-1.3625" y="1" dx="0.875" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$17" x="-1.3625" y="1.5" dx="0.875" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$18" x="-0.5" y="2.1125" dx="0.875" dy="0.25" layer="1" rot="R270"/>
+<smd name="P$19" x="0" y="2.1125" dx="0.875" dy="0.25" layer="1" rot="R270"/>
+<smd name="P$20" x="0.5" y="2.1125" dx="0.875" dy="0.25" layer="1" rot="R270"/>
+<circle x="1.47" y="2.67" radius="0.22360625" width="0" layer="21"/>
+<text x="-3.3" y="-4" size="1.27" layer="25">&gt;NAME</text>
+</package>
 </packages>
 <symbols>
 <symbol name="PCM2704">
@@ -1490,6 +1518,32 @@ In this library the device names are the same as the pin names of the symbols, t
 <text x="10.16" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="P$1" x="0" y="-7.62" length="point"/>
 <wire x1="0" y1="-5.715" x2="0" y2="-7.62" width="0.254" layer="94"/>
+</symbol>
+<symbol name="BMX055">
+<pin name="VDD" x="-2.54" y="17.78" visible="pin" length="short" rot="R270"/>
+<pin name="VDDIO" x="2.54" y="17.78" visible="pin" length="short" rot="R270"/>
+<pin name="GNDA" x="-2.54" y="-17.78" visible="pin" length="short" rot="R90"/>
+<pin name="GNDIO" x="2.54" y="-17.78" visible="pin" length="short" rot="R90"/>
+<pin name="PS" x="15.24" y="7.62" visible="pin" length="short" rot="R180"/>
+<pin name="SDO1" x="-15.24" y="7.62" visible="pin" length="short"/>
+<pin name="SDO2" x="-15.24" y="5.08" visible="pin" length="short"/>
+<pin name="SCX" x="-15.24" y="2.54" visible="pin" length="short"/>
+<pin name="SDX" x="-15.24" y="0" visible="pin" length="short"/>
+<pin name="INT1" x="15.24" y="5.08" visible="pin" length="short" rot="R180"/>
+<pin name="INT2" x="15.24" y="2.54" visible="pin" length="short" rot="R180"/>
+<pin name="INT3" x="15.24" y="0" visible="pin" length="short" rot="R180"/>
+<pin name="INT4" x="15.24" y="-2.54" visible="pin" length="short" rot="R180"/>
+<pin name="INT5" x="15.24" y="-5.08" visible="pin" length="short" rot="R180"/>
+<pin name="CSB1" x="-15.24" y="-2.54" visible="pin" length="short"/>
+<pin name="CSB2" x="-15.24" y="-5.08" visible="pin" length="short"/>
+<pin name="CSB3" x="-15.24" y="-7.62" visible="pin" length="short"/>
+<pin name="DRDYM" x="15.24" y="-7.62" visible="pin" length="short" rot="R180"/>
+<wire x1="-12.7" y1="15.24" x2="-12.7" y2="-15.24" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-15.24" x2="12.7" y2="-15.24" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-15.24" x2="12.7" y2="15.24" width="0.254" layer="94"/>
+<wire x1="12.7" y1="15.24" x2="-12.7" y2="15.24" width="0.254" layer="94"/>
+<text x="10.16" y="-20.32" size="1.27" layer="95">&gt;NAME</text>
+<text x="10.16" y="-22.86" size="1.27" layer="95">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -1735,68 +1789,6 @@ In this library the device names are the same as the pin names of the symbols, t
 </device>
 </devices>
 </deviceset>
-</devicesets>
-</library>
-<library name="sensor">
-<packages>
-<package name="BMX055">
-<wire x1="-1.5" y1="2.25" x2="1.5" y2="2.25" width="0.127" layer="21"/>
-<wire x1="1.5" y1="2.25" x2="1.5" y2="-2.25" width="0.127" layer="21"/>
-<wire x1="1.5" y1="-2.25" x2="-1.5" y2="-2.25" width="0.127" layer="21"/>
-<wire x1="-1.5" y1="-2.25" x2="-1.5" y2="2.25" width="0.127" layer="21"/>
-<smd name="P$1" x="1.2625" y="1.5" dx="0.675" dy="0.25" layer="1"/>
-<smd name="P$2" x="1.2625" y="1" dx="0.675" dy="0.25" layer="1"/>
-<smd name="P$3" x="1.2625" y="0.5" dx="0.675" dy="0.25" layer="1"/>
-<smd name="P$4" x="1.2625" y="0" dx="0.675" dy="0.25" layer="1"/>
-<smd name="P$5" x="1.2625" y="-0.5" dx="0.675" dy="0.25" layer="1"/>
-<smd name="P$6" x="1.2625" y="-1" dx="0.675" dy="0.25" layer="1"/>
-<smd name="P$7" x="1.2625" y="-1.5" dx="0.675" dy="0.25" layer="1"/>
-<smd name="P$8" x="0.5" y="-2.0125" dx="0.675" dy="0.25" layer="1" rot="R90"/>
-<smd name="P$9" x="0" y="-2.0125" dx="0.675" dy="0.25" layer="1" rot="R90"/>
-<smd name="P$10" x="-0.5" y="-2.0125" dx="0.675" dy="0.25" layer="1" rot="R90"/>
-<smd name="P$11" x="-1.2625" y="-1.5" dx="0.675" dy="0.25" layer="1" rot="R180"/>
-<smd name="P$12" x="-1.2625" y="-1" dx="0.675" dy="0.25" layer="1" rot="R180"/>
-<smd name="P$13" x="-1.2625" y="-0.5" dx="0.675" dy="0.25" layer="1" rot="R180"/>
-<smd name="P$14" x="-1.2625" y="0" dx="0.675" dy="0.25" layer="1" rot="R180"/>
-<smd name="P$15" x="-1.2625" y="0.5" dx="0.675" dy="0.25" layer="1" rot="R180"/>
-<smd name="P$16" x="-1.2625" y="1" dx="0.675" dy="0.25" layer="1" rot="R180"/>
-<smd name="P$17" x="-1.2625" y="1.5" dx="0.675" dy="0.25" layer="1" rot="R180"/>
-<smd name="P$18" x="-0.5" y="2.0125" dx="0.675" dy="0.25" layer="1" rot="R270"/>
-<smd name="P$19" x="0" y="2.0125" dx="0.675" dy="0.25" layer="1" rot="R270"/>
-<smd name="P$20" x="0.5" y="2.0125" dx="0.675" dy="0.25" layer="1" rot="R270"/>
-<circle x="0.5" y="1.2" radius="0.22360625" width="0" layer="21"/>
-<text x="-3.3" y="-4" size="1.27" layer="25">&gt;NAME</text>
-</package>
-</packages>
-<symbols>
-<symbol name="BMX055">
-<pin name="VDD" x="-2.54" y="17.78" visible="pin" length="short" rot="R270"/>
-<pin name="VDDIO" x="2.54" y="17.78" visible="pin" length="short" rot="R270"/>
-<pin name="GNDA" x="-2.54" y="-17.78" visible="pin" length="short" rot="R90"/>
-<pin name="GNDIO" x="2.54" y="-17.78" visible="pin" length="short" rot="R90"/>
-<pin name="PS" x="15.24" y="7.62" visible="pin" length="short" rot="R180"/>
-<pin name="SDO1" x="-15.24" y="7.62" visible="pin" length="short"/>
-<pin name="SDO2" x="-15.24" y="5.08" visible="pin" length="short"/>
-<pin name="SCX" x="-15.24" y="2.54" visible="pin" length="short"/>
-<pin name="SDX" x="-15.24" y="0" visible="pin" length="short"/>
-<pin name="INT1" x="15.24" y="5.08" visible="pin" length="short" rot="R180"/>
-<pin name="INT2" x="15.24" y="2.54" visible="pin" length="short" rot="R180"/>
-<pin name="INT3" x="15.24" y="0" visible="pin" length="short" rot="R180"/>
-<pin name="INT4" x="15.24" y="-2.54" visible="pin" length="short" rot="R180"/>
-<pin name="INT5" x="15.24" y="-5.08" visible="pin" length="short" rot="R180"/>
-<pin name="CSB1" x="-15.24" y="-2.54" visible="pin" length="short"/>
-<pin name="CSB2" x="-15.24" y="-5.08" visible="pin" length="short"/>
-<pin name="CSB3" x="-15.24" y="-7.62" visible="pin" length="short"/>
-<pin name="DRDYM" x="15.24" y="-7.62" visible="pin" length="short" rot="R180"/>
-<wire x1="-12.7" y1="15.24" x2="-12.7" y2="-15.24" width="0.254" layer="94"/>
-<wire x1="-12.7" y1="-15.24" x2="12.7" y2="-15.24" width="0.254" layer="94"/>
-<wire x1="12.7" y1="-15.24" x2="12.7" y2="15.24" width="0.254" layer="94"/>
-<wire x1="12.7" y1="15.24" x2="-12.7" y2="15.24" width="0.254" layer="94"/>
-<text x="10.16" y="-20.32" size="1.27" layer="95">&gt;NAME</text>
-<text x="10.16" y="-22.86" size="1.27" layer="95">&gt;VALUE</text>
-</symbol>
-</symbols>
-<devicesets>
 <deviceset name="BMX055" prefix="U">
 <gates>
 <gate name="BMX055" symbol="BMX055" x="0" y="0"/>
@@ -3052,7 +3044,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="SUPPLY26" library="supply2" deviceset="GND" device=""/>
 <part name="J3" library="hqc" deviceset="USB-AF10" device=""/>
 <part name="SUPPLY27" library="supply2" deviceset="GND" device=""/>
-<part name="U$4" library="sensor" deviceset="BMX055" device=""/>
+<part name="U$4" library="hqc" deviceset="BMX055" device=""/>
 <part name="VDD12" library="supply1" deviceset="VDD" device=""/>
 <part name="SUPPLY28" library="supply2" deviceset="GND" device=""/>
 <part name="C34" library="hqc" deviceset="C-0805" device="" value="100nF"/>
