@@ -34,7 +34,7 @@ void Enter_LowPowerMode(void);
 void Leave_LowPowerMode(void);
 void USB_Interrupts_Config(void);
 void USB_Cable_Config (FunctionalState NewState);
-void Joystick_Send(uint8_t Keys);
+void SendHidData(int8_t vv);
 uint8_t JoyState(void);
 void Get_SerialNum(void);
 void Joy_Emul(void);

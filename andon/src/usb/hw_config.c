@@ -167,14 +167,16 @@ uint8_t JoyState(void)
   * Output        : None.
   * Return value  : None.
   */
-void Joystick_Send(uint8_t Keys)
+void SendHidData(int8_t vv)
 {
   uint8_t Mouse_Buffer[4] = {0, 0, 0, 0};
   int8_t X = 0, Y = 0;
   
   /* prepare buffer to send */
-  Mouse_Buffer[1] = X;
-  Mouse_Buffer[2] = Keys & 0xFF;
+  Mouse_Buffer[0] = 0x00; //button
+  Mouse_Buffer[1] = vv; //X
+  Mouse_Buffer[2] = 0x0; //Y
+  Mouse_Buffer[3] = 0;    //WHEEL
 
   
   /* Reset the control token to inform upper layer that a transfer is ongoing */
