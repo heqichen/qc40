@@ -4,6 +4,7 @@
 #include "stm32f10x.h"
 #include "stm32f10x_it.h"
 #include "hardware_serial.h"
+#include "hardware_iic.h"
 
 #include <stm32f10x_rcc.h>
 
@@ -309,6 +310,9 @@ int main(void)
 	Serial.__setUsart(USART1);
 	Serial2.__setUsart(USART2);
 	Serial3.__setUsart(USART3);
+
+	Iic1.__setPort(I2C1_B8_B9);
+	Iic2.__setPort(I2C2_B10_B11);
 
 	setup();
 	while (true)

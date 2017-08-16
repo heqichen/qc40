@@ -34,7 +34,8 @@ typedef void (*InterruptServiceOnSlaveAckFailure)(void *);
 class HardwareIic
 {
 	public:
-		HardwareIic(int iicPort);
+		HardwareIic();
+		void __setPort(int iicPort);
 		bool begin(uint8_t address);
 		void setInterruptService(InterruptServiceOnSlaveTxFrameStart, InterruptServiceOnSlaveRxFrameStart, InterruptServiceOnSlaveData, InterruptServiceSlaveRequestData, InterruptServiceOnSlaveAckFailure, void *);
 		bool write(uint8_t address, uint8_t *buf, int length);

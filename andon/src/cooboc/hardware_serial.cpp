@@ -67,17 +67,17 @@ void HardwareSerial::begin(int baudrate)
 		mRxBufferLength = 0;
 
 
-		/*
-
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
 		
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
 		pinMode(A9, GPIO_MUX_PUSH_PULL);
 		pinMode(A10, INPUT_FLOATING);
-		*/
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOB, ENABLE);
 		
+		/*
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOB, ENABLE);
 		pinMode(B6, GPIO_MUX_PUSH_PULL);
 		pinMode(B7, INPUT_FLOATING);
+		*/
+
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 		GPIO_PinRemapConfig(GPIO_Remap_USART1, ENABLE);
 

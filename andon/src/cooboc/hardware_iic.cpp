@@ -27,35 +27,44 @@ void I2C1ErrorInturruptService()
 	Iic1.errorService();
 }
 
-HardwareIic::HardwareIic(int iicPort)
-	:	mIicPort	(iicPort),
-		mWorkMode	(IDLE),
-		mInterruptServiceOnSlaveTxFrameStart	(NULL),
-		mInterruptServiceOnSlaveRxFrameStart	(NULL),
-		mInterruptServiceOnSlaveData			(NULL),
-		mInterruptServiceSlaveRequestData		(NULL),
-		mInterruptServiceOnSlaveAckFailure		(NULL),
-		mInterruptServiceData 	(NULL)
-
+HardwareIic::HardwareIic()
 {
-	
+
+}
+
+void HardwareIic::__setPort(int iicPort)
+{
+	mIicPort = iicPort;
+	mWorkMode = IDLE;
+	mInterruptServiceOnSlaveTxFrameStart = NULL;
+	mInterruptServiceOnSlaveRxFrameStart = NULL;
+	mInterruptServiceOnSlaveData = NULL;
+	mInterruptServiceSlaveRequestData = NULL;
+	mInterruptServiceOnSlaveAckFailure = NULL;
+	mInterruptServiceData = NULL;
 }
 
 
 bool HardwareIic::begin(uint8_t address)
 {
+	Serial2.println("1");
 	mTransData = NULL;
 	switch (mIicPort)
 	{
 		case (I2C1_B8_B9):
 		{
+			Serial2.println("2");
 			if (HardwareIic::mIsI2C1Initialized)
 			{
 				return false;
 			}
+			Serial2.println("3");
 			this->initializeB8B9();
+			Serial2.println("4");
 			this->initializeI2C1(address);
+			Serial2.println("5");
 			mI2Cx = I2C1;
+			Serial2.println("6");
 			mWorkMode = IDLE;
 			break;
 		}
@@ -105,6 +114,7 @@ void HardwareIic::initializeB8B9()
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO, ENABLE);
+	GPIO_PinRemapConfig(GPIO_Remap_I2C1, ENABLE);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
@@ -253,12 +263,12 @@ void captureError(uint32_t flag)
 
 
 
-	Serial.println(flag);
+	Serial2.println(flag);
 	for (i=0; i<24; ++i)
 	{
 		if (flag & (1<<i))
 		{
-			Serial.println(flags[i]);
+			Serial2.println(flags[i]);
 		}
 	}
 	while (true) ;
@@ -349,7 +359,7 @@ uint32_t HardwareIic::eventServiceOnSlave(uint32_t flag)
 
 	if (flag != 0)
 	{
-		Serial.println("something forgot handle");
+		Serial2.println("something forgot handle");
 		//TODO need hardreset
 		//step1. deinit i2c
 		//step2. set sda and scl to gpio
@@ -486,10 +496,12 @@ uint32_t HardwareIic::eventServiceOnMasterReceiving(uint32_t flag)
 	return flag;
 }
 
+unsigned long errorCount = 0;
+
 void HardwareIic::eventService()
 {
-	//Serial.print(">");
-	//Serial.print(mWorkMode);
+	//Serial2.print(">");
+	//Serial2.print(mWorkMode);
 	/*
 	uint16_t cr1 = I2C_ReadRegister(mI2Cx, I2C_Register_CR1);
 	uint32_t sr1 = I2C_ReadRegister(mI2Cx, I2C_Register_SR1);
@@ -546,10 +558,15 @@ void HardwareIic::eventService()
 	}
 	if (flag != 0)
 	{
-		Serial.print("unknown iic event: ");
-		Serial.print(flag);
-		Serial.print("  work mode: ");
-		Serial.println((int)mWorkMode);
+		Serial2.print("unknown iic event: ");
+		Serial2.print(flag);
+		Serial2.print("  work mode: ");
+		Serial2.println((int)mWorkMode);
+		errorCount++;
+		if (errorCount > 200)
+		{
+			captureError(flag);
+		}
 	}
 }
 
@@ -579,18 +596,18 @@ void HardwareIic::errorService()
 		mTransGood = false;
 		flag = 0;
 		mI2Cx->SR1 = 0;//clear AF
-		Serial.print ("IIC master transmit Error!! at tx xcount: ");
-		Serial.print(mTransCount);
-		Serial.print(" flag: ");
-		Serial.print(flag);
-		Serial.println("");
+		Serial2.print ("IIC master transmit Error!! at tx xcount: ");
+		Serial2.print(mTransCount);
+		Serial2.print(" flag: ");
+		Serial2.print(flag);
+		Serial2.println("");
 
 	}
 
 	if (flag != 0)
 	{
-		Serial.print ("IIC Error!! at tx xcount: ");
-		Serial.println(mTransCount);
+		Serial2.print ("IIC Error!! at tx xcount: ");
+		Serial2.println(mTransCount);
 
 		captureError(flag);	
 	}
@@ -613,6 +630,7 @@ bool HardwareIic::write(uint8_t address, uint8_t *buf, int length)
 	I2C_GenerateSTART(mI2Cx, ENABLE);
 	while (mWorkMode != IDLE)
 	{
+		//Serial2.print('.');
 		;
 	}
 	mTransData = NULL;
@@ -641,6 +659,6 @@ bool HardwareIic::read(uint8_t address, uint8_t *buf, int length)
 	return mTransGood;
 }
 
-HardwareIic Iic2(I2C2_B10_B11);
-HardwareIic Iic1(I2C1_B8_B9);
+HardwareIic Iic2;
+HardwareIic Iic1;
 
