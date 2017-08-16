@@ -169,6 +169,17 @@ void TIM2_IRQHandler(void)
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
 
+void I2C1EventInturruptService();
+void I2C1ErrorInturruptService();
+
+void I2C1_EV_IRQHandler(void)
+{
+	I2C1EventInturruptService();
+}
+void I2C1_ER_IRQHandler(void)
+{
+	I2C1ErrorInturruptService();
+}
 
 void I2C2EventInturruptService();
 void I2C2ErrorInturruptService();

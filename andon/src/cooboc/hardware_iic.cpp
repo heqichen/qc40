@@ -18,6 +18,15 @@ void I2C2ErrorInturruptService()
 	Iic2.errorService();
 }
 
+void I2C1EventInturruptService()
+{
+	Iic1.eventService();
+}
+void I2C1ErrorInturruptService()
+{
+	Iic1.errorService();
+}
+
 HardwareIic::HardwareIic(int iicPort)
 	:	mIicPort	(iicPort),
 		mWorkMode	(IDLE),
@@ -38,6 +47,18 @@ bool HardwareIic::begin(uint8_t address)
 	mTransData = NULL;
 	switch (mIicPort)
 	{
+		case (I2C1_B8_B9):
+		{
+			if (HardwareIic::mIsI2C1Initialized)
+			{
+				return false;
+			}
+			this->initializeB8B9();
+			this->initializeI2C1(address);
+			mI2Cx = I2C1;
+			mWorkMode = IDLE;
+			break;
+		}
 		case (I2C2_B10_B11):
 		{
 			if (HardwareIic::mIsI2C2Initialized)
@@ -80,6 +101,53 @@ void HardwareIic::initializeB10B11()
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
+void HardwareIic::initializeB8B9()
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO, ENABLE);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+}
+
+
+void HardwareIic::initializeI2C1(uint8_t address)
+{
+	NVIC_InitTypeDef NVIC_InitStructure;
+	I2C_InitTypeDef I2C_InitStructure;
+	
+	NVIC_InitStructure.NVIC_IRQChannel = I2C1_EV_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+	NVIC_InitStructure.NVIC_IRQChannel = I2C1_ER_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+
+	I2C_DeInit(I2C1);
+
+
+	I2C_InitStructure.I2C_ClockSpeed = 100000;
+	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+	I2C_InitStructure.I2C_OwnAddress1 = address<<1;
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+	I2C_Init(I2C1, &I2C_InitStructure);
+	while (I2C_GetFlagStatus(I2C1,I2C_FLAG_BUSY)); // Wait until I2C free
+	
+	I2C_ITConfig(I2C1, I2C_IT_BUF | I2C_IT_EVT | I2C_IT_ERR, ENABLE);
+	
+	I2C_Cmd(I2C1, ENABLE);
+}
+
 void HardwareIic::initializeI2C2(uint8_t address)
 {
 	NVIC_InitTypeDef NVIC_InitStructure;
@@ -109,7 +177,7 @@ void HardwareIic::initializeI2C2(uint8_t address)
 	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
 	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 	I2C_Init(I2C2, &I2C_InitStructure);
-	while (I2C_GetFlagStatus(mI2Cx,I2C_FLAG_BUSY)); // Wait until I2C free
+	while (I2C_GetFlagStatus(I2C2,I2C_FLAG_BUSY)); // Wait until I2C free
 	
 	I2C_ITConfig(I2C2, I2C_IT_BUF | I2C_IT_EVT | I2C_IT_ERR, ENABLE);
 	
@@ -574,5 +642,5 @@ bool HardwareIic::read(uint8_t address, uint8_t *buf, int length)
 }
 
 HardwareIic Iic2(I2C2_B10_B11);
-
+HardwareIic Iic1(I2C1_B8_B9);
 

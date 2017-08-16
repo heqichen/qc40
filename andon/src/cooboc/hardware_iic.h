@@ -4,12 +4,15 @@
 #include <stdint.h>
 #include <stm32f10x_i2c.h>
 
-#define I2C2_B10_B11	0
+#define I2C1_B8_B9		0
+#define I2C2_B10_B11	1
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+void I2C1EventInturruptService();
+void I2C1ErrorInturruptService();
 void I2C2EventInturruptService();
 void I2C2ErrorInturruptService();
 #ifdef __cplusplus
@@ -64,7 +67,9 @@ class HardwareIic
 		void * mInterruptServiceData;
 
 		void initializeI2C2(uint8_t address);
+		void initializeI2C1(uint8_t address);
 		void initializeB10B11();
+		void initializeB8B9();
 		void eventService();
 		void errorService();
 
@@ -73,6 +78,8 @@ class HardwareIic
 		uint32_t eventServiceOnMasterTransmitting(uint32_t flag);
 		uint32_t eventServiceOnMasterReceiving(uint32_t flag);
 
+		friend void I2C1EventInturruptService();
+		friend void I2C1ErrorInturruptService();
 		friend void I2C2EventInturruptService();
 		friend void I2C2ErrorInturruptService();
 
@@ -83,6 +90,7 @@ class HardwareIic
 		
 };
 
+extern HardwareIic Iic1;
 extern HardwareIic Iic2;
 
 #endif
