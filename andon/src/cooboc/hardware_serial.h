@@ -40,6 +40,7 @@ class HardwareSerial
 		uint8_t *mRxBuffer;
 		int mRxBufferHeadIdx;
 		int mRxBufferLength;
+		bool mIsBegan;
 };
 
 

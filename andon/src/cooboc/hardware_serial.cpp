@@ -53,7 +53,7 @@ void USART3InterruptService(void)
 
 HardwareSerial::HardwareSerial()
 {
-
+	mIsBegan = false;
 }
 
 void HardwareSerial::begin(int baudrate)
@@ -170,6 +170,7 @@ void HardwareSerial::begin(int baudrate)
 
 		USART_Cmd(USART3, ENABLE);
 	}
+	mIsBegan = true;
 }
 
 
@@ -177,6 +178,10 @@ void HardwareSerial::begin(int baudrate)
 
 void HardwareSerial::write(uint8_t ch)
 {
+	if (!mIsBegan)
+	{
+		return ;
+	}
 	USART_SendData(mUsartx, ch);
 	while (USART_GetFlagStatus(mUsartx, USART_FLAG_TC) == RESET)
 	{
