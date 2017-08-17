@@ -85,10 +85,10 @@ void loop()
 	Set_USBClock();
 	
 	USB_Init();
-	
+	int16_t x = 0;
 	while (1)
 	{
-		int16_t x;
+		
 		bool ok = readBmx055AccX(&x);
 		x /= 4;
 		if (x > 127)
@@ -100,6 +100,7 @@ void loop()
 			x = -127;
 		}
 		x = -x;
+		Serial.println(x);
 		Serial2.println(x);
 		if (bDeviceState == CONFIGURED)
 		{
@@ -107,12 +108,6 @@ void loop()
 		} 
 		delay(10);
 	}
-	
-
-
-	int16_t x;
-	bool ok = readBmx055AccX(&x);
-
 
 	Serial.println("dffsdafa");
 	Serial2.println("dffsdafa");
