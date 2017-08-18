@@ -1118,12 +1118,12 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="-5" y1="-2.5" x2="-2.5" y2="-2.5" width="0.127" layer="21"/>
 <hole x="0" y="0" drill="1.5"/>
 <hole x="6" y="0" drill="1.5"/>
-<smd name="P1" x="0" y="-3.2" dx="1.5" dy="1.5" layer="1"/>
-<smd name="P2" x="3.2" y="-3.2" dx="1.5" dy="1.5" layer="1"/>
-<smd name="P3" x="6.7" y="-3.2" dx="1.5" dy="1.5" layer="1"/>
-<smd name="P3@2" x="6.7" y="3.2" dx="1.5" dy="1.5" layer="1"/>
-<smd name="P2@2" x="3.2" y="3.2" dx="1.5" dy="1.5" layer="1"/>
-<smd name="P1@2" x="0" y="3.2" dx="1.5" dy="1.5" layer="1"/>
+<smd name="P1" x="-0.8" y="-3.2" dx="1.7" dy="1.7" layer="1"/>
+<smd name="P2" x="2.4" y="-3.2" dx="1.7" dy="1.7" layer="1"/>
+<smd name="P3" x="5.9" y="-3.2" dx="1.7" dy="1.7" layer="1"/>
+<smd name="P3@2" x="5.9" y="3.2" dx="1.7" dy="1.7" layer="1"/>
+<smd name="P2@2" x="2.4" y="3.2" dx="1.7" dy="1.7" layer="1"/>
+<smd name="P1@2" x="-0.8" y="3.2" dx="1.7" dy="1.7" layer="1"/>
 <text x="10.8" y="-3" size="1.27" layer="25" rot="R90">&gt;NAME</text>
 <text x="12.6" y="-3.6" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
 </package>
