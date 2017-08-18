@@ -1326,6 +1326,17 @@ In this library the device names are the same as the pin names of the symbols, t
 <text x="3.9" y="0.6" size="1.27" layer="25">&gt;NAME</text>
 <text x="3.9" y="-1.5" size="1.27" layer="27">&gt;VALUE</text>
 </package>
+<package name="SOT-323">
+<smd name="P$1" x="-0.65" y="-1.1" dx="0.8" dy="0.5" layer="1" rot="R90"/>
+<smd name="P$2" x="0.65" y="-1.1" dx="0.8" dy="0.5" layer="1" rot="R90"/>
+<smd name="P$3" x="0" y="1.1" dx="0.8" dy="0.5" layer="1" rot="R90"/>
+<wire x1="-1" y1="0.6" x2="-1" y2="-0.6" width="0.127" layer="21"/>
+<wire x1="-1" y1="-0.6" x2="1" y2="-0.6" width="0.127" layer="21"/>
+<wire x1="1" y1="-0.6" x2="1" y2="0.6" width="0.127" layer="21"/>
+<wire x1="1" y1="0.6" x2="-1" y2="0.6" width="0.127" layer="21"/>
+<text x="1.27" y="0" size="1.27" layer="25">&gt;NAME</text>
+<text x="1.27" y="-1.27" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="PCM2704">
@@ -1593,6 +1604,23 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="10.16" y1="17.78" x2="-10.16" y2="17.78" width="0.4064" layer="94"/>
 <text x="-5.2578" y="19.4818" size="2.0828" layer="95" ratio="10" rot="SR0">&gt;NAME</text>
 <text x="-4.6228" y="-18.3896" size="2.0828" layer="96" ratio="10" rot="SR0">&gt;VALUE</text>
+</symbol>
+<symbol name="TRANSISTOR-PNP">
+<pin name="P$E" x="2.54" y="2.54" visible="off" length="point"/>
+<pin name="P$C" x="2.54" y="-2.54" visible="off" length="point"/>
+<pin name="P$B" x="-2.54" y="0" visible="off" length="point"/>
+<wire x1="-2.54" y1="0" x2="0.762" y2="0" width="0.254" layer="94"/>
+<wire x1="2.54" y1="2.54" x2="2.54" y2="1.524" width="0.254" layer="94"/>
+<wire x1="2.54" y1="1.524" x2="0.762" y2="0.254" width="0.254" layer="94"/>
+<wire x1="0.762" y1="1.524" x2="0.762" y2="0.254" width="0.254" layer="94"/>
+<wire x1="0.762" y1="0.254" x2="0.762" y2="0" width="0.254" layer="94"/>
+<wire x1="0.762" y1="0" x2="0.762" y2="-0.254" width="0.254" layer="94"/>
+<wire x1="0.762" y1="-0.254" x2="0.762" y2="-1.524" width="0.254" layer="94"/>
+<wire x1="0.762" y1="-0.254" x2="2.54" y2="-1.524" width="0.254" layer="94"/>
+<wire x1="2.54" y1="-1.524" x2="2.54" y2="-2.54" width="0.254" layer="94"/>
+<circle x="1.778" y="0" radius="1.983803125" width="0.254" layer="94"/>
+<wire x1="1.3462" y1="0.6604" x2="1.6002" y2="1.1684" width="0.254" layer="94"/>
+<wire x1="1.3208" y1="0.635" x2="1.8796" y2="0.7112" width="0.254" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -1893,6 +1921,23 @@ In this library the device names are the same as the pin names of the symbols, t
 <connect gate="74HC138" pin="E3" pad="P$6"/>
 <connect gate="74HC138" pin="GND" pad="P$8"/>
 <connect gate="74HC138" pin="VCC" pad="P$16"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="SS8550-SOT-323" prefix="U">
+<gates>
+<gate name="G$1" symbol="TRANSISTOR-PNP" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SOT-323">
+<connects>
+<connect gate="G$1" pin="P$B" pad="P$1"/>
+<connect gate="G$1" pin="P$C" pad="P$3"/>
+<connect gate="G$1" pin="P$E" pad="P$2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -3165,6 +3210,9 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="C36" library="hqc" deviceset="C-0805" device="" value="1uF"/>
 <part name="SUPPLY32" library="supply2" deviceset="GND" device=""/>
 <part name="D51" library="hqc-basic" deviceset="IN4148WS-SWITCHING-DIODE" device=""/>
+<part name="U5" library="hqc" deviceset="SS8550-SOT-323" device=""/>
+<part name="R44" library="hqc" deviceset="R-0805" device="" value="10k"/>
+<part name="R45" library="hqc" deviceset="R-0805" device="" value="2.2k"/>
 </parts>
 <sheets>
 <sheet>
@@ -3423,7 +3471,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="U$6" gate="G$1" x="721.36" y="-121.92"/>
 <instance part="U$7" gate="G$1" x="647.7" y="-127"/>
 <instance part="U$8" gate="G$1" x="627.38" y="-127"/>
-<instance part="VDD18" gate="G$1" x="-12.7" y="45.72"/>
+<instance part="VDD18" gate="G$1" x="-12.7" y="63.5"/>
 <instance part="R24" gate="G$1" x="-12.7" y="38.1" rot="R270"/>
 <instance part="U4" gate="74HC138" x="-43.18" y="-147.32"/>
 <instance part="VDD19" gate="G$1" x="-63.5" y="-127"/>
@@ -3433,6 +3481,9 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="C36" gate="G$1" x="-50.8" y="78.74" rot="R90"/>
 <instance part="SUPPLY32" gate="GND" x="-50.8" y="71.12"/>
 <instance part="D51" gate="G$1" x="-48.26" y="88.9" rot="R90"/>
+<instance part="U5" gate="G$1" x="-15.24" y="45.72"/>
+<instance part="R44" gate="G$1" x="-20.32" y="53.34" rot="R270"/>
+<instance part="R45" gate="G$1" x="-27.94" y="45.72"/>
 </instances>
 <busses>
 </busses>
@@ -4538,11 +4589,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="71.12" y1="101.6" x2="71.12" y2="104.14" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="VDD18" gate="G$1" pin="VDD"/>
-<pinref part="R24" gate="G$1" pin="P$1"/>
-<wire x1="-12.7" y1="43.18" x2="-12.7" y2="40.64" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="U4" gate="74HC138" pin="VCC"/>
 <wire x1="-58.42" y1="-134.62" x2="-63.5" y2="-134.62" width="0.1524" layer="91"/>
 <pinref part="VDD19" gate="G$1" pin="VDD"/>
@@ -4558,6 +4604,16 @@ In this library the device names are the same as the pin names of the symbols, t
 <junction x="-50.8" y="93.98"/>
 <pinref part="D51" gate="G$1" pin="P$2"/>
 <wire x1="-48.26" y1="91.44" x2="-48.26" y2="93.98" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="VDD18" gate="G$1" pin="VDD"/>
+<pinref part="U5" gate="G$1" pin="P$E"/>
+<wire x1="-12.7" y1="60.96" x2="-12.7" y2="58.42" width="0.1524" layer="91"/>
+<pinref part="R44" gate="G$1" pin="P$1"/>
+<wire x1="-12.7" y1="58.42" x2="-12.7" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="-20.32" y1="55.88" x2="-20.32" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="-20.32" y1="58.42" x2="-12.7" y2="58.42" width="0.1524" layer="91"/>
+<junction x="-12.7" y="58.42"/>
 </segment>
 </net>
 <net name="KB_C1" class="0">
@@ -5999,6 +6055,36 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="IC1" gate="PORTA_H" pin="PA8"/>
 <wire x1="38.1" y1="45.72" x2="20.32" y2="45.72" width="0.1524" layer="91"/>
 <label x="20.32" y="45.72" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$87" class="0">
+<segment>
+<pinref part="U5" gate="G$1" pin="P$B"/>
+<pinref part="R45" gate="G$1" pin="P$2"/>
+<wire x1="-17.78" y1="45.72" x2="-20.32" y2="45.72" width="0.1524" layer="91"/>
+<pinref part="R44" gate="G$1" pin="P$2"/>
+<wire x1="-20.32" y1="45.72" x2="-25.4" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="-20.32" y1="50.8" x2="-20.32" y2="45.72" width="0.1524" layer="91"/>
+<junction x="-20.32" y="45.72"/>
+</segment>
+</net>
+<net name="USB_DISC" class="0">
+<segment>
+<pinref part="R45" gate="G$1" pin="P$1"/>
+<wire x1="-30.48" y1="45.72" x2="-48.26" y2="45.72" width="0.1524" layer="91"/>
+<label x="-48.26" y="45.72" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC1" gate="PORTA_H" pin="PA15"/>
+<wire x1="38.1" y1="27.94" x2="25.4" y2="27.94" width="0.1524" layer="91"/>
+<label x="22.86" y="27.94" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$91" class="0">
+<segment>
+<pinref part="R24" gate="G$1" pin="P$1"/>
+<pinref part="U5" gate="G$1" pin="P$C"/>
+<wire x1="-12.7" y1="40.64" x2="-12.7" y2="43.18" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
