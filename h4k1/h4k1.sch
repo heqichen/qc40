@@ -1612,6 +1612,8 @@ In this library the device names are the same as the pin names of the symbols, t
 <circle x="1.778" y="0" radius="1.983803125" width="0.254" layer="94"/>
 <wire x1="1.3462" y1="0.6604" x2="1.6002" y2="1.1684" width="0.254" layer="94"/>
 <wire x1="1.3208" y1="0.635" x2="1.8796" y2="0.7112" width="0.254" layer="94"/>
+<text x="5.08" y="0" size="1.778" layer="95">&gt;NAME</text>
+<text x="5.08" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -1903,16 +1905,16 @@ In this library the device names are the same as the pin names of the symbols, t
 </device>
 </devices>
 </deviceset>
-<deviceset name="SS8550-SOT-323" prefix="U">
+<deviceset name="SS8550-SOT-323" prefix="T" uservalue="yes">
 <gates>
-<gate name="G$1" symbol="TRANSISTOR-PNP" x="0" y="0"/>
+<gate name="SS8550" symbol="TRANSISTOR-PNP" x="0" y="0"/>
 </gates>
 <devices>
 <device name="" package="SOT-323">
 <connects>
-<connect gate="G$1" pin="P$B" pad="P$1"/>
-<connect gate="G$1" pin="P$C" pad="P$3"/>
-<connect gate="G$1" pin="P$E" pad="P$2"/>
+<connect gate="SS8550" pin="P$B" pad="P$1"/>
+<connect gate="SS8550" pin="P$C" pad="P$3"/>
+<connect gate="SS8550" pin="P$E" pad="P$2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -3179,7 +3181,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="C36" library="hqc" deviceset="C-0805" device="" value="1uF"/>
 <part name="SUPPLY32" library="supply2" deviceset="GND" device=""/>
 <part name="D51" library="hqc-basic" deviceset="IN4148WS-SWITCHING-DIODE" device=""/>
-<part name="U5" library="hqc" deviceset="SS8550-SOT-323" device=""/>
+<part name="U5" library="hqc" deviceset="SS8550-SOT-323" device="" value="ss8550"/>
 <part name="R44" library="hqc" deviceset="R-0805" device="" value="10k"/>
 <part name="R45" library="hqc" deviceset="R-0805" device="" value="2.2k"/>
 <part name="C32" library="hqc" deviceset="CPOL-6.3X5.4" device="" value="100uF"/>
@@ -3446,7 +3448,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="C36" gate="G$1" x="-50.8" y="78.74" rot="R90"/>
 <instance part="SUPPLY32" gate="GND" x="-50.8" y="71.12"/>
 <instance part="D51" gate="G$1" x="-48.26" y="88.9" rot="R90"/>
-<instance part="U5" gate="G$1" x="-15.24" y="45.72"/>
+<instance part="U5" gate="SS8550" x="-15.24" y="45.72"/>
 <instance part="R44" gate="G$1" x="-20.32" y="53.34" rot="R270"/>
 <instance part="R45" gate="G$1" x="-27.94" y="45.72"/>
 <instance part="C32" gate="G$1" x="342.9" y="231.14" rot="R270"/>
@@ -4574,7 +4576,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </segment>
 <segment>
 <pinref part="VDD18" gate="G$1" pin="VDD"/>
-<pinref part="U5" gate="G$1" pin="P$E"/>
+<pinref part="U5" gate="SS8550" pin="P$E"/>
 <wire x1="-12.7" y1="60.96" x2="-12.7" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="R44" gate="G$1" pin="P$1"/>
 <wire x1="-12.7" y1="58.42" x2="-12.7" y2="48.26" width="0.1524" layer="91"/>
@@ -5991,7 +5993,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="N$87" class="0">
 <segment>
-<pinref part="U5" gate="G$1" pin="P$B"/>
+<pinref part="U5" gate="SS8550" pin="P$B"/>
 <pinref part="R45" gate="G$1" pin="P$2"/>
 <wire x1="-17.78" y1="45.72" x2="-20.32" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="R44" gate="G$1" pin="P$2"/>
@@ -6015,7 +6017,7 @@ In this library the device names are the same as the pin names of the symbols, t
 <net name="N$91" class="0">
 <segment>
 <pinref part="R24" gate="G$1" pin="P$1"/>
-<pinref part="U5" gate="G$1" pin="P$C"/>
+<pinref part="U5" gate="SS8550" pin="P$C"/>
 <wire x1="-12.7" y1="40.64" x2="-12.7" y2="43.18" width="0.1524" layer="91"/>
 </segment>
 </net>
