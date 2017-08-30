@@ -20,10 +20,12 @@ STFLASH = ../tools/stlink/bin-amd64/st-flash
 COOOBOC_DIR = $(SRC_DIR)/cooboc
 
 USER_SRC += $(SRC_DIR)/main.cpp
+USER_SRC += $(SRC_DIR)/keyboard.cpp
+USER_SRC += $(SRC_DIR)/key.cpp
 
-DEVICE_SRC += $(SRC_DIR)/devices/a7/aia7.cpp
-DEVICE_SRC += $(SRC_DIR)/devices/a7/at_decoder.cpp
-DEVICE_SRC += $(SRC_DIR)/devices/gps/gps.cpp
+#DEVICE_SRC += $(SRC_DIR)/devices/a7/aia7.cpp
+#DEVICE_SRC += $(SRC_DIR)/devices/a7/at_decoder.cpp
+#DEVICE_SRC += $(SRC_DIR)/devices/gps/gps.cpp
 
 
 COOBOC_SRC += $(COOOBOC_DIR)/cooboc.cpp

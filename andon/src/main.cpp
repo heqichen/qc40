@@ -3,7 +3,7 @@
 #include "stm32f10x_conf.h"
 #include "hardware_serial.h"
 #include "hardware_iic.h"
-
+#include "keyboard.h"
 
 extern "C" {
 //usb
@@ -16,21 +16,27 @@ extern "C" {
 
 __IO uint8_t PrevXferComplete = 1;
 
+
+Keyboard keyboard;
+
 void setup()
 {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
-	Serial.begin(115200);
-	Serial2.begin(115200);
-	Serial.println("program begin");
-	Serial2.println("program begin");
 
-	pinMode(B8, OUTPUT);
-	digitalWrite(B8, HIGH);
-	pinMode(B9, OUTPUT);
-	digitalWrite(B9, HIGH);
+
+	Set_System();	
+	USB_Interrupts_Config();
+	Set_USBClock();
+	USB_Init();
+
+
+	Serial.begin(115200);
+	Serial.println("program begin");
 	
-	Iic1.begin(0x01);
+	//Iic1.begin(0x01);
+
+	keyboard.setup();
 
 }
 
@@ -76,15 +82,8 @@ bool readBmx055AccZ(int16_t *z)
 
 void loop()
 {
-
-
-		Set_System();
-	
-	USB_Interrupts_Config();
-	
-	Set_USBClock();
-	
-	USB_Init();
+	keyboard.tick();
+	/*
 	int16_t x = 0;
 	while (1)
 	{
@@ -113,4 +112,9 @@ void loop()
 	Serial2.println("dffsdafa");
 	Serial2.println(x);
 	delay(500);
+	*/
+
+	//Serial.println("hello world");
+	//delay(20);
+
 }
