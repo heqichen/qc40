@@ -2,6 +2,8 @@
 
 #include <hardware_serial.h>
 
+#include "keymap.h"
+
 void EventLoop::setup()
 {
 	mFifo.setup(24);
@@ -31,7 +33,11 @@ void EventLoop::dispatcher(uint8_t type, int value)
 		case (EVENT_KEY_DOWN):
 		{
 			Serial.print("key down: ");
-			Serial.println(value);
+			Serial.print(value);
+			Serial.print("\t");
+			Serial.print(mmmap[value]);
+			Serial.println("");
+
 			break;
 		}
 		case (EVENT_KEY_UP):

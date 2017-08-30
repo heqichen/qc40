@@ -24,6 +24,7 @@ USER_SRC += $(SRC_DIR)/keyboard.cpp
 USER_SRC += $(SRC_DIR)/key.cpp
 USER_SRC += $(SRC_DIR)/event_loop.cpp
 USER_SRC += $(SRC_DIR)/fifo.cpp
+USER_SRC += $(SRC_DIR)/keymap.cpp
 
 #DEVICE_SRC += $(SRC_DIR)/devices/a7/aia7.cpp
 #DEVICE_SRC += $(SRC_DIR)/devices/a7/at_decoder.cpp
