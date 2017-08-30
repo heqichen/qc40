@@ -3,15 +3,16 @@
 
 #include <stdint.h>
 #include "key.h"
-
+#include "event_loop.h"
 
 class Keyboard
 {
 	public:
-		void setup();
+		void setup(EventLoop *el);
 		void tick();
 	private:
 		unsigned long mLastTickTime;
+		EventLoop *mEventLoop;
 		Key mKeys[56];
 };
 

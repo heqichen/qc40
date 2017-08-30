@@ -5,6 +5,9 @@
 #include "hardware_iic.h"
 #include "keyboard.h"
 
+#include "event_loop.h"
+
+
 extern "C" {
 //usb
 #include <usb_core.h>
@@ -18,6 +21,7 @@ __IO uint8_t PrevXferComplete = 1;
 
 
 Keyboard keyboard;
+EventLoop eventLoop;
 
 void setup()
 {
@@ -36,7 +40,8 @@ void setup()
 	
 	//Iic1.begin(0x01);
 
-	keyboard.setup();
+	eventLoop.setup();
+	keyboard.setup(&eventLoop);
 
 }
 
@@ -82,6 +87,7 @@ bool readBmx055AccZ(int16_t *z)
 
 void loop()
 {
+	eventLoop.tick();
 	keyboard.tick();
 	/*
 	int16_t x = 0;

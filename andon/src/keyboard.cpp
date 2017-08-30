@@ -21,9 +21,10 @@
 
 uint8_t PIN_KB_COLS[] = {PIN_KB_C1, PIN_KB_C2, PIN_KB_C3, PIN_KB_C4, PIN_KB_C5, PIN_KB_C6, PIN_KB_C7, PIN_KB_C8};
 
-void Keyboard::setup()
+void Keyboard::setup(EventLoop *el)
 {
 	int i;
+	mEventLoop = el;
 	for (i=0; i<8; ++i)
 	{
 		pinMode(PIN_KB_COLS[i], INPUT);
@@ -65,10 +66,21 @@ void Keyboard::tick()
 				mKeys[y*8 + x].tick(digitalRead(PIN_KB_COLS[x]));
 				if (mKeys[y*8 + x].hasChanged())
 				{
+					if (mKeys[y*8+x].getNewValue() > 0)
+					{
+						mEventLoop->newEvent(EVENT_KEY_UP, y*8 + x);
+					}
+					else
+					{
+						mEventLoop->newEvent(EVENT_KEY_DOWN, y*8 + x);
+					}
+					
+					/*
 					Serial.print("Key: ");
 					Serial.print(y*8+x);
 					Serial.print(" has changed to ");
 					Serial.println(mKeys[y*8+x].getNewValue());
+					*/
 				}
 				//Serial.print(digitalRead(PIN_KB_COLS[x]));
 			}
