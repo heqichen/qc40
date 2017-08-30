@@ -101,7 +101,7 @@ void loop()
 	eventLoop.tick();
 	keyboard.tick();
 	
-	/*
+	
 	int16_t x = 0;
 	bool ok = readBmx055AccX(&x);
 	x /= 4;
@@ -117,10 +117,10 @@ void loop()
 	Serial.println(x);
 	if (bDeviceState == CONFIGURED)
 	{
-		SendHidData((int8_t)x);
+		//SendHidData((int8_t)x);
 	} 
 	delay(10);
-	*/
+	
 
 	
 

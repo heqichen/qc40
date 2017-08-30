@@ -169,21 +169,22 @@ uint8_t JoyState(void)
   */
 void SendHidData(int8_t vv)
 {
-  uint8_t Mouse_Buffer[4] = {0, 0, 0, 0};
+  uint8_t Mouse_Buffer[5] = {0, 0, 0, 0, 0};
   int8_t X = 0, Y = 0;
   
   /* prepare buffer to send */
-  Mouse_Buffer[0] = 0x00; //button
-  Mouse_Buffer[1] = vv; //X
-  Mouse_Buffer[2] = 0x0; //Y
-  Mouse_Buffer[3] = 0;    //WHEEL
+  Mouse_Buffer[0] = 0x01; //report id 4
+  Mouse_Buffer[1] = 0x00; //button
+  Mouse_Buffer[2] = vv; //X
+  Mouse_Buffer[3] = 0x0; //Y
+  Mouse_Buffer[4] = 0;    //WHEEL
 
   
   /* Reset the control token to inform upper layer that a transfer is ongoing */
   PrevXferComplete = 0;
   
   /* Copy mouse position info in ENDP1 Tx Packet Memory Area*/
-  USB_SIL_Write(EP1_IN, Mouse_Buffer, 4);
+  USB_SIL_Write(EP1_IN, Mouse_Buffer, 5);
   
   /* Enable endpoint for transmission */
   SetEPTxValid(ENDP1);
