@@ -24,6 +24,7 @@ USER_SRC += $(SRC_DIR)/keyboard.cpp
 USER_SRC += $(SRC_DIR)/key.cpp
 USER_SRC += $(SRC_DIR)/event_loop.cpp
 USER_SRC += $(SRC_DIR)/fifo.cpp
+USER_SRC += $(SRC_DIR)/keymap.cpp
 
 #DEVICE_SRC += $(SRC_DIR)/devices/a7/aia7.cpp
 #DEVICE_SRC += $(SRC_DIR)/devices/a7/at_decoder.cpp
@@ -62,7 +63,7 @@ CORE_SRC +=	./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/CMSIS/Device/ST/STM32F10x
 
 DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_bkp.c
-DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_can.c
+#DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_can.c
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_cec.c
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_crc.c
 #DRIVER_SRC += ./STM32_USB-FS-Device_Lib_V4.1.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c

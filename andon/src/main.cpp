@@ -20,28 +20,39 @@ extern "C" {
 __IO uint8_t PrevXferComplete = 1;
 
 
+#define PIN_USB_DISC A15
+
 Keyboard keyboard;
 EventLoop eventLoop;
+
+
 
 void setup()
 {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
 
+	pinMode(PIN_USB_DISC, OUTPUT);
+	digitalWrite(PIN_USB_DISC, HIGH);
+	
+
+
+
+	Serial.begin(115200);
+	Serial.println("program begin");
+	delay(300);
+	digitalWrite(PIN_USB_DISC, LOW);
+	Iic1.begin(0x01);
+
+	eventLoop.setup();
+	keyboard.setup(&eventLoop);
+	
+
 
 	Set_System();	
 	USB_Interrupts_Config();
 	Set_USBClock();
 	USB_Init();
-
-
-	Serial.begin(115200);
-	Serial.println("program begin");
-	
-	//Iic1.begin(0x01);
-
-	eventLoop.setup();
-	keyboard.setup(&eventLoop);
 
 }
 
@@ -89,36 +100,29 @@ void loop()
 {
 	eventLoop.tick();
 	keyboard.tick();
-	/*
+	
+	
 	int16_t x = 0;
-	while (1)
+	bool ok = readBmx055AccX(&x);
+	x /= 4;
+	if (x > 127)
 	{
-		
-		bool ok = readBmx055AccX(&x);
-		x /= 4;
-		if (x > 127)
-		{
-			x = 127;
-		}
-		if (x < -127)
-		{
-			x = -127;
-		}
-		x = -x;
-		Serial.println(x);
-		Serial2.println(x);
-		if (bDeviceState == CONFIGURED)
-		{
-			SendHidData((int8_t)x);
-		} 
-		delay(10);
+		x = 127;
 	}
+	if (x < -127)
+	{
+		x = -127;
+	}
+	x = -x;
+	Serial.println(x);
+	if (bDeviceState == CONFIGURED)
+	{
+		//SendHidData((int8_t)x);
+	} 
+	delay(10);
+	
 
-	Serial.println("dffsdafa");
-	Serial2.println("dffsdafa");
-	Serial2.println(x);
-	delay(500);
-	*/
+	
 
 	//Serial.println("hello world");
 	//delay(20);
