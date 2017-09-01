@@ -35,6 +35,7 @@ void Leave_LowPowerMode(void);
 void USB_Interrupts_Config(void);
 void USB_Cable_Config (FunctionalState NewState);
 void SendHidData(int8_t vv);
+void sendKeyboardData(uint8_t *, int);
 uint8_t JoyState(void);
 void Get_SerialNum(void);
 void Joy_Emul(void);

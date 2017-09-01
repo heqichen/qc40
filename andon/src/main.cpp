@@ -95,12 +95,76 @@ bool readBmx055AccZ(int16_t *z)
 }
 
 
+unsigned long lastKeyboardTime = 0UL;
+bool fff = false;
+
+
+void keyboardSimTick()
+{
+	if (millis() - lastKeyboardTime < 1000)
+	{
+		return ;
+	}
+
+	Serial.println("emu");
+	lastKeyboardTime = millis();
+	uint8_t data[10];
+
+	data[0] = 0x02;
+	data[1] = 0x00;
+	data[2] = 0x07;
+	data[3] = 0x00;
+	data[4] = 0x00;
+
+	Serial.println(PrevXferComplete);
+	if (bDeviceState == CONFIGURED)
+	{
+		sendKeyboardData(data, 5);
+	}
+	while (!PrevXferComplete)
+	{
+
+	}
+
+
+	data[0] = 0x01;	//report id
+	data[1] = 0x00;	//modification key
+	data[2] = 0x00;	//constant
+	data[3] = 0x00; //key1
+	data[4] = 0x00; //key2
+	data[5] = 0x00; //key3
+	data[6] = 0x00; //key4
+	data[7] = 0x00; //key5
+	data[8] = 0x00; //key6
+	if (fff)
+	{
+		data[3] = 0x0a;
+		fff = false;
+		Serial.println("g");
+	}
+	else
+	{
+		data[3] = 0;
+		fff = true;
+	}	
+
+	if (bDeviceState == CONFIGURED)
+	{
+		sendKeyboardData(data, 9);
+	}
+	while (!PrevXferComplete)
+	{
+
+	}
+	Serial.println(PrevXferComplete);
+	
+}
 
 void loop()
 {
 	eventLoop.tick();
 	keyboard.tick();
-	
+	keyboardSimTick();
 	
 	int16_t x = 0;
 	bool ok = readBmx055AccX(&x);
@@ -114,7 +178,7 @@ void loop()
 		x = -127;
 	}
 	x = -x;
-	Serial.println(x);
+	//Serial.println(x);
 	if (bDeviceState == CONFIGURED)
 	{
 		//SendHidData((int8_t)x);

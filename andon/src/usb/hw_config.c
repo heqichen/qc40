@@ -188,7 +188,21 @@ void SendHidData(int8_t vv)
   
   /* Enable endpoint for transmission */
   SetEPTxValid(ENDP1);
+}
 
+void sendKeyboardData(uint8_t *data, int length)
+{
+  
+
+  
+  /* Reset the control token to inform upper layer that a transfer is ongoing */
+  PrevXferComplete = 0;
+  
+  /* Copy mouse position info in ENDP1 Tx Packet Memory Area*/
+  USB_SIL_Write(EP1_IN, data, length);
+  
+  /* Enable endpoint for transmission */
+  SetEPTxValid(ENDP1);
 }
 #endif /* USE_NUCLEO */
 /**
