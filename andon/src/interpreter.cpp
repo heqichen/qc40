@@ -28,6 +28,11 @@ void Interpreter::onKeyDown(uint8_t phyKey)
 		case (EVENT_VALUE_KEYMOD):
 		{
 			addKeycode(phyKey, keyFun);
+			Serial.print("add ");
+			Serial.print(phyKey);
+			Serial.print(" ");
+			Serial.print(keyFun);
+			Serial.println("");
 			break;
 		}
 		default:
@@ -46,12 +51,11 @@ void Interpreter::onKeyUp(uint8_t phyKey)
 	removeKeycode(phyKey);
 }
 
-void Interpreter::addKeycode(uint8_t phyKey, int keycode)
+void Interpreter::addKeycode(uint8_t phyKey, uint32_t keyFun)
 {
 	mActivePhyKey[mKbMapLength] = phyKey;
-	mActiveKeycode[mKbMapLength] = keycode;
+	mActiveKeyFun[mKbMapLength] = keyFun;
 	mKbMapLength++;	
-
 }
 void Interpreter::removeKeycode(uint8_t phyKey)
 {
@@ -66,7 +70,7 @@ void Interpreter::removeKeycode(uint8_t phyKey)
 	while (i<mKbMapLength-1)
 	{
 		mActivePhyKey[i] = mActivePhyKey[i+1];
-		mActiveKeycode[i] = mActiveKeycode[i+1];
+		mActiveKeyFun[i] = mActiveKeyFun[i+1];
 		++i;
 	}
 	--mKbMapLength;
@@ -78,7 +82,7 @@ const uint8_t *Interpreter::getHidKeycodeArray()
 	int kcLength = 0;
 
 	//step 1. intitialize
-	for (i=0; i<7; ++i)
+	for (i=0; i<8; ++i)
 	{
 		mHidKeycodes[i] = KEYCODE_NONE;
  	}
@@ -87,7 +91,7 @@ const uint8_t *Interpreter::getHidKeycodeArray()
  	for (i=0; i<mKbMapLength; ++i)
  	{
  		
- 		int kc = mActiveKeycode[i];
+ 		int kc = mActiveKeyFun[i];
  		int keyType = kc & EVENT_VALUE_MASK;
  		uint8_t hidKc = kc & 0xFF;
  		switch (keyType)
@@ -97,7 +101,7 @@ const uint8_t *Interpreter::getHidKeycodeArray()
  				//step 2. check duplicated
 		 		for (j=0; j<kcLength; ++j)
 		 		{
-		 			if (hidKc == mHidKeycodes[1+j])
+		 			if (hidKc == mHidKeycodes[2+j])
 		 			{
 		 				break;
 		 			}
@@ -114,18 +118,18 @@ const uint8_t *Interpreter::getHidKeycodeArray()
 		 		{
 		 			for (j=0; j<6; ++j)
 		 			{
-		 				mHidKeycodes[1+j] = KEYCODE_ERR_OVF;
+		 				mHidKeycodes[2+j] = KEYCODE_ERR_OVF;
 		 			}
 		 			break;
 		 		}
 
-		 		mHidKeycodes[1+kcLength] = hidKc;
+		 		mHidKeycodes[2+kcLength] = hidKc;
 		 		kcLength++;
  				break;
  			}
  			case (EVENT_VALUE_KEYMOD):
  			{
-
+ 				mHidKeycodes[0] |= hidKc;
  				break;
  			}
  			default:

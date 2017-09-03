@@ -13,12 +13,12 @@ class Interpreter
 		const uint8_t *getHidKeycodeArray();
 	private:
 		uint8_t mActivePhyKey[60];
-		int mActiveKeycode[60];
+		uint32_t mActiveKeyFun[60];
 
-		uint8_t mHidKeycodes[7];
+		uint8_t mHidKeycodes[8];
 		int mKbMapLength;
 
-		void addKeycode(uint8_t phyKey, int keyCode);
+		void addKeycode(uint8_t phyKey, uint32_t keyFun);
 		void removeKeycode(uint8_t phyKey);
 };
 
