@@ -1,16 +1,25 @@
 #include "event_loop.h"
 
 #include <hardware_serial.h>
+#include <cooboc.h>
 
 #include "keymap.h"
+#include "hid_keycode.h"
 
-void EventLoop::setup()
+void EventLoop::setup(Hid *hid, Interpreter *interpreter)
 {
 	mFifo.setup(24);
+	mHid = hid;
+	mInterpreter = interpreter;
+	mHid->setup();
+	mInterpreter->setup();
 }
 
 void EventLoop::tick()
 {
+	mHid->tick();
+	mInterpreter->tick();
+
 	while (mFifo.size() > 0)
 	{
 		uint32_t vv = mFifo.pop();
@@ -32,18 +41,16 @@ void EventLoop::dispatcher(uint8_t type, int value)
 	{
 		case (EVENT_KEY_DOWN):
 		{
-			Serial.print("key down: ");
-			Serial.print(value);
-			Serial.print("\t");
-			Serial.print(mmmap[value]);
-			Serial.println("");
-
+			mInterpreter->onKeyDown(value);
 			break;
 		}
 		case (EVENT_KEY_UP):
 		{
 			Serial.print("key up: ");
-			Serial.println(value);
+			uint8_t simKc = mmmap[value] - '0' + KEYCODE_A;
+			Serial.print(simKc, 16);
+			Serial.println("");
+			mHid->keyUp(KEYCODE_DOWN);
 			break;
 		}
 		default:

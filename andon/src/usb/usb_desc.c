@@ -121,7 +121,8 @@ const uint8_t Joystick_ConfigDescriptor[JOYSTICK_SIZ_CONFIG_DESC] =
     0x03,          /*bmAttributes: Interrupt endpoint*/
     0x0A,          /*wMaxPacketSize: 10 Byte max */
     0x00,
-    0x20,          /*bInterval: Polling Interval (32 ms)*/
+    //0x20,          /*bInterval: Polling Interval (32 ms)*/
+    0x08,          /*bInterval: Polling Interval (8 ms)*/
     /* 34 */
   }
   ; /* MOUSE_ConfigDescriptor */

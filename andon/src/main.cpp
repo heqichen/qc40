@@ -6,6 +6,9 @@
 #include "keyboard.h"
 
 #include "event_loop.h"
+#include "hid.h"
+#include "interpreter.h"
+
 
 
 extern "C" {
@@ -24,8 +27,8 @@ __IO uint8_t PrevXferComplete = 1;
 
 Keyboard keyboard;
 EventLoop eventLoop;
-
-
+Hid hid;
+Interpreter interpreter;
 
 void setup()
 {
@@ -35,20 +38,15 @@ void setup()
 	pinMode(PIN_USB_DISC, OUTPUT);
 	digitalWrite(PIN_USB_DISC, HIGH);
 	
-
-
-
 	Serial.begin(115200);
 	Serial.println("program begin");
 	delay(300);
 	digitalWrite(PIN_USB_DISC, LOW);
 	Iic1.begin(0x01);
 
-	eventLoop.setup();
+	eventLoop.setup(&hid, &interpreter);
 	keyboard.setup(&eventLoop);
 	
-
-
 	Set_System();	
 	USB_Interrupts_Config();
 	Set_USBClock();
@@ -164,7 +162,8 @@ void loop()
 {
 	eventLoop.tick();
 	keyboard.tick();
-	keyboardSimTick();
+
+	//keyboardSimTick();
 	
 	int16_t x = 0;
 	bool ok = readBmx055AccX(&x);
