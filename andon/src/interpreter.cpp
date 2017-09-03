@@ -8,6 +8,7 @@
 void Interpreter::setup()
 {
 	mKbMapLength = 0;
+	mLayerLength = 0;
 }
 
 void Interpreter::tick()
@@ -18,7 +19,7 @@ void Interpreter::tick()
 
 void Interpreter::onKeyDown(uint8_t phyKey)
 {
-	uint32_t keyFun = mmmap[phyKey];
+	uint32_t keyFun = myLayout[0][phyKey];
 	uint32_t eventValue = keyFun & EVENT_VALUE_MASK;
 	
 	switch (eventValue)
@@ -28,11 +29,12 @@ void Interpreter::onKeyDown(uint8_t phyKey)
 		case (EVENT_VALUE_KEYMOD):
 		{
 			addKeycode(phyKey, keyFun);
-			Serial.print("add ");
-			Serial.print(phyKey);
-			Serial.print(" ");
-			Serial.print(keyFun);
-			Serial.println("");
+			break;
+		}
+		case (EVENT_VALUE_LAYER):
+		{
+			uint8_t layerId = keyFun & 0xFF;
+			addLayer(phyKey, layerId);
 			break;
 		}
 		default:
@@ -49,6 +51,7 @@ void Interpreter::onKeyDown(uint8_t phyKey)
 void Interpreter::onKeyUp(uint8_t phyKey)
 {
 	removeKeycode(phyKey);
+	removeLayer(phyKey);
 }
 
 void Interpreter::addKeycode(uint8_t phyKey, uint32_t keyFun)
@@ -73,7 +76,12 @@ void Interpreter::removeKeycode(uint8_t phyKey)
 		mActiveKeyFun[i] = mActiveKeyFun[i+1];
 		++i;
 	}
-	--mKbMapLength;
+
+	if (i<mKbMapLength)
+	{
+		--mKbMapLength;
+	}
+	
 }
 
 const uint8_t *Interpreter::getHidKeycodeArray()
@@ -142,3 +150,58 @@ const uint8_t *Interpreter::getHidKeycodeArray()
  	}
  	return mHidKeycodes;
 }
+
+
+
+void Interpreter::addLayer(uint8_t phyKey, uint8_t layerId)
+{
+	if (mLayerLength >= MAX_LAYER_DEPTH)
+	{
+		return ;
+	}
+
+	mLayerStackMap[mLayerLength][0] = phyKey;
+	mLayerStackMap[mLayerLength][1] = layerId;
+	++mLayerLength;
+}
+
+
+void Interpreter::removeLayer(uint8_t phyKey)
+{
+	int i;
+	for (i=0; i<mLayerLength; ++i)
+	{
+		if (mLayerStackMap[i][0] == phyKey)
+		{
+			mLayerStackMap[i][0] = 0xFF;
+			mLayerStackMap[i][1] = 0xFF;
+		}
+	}
+
+	i = mLayerLength-1;
+	while (i>=0)
+	{
+		if (mLayerStackMap[i][0] != 0xFF)
+		{
+			break;
+		}
+		--i;
+	}
+	mLayerLength = i+1;
+}
+
+
+int Interpreter::getCurrentLayerId()
+{
+	if (mLayerLength > 0)
+	{
+		return mLayerStackMap[mLayerLength-1][1];
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+
+

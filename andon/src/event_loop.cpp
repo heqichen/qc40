@@ -58,13 +58,15 @@ void EventLoop::dispatcher(uint8_t type, int value)
 
 	const uint8_t *hidBuffer = mInterpreter->getHidKeycodeArray();
 	int i;
-	for (i=0; i<7; ++i)
+	for (i=0; i<8; ++i)
 	{
 		Serial.print(hidBuffer[i], 16);
 		Serial.print(" ");
 	}
 	Serial.println("");
-
+	Serial.print("current layer: ");
+	Serial.print(mInterpreter->getCurrentLayerId());
+	Serial.println("");
 	mHid->sendKeyCode(hidBuffer);
 
 }
