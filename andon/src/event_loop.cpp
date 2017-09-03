@@ -54,11 +54,15 @@ void EventLoop::dispatcher(uint8_t type, int value)
 		}
 		case (EVENT_KEY_UP):
 		{
-			Serial.print("key up: ");
-			uint8_t simKc = mmmap[value] - '0' + KEYCODE_A;
-			Serial.print(simKc, 16);
+			mInterpreter->onKeyUp(value);
+			const uint8_t *hidBuffer = mInterpreter->getHidKeycodeArray();
+			int i;
+			for (i=0; i<6; ++i)
+			{
+				Serial.print(hidBuffer[i], 16);
+				Serial.print(" ");
+			}
 			Serial.println("");
-			mHid->keyUp(KEYCODE_DOWN);
 			break;
 		}
 		default:

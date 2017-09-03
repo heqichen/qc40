@@ -17,18 +17,31 @@ void Interpreter::tick()
 
 void Interpreter::onKeyDown(uint8_t phyKey)
 {
-	Serial.print("key down: ");
 	uint8_t simKc = mmmap[phyKey];
 	mPhy2Code[mKbMapLength][0] = phyKey;
 	mPhy2Code[mKbMapLength][1] = simKc;
-	mKbMapLength++;
-
-
-	Serial.print(simKc, 16);
-	Serial.println("");
-	
+	mKbMapLength++;	
 }
 
+
+void Interpreter::onKeyUp(uint8_t phyKey)
+{
+	int i;
+	for (i=0; i<mKbMapLength; ++i)
+	{
+		if (mPhy2Code[i][0] == phyKey)
+		{
+			break;
+		}
+	}
+	while (i<mKbMapLength-1)
+	{
+		mPhy2Code[i][0] = mPhy2Code[i+1][0];
+		mPhy2Code[i][1] = mPhy2Code[i+1][1];
+		++i;
+	}
+	--mKbMapLength;
+}
 
 const uint8_t *Interpreter::getHidKeycodeArray()
 {
