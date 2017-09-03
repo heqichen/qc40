@@ -3,6 +3,7 @@
 #include <hardware_serial.h>
 #include "keymap.h"
 #include "hid_keycode.h"
+#include "keycode.h"
 
 void Interpreter::setup()
 {
@@ -17,14 +18,40 @@ void Interpreter::tick()
 
 void Interpreter::onKeyDown(uint8_t phyKey)
 {
-	uint8_t simKc = mmmap[phyKey];
-	mPhy2Code[mKbMapLength][0] = phyKey;
-	mPhy2Code[mKbMapLength][1] = simKc;
-	mKbMapLength++;	
+	uint32_t keyFun = mmmap[phyKey];
+	uint32_t eventValue = keyFun & EVENT_VALUE_MASK;
+	
+	switch (eventValue)
+	{
+		case (EVENT_VALUE_KEYCODE):
+		{
+			uint8_t keycode = keyFun & 0xFF;
+			addKeycode(phyKey, keycode);
+			break;
+		}
+		default:
+		{
+			//TODO
+			break;
+		}
+	}
+
+	
 }
 
 
 void Interpreter::onKeyUp(uint8_t phyKey)
+{
+	removeKeycode(phyKey);
+}
+
+void Interpreter::addKeycode(uint8_t phyKey, uint8_t keyCode)
+{
+	mPhy2Code[mKbMapLength][0] = phyKey;
+	mPhy2Code[mKbMapLength][1] = keyCode;
+	mKbMapLength++;	
+}
+void Interpreter::removeKeycode(uint8_t phyKey)
 {
 	int i;
 	for (i=0; i<mKbMapLength; ++i)

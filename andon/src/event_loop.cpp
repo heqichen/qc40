@@ -6,6 +6,7 @@
 #include "keymap.h"
 #include "hid_keycode.h"
 
+
 void EventLoop::setup(Hid *hid, Interpreter *interpreter)
 {
 	mFifo.setup(24);
@@ -42,27 +43,11 @@ void EventLoop::dispatcher(uint8_t type, int value)
 		case (EVENT_KEY_DOWN):
 		{
 			mInterpreter->onKeyDown(value);
-			const uint8_t *hidBuffer = mInterpreter->getHidKeycodeArray();
-			int i;
-			for (i=0; i<6; ++i)
-			{
-				Serial.print(hidBuffer[i], 16);
-				Serial.print(" ");
-			}
-			Serial.println("");
 			break;
 		}
 		case (EVENT_KEY_UP):
 		{
 			mInterpreter->onKeyUp(value);
-			const uint8_t *hidBuffer = mInterpreter->getHidKeycodeArray();
-			int i;
-			for (i=0; i<6; ++i)
-			{
-				Serial.print(hidBuffer[i], 16);
-				Serial.print(" ");
-			}
-			Serial.println("");
 			break;
 		}
 		default:
@@ -70,4 +55,16 @@ void EventLoop::dispatcher(uint8_t type, int value)
 			break;
 		}
 	}
+
+	const uint8_t *hidBuffer = mInterpreter->getHidKeycodeArray();
+	int i;
+	for (i=0; i<6; ++i)
+	{
+		Serial.print(hidBuffer[i], 16);
+		Serial.print(" ");
+	}
+	Serial.println("");
+
+	mHid->sendKeyCode(hidBuffer);
+
 }

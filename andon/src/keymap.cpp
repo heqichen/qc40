@@ -1,11 +1,12 @@
 #include "keymap.h"
+#include "keycode.h"
 
-char mmmap[] = {H4K_LAYOUT(
-	'1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
-	'1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
-	'1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
-	'1', '2', '3', '4', '5', '6', '7', '8', '9',
-	'0', '1')
+uint32_t mmmap[] = {H4K_LAYOUT(
+	KB_ESC_, KB_Q___, KB_W___, KB_E___, KB_R___, KB_T___, KB_Y___, KB_U___, KB_I___, KB_O___, KB_P___, KB_BKSP, KB_0___,
+	KB_TAB_, KB_A___, KB_S___, KB_D___, KB_F___, KB_G___, KB_H___, KB_J___, KB_K___, KB_L___, KB_SEMI, KB_ENT_,
+	KB_0___, KB_Z___, KB_X___, KB_C___, KB_V___, KB_B___, KB_N___, KB_M___, KB_COMA, KB_DOT_, KB_SL__, KB_0___,
+	KB_0___, KB_0___, KB_0___, KB_0___, KB_SP__, KB_0___, KB_0___, KB_0___, KB_0___,
+	KB_0___, KB_D___)
 };
 
 char bbmap[] = {

@@ -15,6 +15,9 @@ class Interpreter
 		uint8_t mPhy2Code[60][2];
 		uint8_t mHidKeycodes[6];
 		int mKbMapLength;
+
+		void addKeycode(uint8_t phyKey, uint8_t keyCode);
+		void removeKeycode(uint8_t phyKey);
 };
 
 

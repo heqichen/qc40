@@ -1,7 +1,9 @@
 #ifndef __KEYMAP_H__
 #define __KEYMAP_H__
 
-extern char mmmap[];
+#include <stdint.h>
+
+extern uint32_t mmmap[];
 
 #define H4K_LAYOUT(\
 K24,K25,K26,K27,K28,K29,K30,K31,K41,K42,K43,K44,K45,\
