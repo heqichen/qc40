@@ -1,7 +1,7 @@
 #ifndef __HID_KEYCODE_H__
 #define __HID_KEYCODE_H__
 
-/*
+
 #define KEYCODE_MOD_LCTRL  0x01
 #define KEYCODE_MOD_LSHIFT 0x02
 #define KEYCODE_MOD_LALT   0x04
@@ -10,7 +10,7 @@
 #define KEYCODE_MOD_RSHIFT 0x20
 #define KEYCODE_MOD_RALT   0x40
 #define KEYCODE_MOD_RMETA  0x80
-*/
+
 
 #define KEYCODE_NONE 0x00 // No key pressed
 #define KEYCODE_ERR_OVF 0x01 //  Keyboard Error Roll Over - used for all slots if too many keys are pressed ("Phantom key")

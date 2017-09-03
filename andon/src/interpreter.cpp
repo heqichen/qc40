@@ -23,10 +23,11 @@ void Interpreter::onKeyDown(uint8_t phyKey)
 	
 	switch (eventValue)
 	{
+
 		case (EVENT_VALUE_KEYCODE):
+		case (EVENT_VALUE_KEYMOD):
 		{
-			uint8_t keycode = keyFun & 0xFF;
-			addKeycode(phyKey, keycode);
+			addKeycode(phyKey, keyFun);
 			break;
 		}
 		default:
@@ -45,26 +46,27 @@ void Interpreter::onKeyUp(uint8_t phyKey)
 	removeKeycode(phyKey);
 }
 
-void Interpreter::addKeycode(uint8_t phyKey, uint8_t keyCode)
+void Interpreter::addKeycode(uint8_t phyKey, int keycode)
 {
-	mPhy2Code[mKbMapLength][0] = phyKey;
-	mPhy2Code[mKbMapLength][1] = keyCode;
+	mActivePhyKey[mKbMapLength] = phyKey;
+	mActiveKeycode[mKbMapLength] = keycode;
 	mKbMapLength++;	
+
 }
 void Interpreter::removeKeycode(uint8_t phyKey)
 {
 	int i;
 	for (i=0; i<mKbMapLength; ++i)
 	{
-		if (mPhy2Code[i][0] == phyKey)
+		if (mActivePhyKey[i] == phyKey)
 		{
 			break;
 		}
 	}
 	while (i<mKbMapLength-1)
 	{
-		mPhy2Code[i][0] = mPhy2Code[i+1][0];
-		mPhy2Code[i][1] = mPhy2Code[i+1][1];
+		mActivePhyKey[i] = mActivePhyKey[i+1];
+		mActiveKeycode[i] = mActiveKeycode[i+1];
 		++i;
 	}
 	--mKbMapLength;
@@ -76,7 +78,7 @@ const uint8_t *Interpreter::getHidKeycodeArray()
 	int kcLength = 0;
 
 	//step 1. intitialize
-	for (i=0; i<6; ++i)
+	for (i=0; i<7; ++i)
 	{
 		mHidKeycodes[i] = KEYCODE_NONE;
  	}
@@ -84,34 +86,55 @@ const uint8_t *Interpreter::getHidKeycodeArray()
  	
  	for (i=0; i<mKbMapLength; ++i)
  	{
- 		//step 2. check duplicated
- 		uint8_t kc = mPhy2Code[i][1];
- 		for (j=0; j<kcLength; ++j)
+ 		
+ 		int kc = mActiveKeycode[i];
+ 		int keyType = kc & EVENT_VALUE_MASK;
+ 		uint8_t hidKc = kc & 0xFF;
+ 		switch (keyType)
  		{
- 			if (kc == mHidKeycodes[j])
+ 			case (EVENT_VALUE_KEYCODE):
+ 			{
+ 				//step 2. check duplicated
+		 		for (j=0; j<kcLength; ++j)
+		 		{
+		 			if (hidKc == mHidKeycodes[1+j])
+		 			{
+		 				break;
+		 			}
+		 		}
+
+		 		if (j<kcLength && kcLength>0)
+		 		{
+		 			continue;
+		 		}
+
+
+		 		//step 3, check overflow
+		 		if (kcLength == 6)
+		 		{
+		 			for (j=0; j<6; ++j)
+		 			{
+		 				mHidKeycodes[1+j] = KEYCODE_ERR_OVF;
+		 			}
+		 			break;
+		 		}
+
+		 		mHidKeycodes[1+kcLength] = hidKc;
+		 		kcLength++;
+ 				break;
+ 			}
+ 			case (EVENT_VALUE_KEYMOD):
+ 			{
+
+ 				break;
+ 			}
+ 			default:
  			{
  				break;
  			}
  		}
 
- 		if (j<kcLength && kcLength>0)
- 		{
- 			continue;
- 		}
 
-
- 		//step 3, check overflow
- 		if (kcLength == 6)
- 		{
- 			for (j=0; j<6; ++j)
- 			{
- 				mHidKeycodes[j] = KEYCODE_ERR_OVF;
- 			}
- 			break;
- 		}
-
- 		mHidKeycodes[kcLength] = kc;
- 		kcLength++;
  	}
  	return mHidKeycodes;
 }

@@ -58,7 +58,7 @@ void EventLoop::dispatcher(uint8_t type, int value)
 
 	const uint8_t *hidBuffer = mInterpreter->getHidKeycodeArray();
 	int i;
-	for (i=0; i<6; ++i)
+	for (i=0; i<7; ++i)
 	{
 		Serial.print(hidBuffer[i], 16);
 		Serial.print(" ");
