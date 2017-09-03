@@ -42,6 +42,14 @@ void EventLoop::dispatcher(uint8_t type, int value)
 		case (EVENT_KEY_DOWN):
 		{
 			mInterpreter->onKeyDown(value);
+			const uint8_t *hidBuffer = mInterpreter->getHidKeycodeArray();
+			int i;
+			for (i=0; i<6; ++i)
+			{
+				Serial.print(hidBuffer[i], 16);
+				Serial.print(" ");
+			}
+			Serial.println("");
 			break;
 		}
 		case (EVENT_KEY_UP):
