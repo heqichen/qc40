@@ -23,6 +23,7 @@ class Interpreter
 		uint8_t mHidKeycodes[8];
 		int mKbMapLength;
 
+		uint32_t getKeyFun(uint8_t phyKey);
 		void addKeycode(uint8_t phyKey, uint32_t keyFun);
 		void removeKeycode(uint8_t phyKey);
 		void addLayer(uint8_t phyKey, uint8_t layerId);

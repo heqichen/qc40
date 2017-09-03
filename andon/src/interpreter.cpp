@@ -16,10 +16,46 @@ void Interpreter::tick()
 
 }
 
+uint32_t Interpreter::getKeyFun(uint8_t phyKey)
+{
+	Serial.print("Layer: [");
+	int i;
+	for (i=0; i<mLayerLength; ++i)
+	{
+		Serial.print(mLayerStackMap[i][1]);
+		Serial.print(" , ");
+	}
+	Serial.println("   ]");
+	int keyFun = 0x00;
+	int layerIp = mLayerLength-1;
+
+	while (layerIp >= 0)
+	{
+
+		int layerId = mLayerStackMap[layerIp][1];
+		Serial.print(layerIp);
+		Serial.print("#");
+		Serial.print(layerId);
+		Serial.println("");
+		keyFun = myLayout[layerId][phyKey];
+		if (KB_____ != keyFun)
+		{
+			Serial.print("find key at: ");
+			Serial.print(layerIp);
+			Serial.println("");
+			return keyFun;
+		}
+		--layerIp;
+	}
+	
+	return myLayout[0][phyKey];
+}
+
 
 void Interpreter::onKeyDown(uint8_t phyKey)
 {
-	uint32_t keyFun = myLayout[0][phyKey];
+	
+	uint32_t keyFun = getKeyFun(phyKey);
 	uint32_t eventValue = keyFun & EVENT_VALUE_MASK;
 	
 	switch (eventValue)
@@ -174,7 +210,6 @@ void Interpreter::removeLayer(uint8_t phyKey)
 		if (mLayerStackMap[i][0] == phyKey)
 		{
 			mLayerStackMap[i][0] = 0xFF;
-			mLayerStackMap[i][1] = 0xFF;
 		}
 	}
 

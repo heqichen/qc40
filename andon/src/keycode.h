@@ -16,7 +16,7 @@
 #define LAYER_4 EVENT_VALUE_LAYER | 0x04
 #define LAYER_5 EVENT_VALUE_LAYER | 0x05
 #define LAYER_6 EVENT_VALUE_LAYER | 0x06
-#define KB_TRAN ;//TODO
+#define KB_____ 0x00
 
 
 
@@ -80,7 +80,7 @@
 #define KB_F11_ EVENT_VALUE_KEYCODE|KEYCODE_F11
 #define KB_F12_ EVENT_VALUE_KEYCODE|KEYCODE_F12
 
-
+//punctuation
 #define KB_ENT_	EVENT_VALUE_KEYCODE | KEYCODE_ENTER
 #define KB_ESC_	EVENT_VALUE_KEYCODE | KEYCODE_ESC
 #define KB_BKSP	EVENT_VALUE_KEYCODE | KEYCODE_BACKSPACE
@@ -100,6 +100,7 @@
 #define KB_SL__	EVENT_VALUE_KEYCODE | KEYCODE_SLASH
 #define KB_CAPS	EVENT_VALUE_KEYCODE | KEYCODE_CAPSLOCK
 
+//control
 #define KB_PTSC	 EVENT_VALUE_KEYCODE | KEYCODE_PRINTSCREEN
 #define KB_SCRL	 EVENT_VALUE_KEYCODE | KEYCODE_SCROLLLOCK
 #define KB_PAUS	 EVENT_VALUE_KEYCODE | KEYCODE_PAUSE
@@ -113,6 +114,60 @@
 #define KB_LEFT	 EVENT_VALUE_KEYCODE | KEYCODE_LEFT
 #define KB_DOWN	 EVENT_VALUE_KEYCODE | KEYCODE_DOWN
 #define KB_UP__	 EVENT_VALUE_KEYCODE | KEYCODE_UP
+
+
+
+//media
+// #define KEYCODE_EXECUTE 0x74 // Keyboard Execute
+// #define KEYCODE_HELP 0x75 // Keyboard Help
+// #define KEYCODE_PROPS 0x76 // Keyboard Menu
+// #define KEYCODE_FRONT 0x77 // Keyboard Select
+// #define KEYCODE_STOP 0x78 // Keyboard Stop
+// #define KEYCODE_AGAIN 0x79 // Keyboard Again
+// #define KEYCODE_UNDO 0x7a // Keyboard Undo
+// #define KEYCODE_CUT 0x7b // Keyboard Cut
+// #define KEYCODE_COPY 0x7c // Keyboard Copy
+// #define KEYCODE_PASTE 0x7d // Keyboard Paste
+// #define KEYCODE_FIND 0x7e // Keyboard Find
+// #define KEYCODE_MUTE 0x7f // Keyboard Mute
+#define KB_VOUP EVENT_VALUE_KEYCODE|KEYCODE_VOLUMEUP
+#define KB_VODN	EVENT_VALUE_KEYCODE|KEYCODE_VOLUMEDOWN
+// #define KEYCODE_LOCKING_CAPSLOCK	0x82 //  Keyboard Locking Caps Lock
+// #define KEYCODE_LOCKING_NUMLOCK		0x83 //  Keyboard Locking Num Lock
+// #define KEYCODE_LOCKING_SCROLLLOCK	0x84 //  Keyboard Locking Scroll Lock
+// #define KEYCODE_PAD_KPCOMMA 0x85 // Keypad Comma
+// #define KEYCODE_PAD_EQUAL_AS400	0x86 //  Keypad Equal Sign
+// #define KEYCODE_RO 0x87 // Keyboard International1
+// #define KEYCODE_KATAKANAHIRAGANA 0x88 // Keyboard International2
+// #define KEYCODE_YEN 0x89 // Keyboard International3
+// #define KEYCODE_HENKAN 0x8a // Keyboard International4
+// #define KEYCODE_MUHENKAN 0x8b // Keyboard International5
+// #define KEYCODE_KPJPCOMMA 0x8c // Keyboard International6
+// #define KEYCODE_INTERNATIONAL7	0x8d //  Keyboard International7
+// #define KEYCODE_INTERNATIONAL8	0x8e //  Keyboard International8
+// #define KEYCODE_INTERNATIONAL9	0x8f //  Keyboard International9
+// #define KEYCODE_HANGEUL 0x90 // Keyboard LANG1
+// #define KEYCODE_HANJA 0x91 // Keyboard LANG2
+// #define KEYCODE_KATAKANA 0x92 // Keyboard LANG3
+// #define KEYCODE_HIRAGANA 0x93 // Keyboard LANG4
+// #define KEYCODE_ZENKAKUHANKAKU 0x94 // Keyboard LANG5
+// #define KEYCODE_LANG6		0x95 //  Keyboard LANG6
+// #define KEYCODE_LANG7		0x96 //  Keyboard LANG7
+// #define KEYCODE_LANG8		0x97 //  Keyboard LANG8
+// #define KEYCODE_LANG9		0x98 //  Keyboard LANG9
+// #define KEYCODE_ERASE		0x99 //  Keyboard Alternate Erase
+// #define KEYCODE_SYSREQ		0x9a //  Keyboard SysReq/Attention
+// #define KEYCODE_CANCEL		0x9b //  Keyboard Cancel
+// #define KEYCODE_CLEAR		0x9c //  Keyboard Clear
+// #define KEYCODE_PRIOR		0x9d //  Keyboard Prior
+// #define KEYCODE_RETURN		0x9e //  Keyboard Return
+// #define KEYCODE_SEPARATOR	0x9f //  Keyboard Separator
+// #define KEYCODE_OUT			0xa0 //  Keyboard Out
+// #define KEYCODE_OPER 		0xa1 //  Keyboard Oper
+// #define KEYCODE_CLEARAGAIN		0xa2 //  Keyboard Clear/Again
+// #define KEYCODE_CRSEL		0xa3 //  Keyboard CrSel/Props
+// #define KEYCODE_EXSEL		0xa4 //  Keyboard ExSel
+
 
 #endif
 
