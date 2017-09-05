@@ -9,6 +9,9 @@ void Interpreter::setup()
 {
 	mKbMapLength = 0;
 	mLayerLength = 0;
+	mMouseEventLength = 0;
+	mIsKeyboardDirty = false;
+	mIsMouseDirty = false;
 }
 
 void Interpreter::tick()
@@ -65,6 +68,7 @@ void Interpreter::onKeyDown(uint8_t phyKey)
 		case (EVENT_VALUE_KEYMOD):
 		{
 			addKeycode(phyKey, keyFun);
+			mIsKeyboardDirty = true;
 			break;
 		}
 		case (EVENT_VALUE_LAYER):
@@ -73,21 +77,33 @@ void Interpreter::onKeyDown(uint8_t phyKey)
 			addLayer(phyKey, layerId);
 			break;
 		}
+		case (EVENT_VALUE_MOUSE):
+		{
+			uint8_t value = keyFun & 0xFF;
+			addMouseEvent(phyKey, value);
+			mIsMouseDirty = true;
+			break;
+		}
 		default:
 		{
 			//TODO
 			break;
 		}
 	}
-
-	
 }
 
 
 void Interpreter::onKeyUp(uint8_t phyKey)
 {
-	removeKeycode(phyKey);
+	if (removeKeycode(phyKey))
+	{
+		mIsKeyboardDirty = true;
+	}
 	removeLayer(phyKey);
+	if (removeMouseEvent(phyKey))
+	{
+		mIsMouseDirty = true;
+	}
 }
 
 void Interpreter::addKeycode(uint8_t phyKey, uint32_t keyFun)
@@ -96,7 +112,7 @@ void Interpreter::addKeycode(uint8_t phyKey, uint32_t keyFun)
 	mActiveKeyFun[mKbMapLength] = keyFun;
 	mKbMapLength++;	
 }
-void Interpreter::removeKeycode(uint8_t phyKey)
+bool Interpreter::removeKeycode(uint8_t phyKey)
 {
 	int i;
 	for (i=0; i<mKbMapLength; ++i)
@@ -106,17 +122,19 @@ void Interpreter::removeKeycode(uint8_t phyKey)
 			break;
 		}
 	}
-	while (i<mKbMapLength-1)
+	while (i < mKbMapLength-1)
 	{
 		mActivePhyKey[i] = mActivePhyKey[i+1];
 		mActiveKeyFun[i] = mActiveKeyFun[i+1];
 		++i;
 	}
 
-	if (i<mKbMapLength)
+	if (i < mKbMapLength)
 	{
 		--mKbMapLength;
+		return true;
 	}
+	return false;
 	
 }
 
@@ -184,6 +202,7 @@ const uint8_t *Interpreter::getHidKeycodeArray()
 
 
  	}
+ 	mIsKeyboardDirty = false;
  	return mHidKeycodes;
 }
 
@@ -236,6 +255,77 @@ int Interpreter::getCurrentLayerId()
 	{
 		return 0;
 	}
+}
+
+void Interpreter::addMouseEvent(uint8_t phyKey, uint8_t event)
+{
+	if (mMouseEventLength > 8)
+	{
+		return ;
+	}
+	mMouseEvnetMap[mMouseEventLength][0] = phyKey;
+	mMouseEvnetMap[mMouseEventLength][1] = event;
+	++mMouseEventLength;
+}
+
+bool Interpreter::removeMouseEvent(uint8_t phyKey)
+{
+	int i;
+	for (i=0; i<mMouseEventLength; ++i)
+	{
+		if (mMouseEvnetMap[i][0] == phyKey)
+		{
+			break;
+		}
+	}
+	while (i < mMouseEventLength-1)
+	{
+		mMouseEvnetMap[i][0] = mMouseEvnetMap[i+1][0];
+		mMouseEvnetMap[i][1] = mMouseEvnetMap[i+1][1];
+		++i;
+	}
+	if (i < mMouseEventLength)
+	{
+		--mMouseEventLength;
+		return true;
+	}
+	return false;
+}
+
+const uint8_t * Interpreter::getMouseEvent()
+{
+	int i;
+	for (i=0; i<4; ++i)
+	{
+		mHidMouse[i] = 0x00;
+	}
+	for (i=0; i<mMouseEventLength; ++i)
+	{
+		switch (mMouseEvnetMap[i][1])
+		{
+			case (MOUSE_EVENT_LEFT_BUTTON):
+			{
+				mHidMouse[0] |= 0x01;
+				break;
+			}
+			case (MOUSE_EVENT_MIDDLE_BUTTON):
+			{
+				mHidMouse[0] |= 0x02;
+				break;
+			}
+			case (MOUSE_EVENT_RIGHT_BUTTON):
+			{
+				mHidMouse[0] |= 0x04;
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	}
+	mIsMouseDirty = false;
+	return mHidMouse;
 }
 
 

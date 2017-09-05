@@ -26,12 +26,32 @@ void Hid::sendKeyCode(const uint8_t *arr)
 		buffer[i+1] = arr[i];
 	}
 
+	writeHidEndPoint(buffer, 9);
+
+
+}
+
+void Hid::sendMouse(const uint8_t*arr)
+{
+	uint8_t buffer[5];
+	buffer[0] = 0x02;
+	int i;
+	for (i=0; i<4; ++i)
+	{
+		buffer[1+i] = arr[i];
+	}
+	writeHidEndPoint(buffer, 5);
+}
+
+
+void Hid::writeHidEndPoint(const uint8_t *data, int length)
+{
 	while (!PrevXferComplete)
 	{
 
 	}
 	if (bDeviceState == CONFIGURED)
 	{
-		sendKeyboardData(buffer, 9);
+		sendHidData(data, length);
 	}
 }

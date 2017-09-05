@@ -117,7 +117,7 @@ void keyboardSimTick()
 	Serial.println(PrevXferComplete);
 	if (bDeviceState == CONFIGURED)
 	{
-		sendKeyboardData(data, 5);
+		//sendKeyboardData(data, 5);
 	}
 	while (!PrevXferComplete)
 	{
@@ -148,7 +148,7 @@ void keyboardSimTick()
 
 	if (bDeviceState == CONFIGURED)
 	{
-		sendKeyboardData(data, 9);
+		//sendKeyboardData(data, 9);
 	}
 	while (!PrevXferComplete)
 	{

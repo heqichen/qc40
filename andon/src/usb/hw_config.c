@@ -167,7 +167,7 @@ uint8_t JoyState(void)
   * Output        : None.
   * Return value  : None.
   */
-void SendHidData(int8_t vv)
+void sendEmuData(int8_t vv)
 {
   uint8_t Mouse_Buffer[5] = {0, 0, 0, 0, 0};
   int8_t X = 0, Y = 0;
@@ -190,11 +190,8 @@ void SendHidData(int8_t vv)
   SetEPTxValid(ENDP1);
 }
 
-void sendKeyboardData(uint8_t *data, int length)
+void sendHidData(const uint8_t *data, int length)
 {
-  
-
-  
   /* Reset the control token to inform upper layer that a transfer is ongoing */
   PrevXferComplete = 0;
   

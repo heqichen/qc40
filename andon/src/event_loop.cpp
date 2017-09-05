@@ -56,17 +56,39 @@ void EventLoop::dispatcher(uint8_t type, int value)
 		}
 	}
 
-	const uint8_t *hidBuffer = mInterpreter->getHidKeycodeArray();
+	const uint8_t *hidBuffer ;
 	int i;
-	for (i=0; i<8; ++i)
+	if (mInterpreter->isKeyboardDirty())
 	{
-		Serial.print(hidBuffer[i], 16);
-		Serial.print(" ");
+		Serial.print("keyboard: \t");
+		hidBuffer= mInterpreter->getHidKeycodeArray();
+		
+		for (i=0; i<8; ++i)
+		{
+			Serial.print(hidBuffer[i], 16);
+			Serial.print(" ");
+		}
+		Serial.println("");
+		mHid->sendKeyCode(hidBuffer);
 	}
-	Serial.println("");
+
+
+	if (mInterpreter->isMouseDirty())
+	{
+		Serial.print("Mouse: \t");
+		hidBuffer = mInterpreter->getMouseEvent();
+		for (i=0; i<4; ++i)
+		{
+			Serial.print(hidBuffer[i], 16);
+			Serial.print(" ");
+		}
+		Serial.println("");
+		mHid->sendMouse(hidBuffer);
+	}
+
+	
 	Serial.print("current layer: ");
 	Serial.print(mInterpreter->getCurrentLayerId());
 	Serial.println("");
-	mHid->sendKeyCode(hidBuffer);
 
 }
