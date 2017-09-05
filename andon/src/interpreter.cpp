@@ -1,22 +1,85 @@
 #include "interpreter.h"
 
 #include <hardware_serial.h>
+#include <cooboc.h>
+
 #include "keymap.h"
 #include "hid_keycode.h"
 #include "keycode.h"
 
 void Interpreter::setup()
 {
+	mLastTickTime = 0UL;
 	mKbMapLength = 0;
 	mLayerLength = 0;
 	mMouseEventLength = 0;
 	mIsKeyboardDirty = false;
 	mIsMouseDirty = false;
+	mMousePosX = 0;
+	mMousePosY = 0;
+	mLastMouseMoveTime = 0UL;
 }
 
 void Interpreter::tick()
 {
+	if (millis() - mLastTickTime < 2)
+	{
+		return; 
+	}
+	mLastTickTime = millis();
 
+	refreshMouse();
+}
+
+void Interpreter::refreshMouse()
+{
+	int i;
+	if (millis() - mLastMouseMoveTime < 20)
+	{
+		return ;
+	}
+	mLastMouseMoveTime = millis();
+	//Serial.print("mouse event length: ");
+	//Serial.println(mMouseEventLength);
+
+	for (i=0; i<mMouseEventLength; ++i)
+	{
+		Serial.print(mMouseEvnetMap[i][1]);
+		Serial.println(":  ");
+		switch (mMouseEvnetMap[i][1])
+		{
+			case (MOUSE_EVENT_MOVE_UP):
+			{
+				mMousePosY -= 3;
+				mIsMouseDirty = true;
+				break;
+			}
+			case (MOUSE_EVENT_MOVE_DOWN):
+			{
+				mMousePosY += 3;
+				Serial.println(mMousePosY);
+				mIsMouseDirty = true;
+				break;
+			}
+			case (MOUSE_EVENT_MOVE_LEFT):
+			{
+				mMousePosX -= 3;
+				mIsMouseDirty = true;
+				break;
+			}
+			case (MOUSE_EVENT_MOVE_RIGHT):
+			{
+				mMousePosX += 3;
+				mIsMouseDirty = true;
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	}
+	
 }
 
 uint32_t Interpreter::getKeyFun(uint8_t phyKey)
@@ -80,6 +143,9 @@ void Interpreter::onKeyDown(uint8_t phyKey)
 		case (EVENT_VALUE_MOUSE):
 		{
 			uint8_t value = keyFun & 0xFF;
+			Serial.print("add mouse event: ");
+			Serial.print(value, 16);
+			Serial.println("");
 			addMouseEvent(phyKey, value);
 			mIsMouseDirty = true;
 			break;
@@ -263,6 +329,7 @@ void Interpreter::addMouseEvent(uint8_t phyKey, uint8_t event)
 	{
 		return ;
 	}
+	mLastMouseMoveTime = 0;
 	mMouseEvnetMap[mMouseEventLength][0] = phyKey;
 	mMouseEvnetMap[mMouseEventLength][1] = event;
 	++mMouseEventLength;
@@ -318,12 +385,26 @@ const uint8_t * Interpreter::getMouseEvent()
 				mHidMouse[0] |= 0x04;
 				break;
 			}
+			case (MOUSE_EVENT_MOVE_UP):
+			case (MOUSE_EVENT_MOVE_DOWN):
+			{
+				mHidMouse[2] = mMousePosY;
+				break;
+			}
+			case (MOUSE_EVENT_MOVE_LEFT):
+			case (MOUSE_EVENT_MOVE_RIGHT):
+			{
+				mHidMouse[1] = mMousePosX;
+				break;
+			}
 			default:
 			{
 				break;
 			}
 		}
 	}
+	mMousePosX = 0;
+	mMousePosY = 0;
 	mIsMouseDirty = false;
 	return mHidMouse;
 }

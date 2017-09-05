@@ -18,6 +18,7 @@ class Interpreter
 		const uint8_t *getHidKeycodeArray();
 		const uint8_t *getMouseEvent();
 	private:
+		unsigned long mLastTickTime;
 		bool mIsKeyboardDirty;
 		bool mIsMouseDirty;
 		uint8_t mActivePhyKey[60];
@@ -29,9 +30,14 @@ class Interpreter
 		int mMouseEventLength;
 		uint8_t mHidKeycodes[8];
 		uint8_t mHidMouse[4];
+
+		unsigned long mLastMouseMoveTime;
+		int8_t mMousePosX;
+		int8_t mMousePosY;
 		
 
 		uint32_t getKeyFun(uint8_t phyKey);
+		void refreshMouse();
 		void addKeycode(uint8_t phyKey, uint32_t keyFun);
 		bool removeKeycode(uint8_t phyKey);
 		void addLayer(uint8_t phyKey, uint8_t layerId);

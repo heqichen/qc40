@@ -16,9 +16,12 @@ class EventLoop
 		void newEvent(uint8_t type, int value);
 	private:
 		void dispatcher(uint8_t type, int value);
+		void reportHid();
+
 		Fifo mFifo;
 		Hid *mHid;
 		Interpreter *mInterpreter;
+		unsigned long mLastReportTime;
 };
 
 

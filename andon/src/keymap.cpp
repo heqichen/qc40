@@ -10,8 +10,8 @@ uint32_t myLayout[][48] = {
 		KB_0___, KB_D___)
 	},
 	{H4K_LAYOUT(	//Layer #1
-		KB_GRAV, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_HOME, KB_END_, KB_PGUP, KB_PGDW, KB_MINU, KB_EQ__, 
-		KB_____, KB_____, KB_____, KB_____, KB_VODN, KB_VOUP, KB_LEFT, KB_DOWN, KB_UP__, KB_RIGH, KB_____, KB_____,
+		KB_GRAV, MS_WHUP, MS_MOVU, MS_WHDN, KB_____, KB_____, KB_____, KB_HOME, KB_END_, KB_PGUP, KB_PGDN, KB_MINU, KB_EQ__, 
+		KB_____, MS_MOVL, MS_MOVD, MS_MOVR, KB_VODN, KB_VOUP, KB_LEFT, KB_DOWN, KB_UP__, KB_RIGH, KB_____, KB_____,
 		KB_____, MS_LB__, MS_MB__, MS_RB__, KB_____, KB_____, KB_LBRA, KB_RBRA, KB_BKSP, KB_DEL_, KB_____, KB_____,
 		KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____,
 		KB_____, KB_____)
