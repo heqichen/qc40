@@ -26,7 +26,7 @@ uint32_t myLayout[][48] = {
 	{H4K_LAYOUT(	//Layer #3
 		KB_____, KB_F1__, KB_F2__, KB_F3__, KB_F4__, KB_F5__, KB_F6__, KB_F7__, KB_F8__, KB_F9__, KB_F10_, KB_F11_, KB_F12_,  
 		KB_CAPS, KB_1___, KB_2___, KB_3___, KB_4___, KB_5___, KB_6___, KB_7___, KB_8___, KB_9___, KB_0___, KB_BKSL,
-		KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_SL__, KB_QUOT, KB_____, KB_____,
+		KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_SL__, KB_QUOT, KB_____, KB_____, KB_____, KB_____,
 		KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____, KB_____,
 		KB_____, KB_____)
 	},
