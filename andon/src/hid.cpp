@@ -48,7 +48,7 @@ void Hid::writeHidEndPoint(const uint8_t *data, int length)
 {
 	while (!PrevXferComplete)
 	{
-
+		Serial.write('.');
 	}
 	if (bDeviceState == CONFIGURED)
 	{

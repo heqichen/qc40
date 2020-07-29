@@ -148,6 +148,9 @@ clean:
 flash: $(BIN)
 	$(STFLASH) --reset write $(BIN) 0x8000000
 
+wf: $(HEX)
+	/mnt/c/Program\ Files\ \(x86\)/STMicroelectronics/STM32\ ST-LINK\ Utility/ST-LINK\ Utility/ST-LINK_CLI.exe -P $(HEX) -Rst
+
 reset:
 	$(STFLASH) --reset
 
